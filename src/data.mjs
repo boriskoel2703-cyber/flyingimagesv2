@@ -43,7 +43,7 @@ const steps = {
 
 export const services = [
   {
-    slug: 'maatwerk-website', cat: 'web', name: 'Maatwerk website', popular: true, // 'Aanrader'-label in het menu
+    slug: 'maatwerk-website', cat: 'web', name: 'Maatwerk website', popular: true, // 'Meest gekozen'-label in het menu
     short: 'Uniek ontwerp, eigen functies',
     price: { from: '€990', unit: 'eenmalig' },
     title: 'Maatwerk voor wat standaard niet kan.',
