@@ -202,6 +202,23 @@
     window.addEventListener('resize', updRoute);
   }
 
+  /* Garantie-logo (homepage): animatie speelt mee met scrollen */
+  var fi3d = document.querySelector('.fi3d');
+  if (fi3d && !reduce) {
+    fi3d.classList.add('scrub');
+    var fiTick = false;
+    var updFi = function () {
+      fiTick = false;
+      var b = fi3d.getBoundingClientRect(), vh = window.innerHeight;
+      // 0 = komt onderin beeld, 0.5 = midden (laptop open), 1 = verlaat bovenin beeld
+      var p = Math.max(0, Math.min(1, (vh - b.top) / (vh + b.height)));
+      fi3d.style.setProperty('--fp', p.toFixed(4));
+    };
+    updFi();
+    window.addEventListener('scroll', function () { if (!fiTick) { fiTick = true; requestAnimationFrame(updFi); } }, { passive: true });
+    window.addEventListener('resize', updFi);
+  }
+
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 })();

@@ -503,6 +503,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 @keyframes fi-scene { 0%, 15% { transform: rotateX(0) rotateY(0) scale(1); } 40%, 65% { transform: translateY(-30px) rotateX(-24deg) rotateY(32deg) scale(.92); } 90%, 100% { transform: rotateX(0) rotateY(0) scale(1); } }
 @keyframes fi-fold { 0%, 15% { transform: rotateX(0); } 40%, 65% { transform: rotateX(84deg); } 90%, 100% { transform: rotateX(0); } }
 @keyframes fi-screen { 0%, 15% { transform: rotateX(0); } 40%, 65% { transform: rotateX(-6deg); } 90%, 100% { transform: rotateX(0); } }
+/* Scroll-gestuurd: JS zet --fp (0–1) op .fi3d; de keyframes staan op pauze en volgen de scrollpositie */
+.fi3d.scrub .fi3d-logo, .fi3d.scrub .top, .fi3d.scrub .bot { animation-play-state: paused; animation-delay: calc(var(--fp, 0) * -5.99s); }
 @media (max-width: 800px) { .fi3d { justify-self: start; scale: .58; transform-origin: left top; margin: 10px 0 -110px; } }
 
 /* Doorlopend slot: CTA + footer in één vlak, gloed en supergraphic over de naad heen */
