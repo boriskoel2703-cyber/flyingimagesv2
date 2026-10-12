@@ -9,6 +9,8 @@ import crypto from "node:crypto";
 const BUCKET = "referenties";
 const CONFIG_PATH = "config/system-config.json";
 const PRICES_PATH = "config/prices.json";
+const SITE_PATH = "config/site.json";
+const FOCUS = /^\d{1,3}% \d{1,3}%$/;
 const SESSION_DAYS = 7;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const COLS = "id,bedrijfsnaam,workflow_type,huidige_stap,status,bijgewerkt_op,aangemaakt_op";
@@ -219,7 +221,60 @@ const actions = {
     });
     return { ok: true };
   },
+
+  /* ---- Website → Hero-afbeelding ---- */
+  async getSite(b) {
+    requireSession(b);
+    return { site: await readSite() };
+  },
+
+  async saveHero(b) {
+    requireSession(b);
+    const site = (await readSite()) || {};
+    const old = site.hero?.path;
+    const focus = FOCUS.test(String(b.focus || "")) ? b.focus : "50% 50%";
+    let path = old;
+    if (b.dataBase64) {
+      const type = /^image\/(webp|jpeg|png)$/i.test(b.contentType || "") ? b.contentType : "image/webp";
+      const bytes = Buffer.from(String(b.dataBase64), "base64");
+      if (!bytes.length) throw new HttpError(400, "Leeg bestand.");
+      path = `site/hero-${Date.now()}.${type.split("/")[1].replace("jpeg", "jpg")}`;
+      await sb(`/storage/v1/object/${BUCKET}/${path}`, {
+        method: "POST", body: bytes, raw: true, headers: { "Content-Type": type, "x-upsert": "true" },
+      });
+    }
+    if (!path) throw new HttpError(400, "Upload eerst een afbeelding.");
+    site.hero = { path, focus, savedAt: new Date().toISOString() };
+    await writeSite(site);
+    if (old && old !== path) await removeFile(old);
+    return { hero: site.hero };
+  },
+
+  async removeHero(b) {
+    requireSession(b);
+    const site = (await readSite()) || {};
+    const old = site.hero?.path;
+    delete site.hero;
+    await writeSite(site);
+    if (old) await removeFile(old);
+    return { ok: true };
+  },
 };
+
+async function readSite() {
+  try { return await sb(`/storage/v1/object/authenticated/${BUCKET}/${SITE_PATH}`); }
+  catch (e) { if (e.upstream === 400 || e.upstream === 404) return null; throw e; }
+}
+async function writeSite(site) {
+  await sb(`/storage/v1/object/${BUCKET}/${SITE_PATH}`, {
+    method: "POST", body: Buffer.from(JSON.stringify(site)), raw: true,
+    headers: { "Content-Type": "application/json", "x-upsert": "true", "cache-control": "no-cache" },
+  });
+}
+async function removeFile(path) {
+  if (!/^site\/hero-\d+\.(webp|jpg|png)$/.test(path)) return;
+  try { await sb(`/storage/v1/object/${BUCKET}`, { method: "DELETE", body: { prefixes: [path] } }); } catch {}
+}
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");

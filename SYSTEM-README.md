@@ -7,6 +7,7 @@ De intake-workflow (Custom website, klant zónder website) draait nu in de eigen
 ```
 api/system.mjs          serverfunctie (Vercel) — praat met Supabase
 api/prices.mjs          publieke prijzen voor de website (alleen-lezen)
+api/site.mjs            publieke site-instellingen (hero-afbeelding) voor de website
 src/assets/prices.js        laadt de prijzen uit System op de website
 src/system/index.html       het dashboard
 src/system/app.js           schermen, stepper, Workflow BE, Vragenlijst BE
@@ -36,6 +37,8 @@ De service role key staat alleen op de server, nooit in de browser. Na het toevo
 - Logo's en referentie-screenshots: storage-bucket `referenties`.
 - Aanpassingen uit Workflow BE en Vragenlijst BE: bestand `config/system-config.json` in dezelfde bucket. Geen nieuwe tabellen nodig.
 - Prijzen (System → Website → Prijzen): bestand `config/prices.json` in dezelfde bucket. De website haalt ze op via `/api/prices` (30 sec cache) en vervangt de prijzen uit `src/data.mjs`. Zolang er niets is opgeslagen, gelden de prijzen uit `src/data.mjs`. Let op: meta-omschrijvingen voor Google gebruiken de prijzen uit `src/data.mjs`.
+
+- Hero-afbeelding (System → Website → Hero-afbeelding): foto in `site/hero-<tijd>.webp` en instellingen (pad + focuspunt) in `config/site.json`, beide in dezelfde bucket. De foto wordt in de browser verkleind naar max. 2400 px en gecomprimeerd. De homepage vraagt `/api/site` op (30 sec cache) en vervangt de standaard dronefoto; `/api/site?img=hero` levert de foto zelf. Zonder eigen foto blijft de standaardfoto staan.
 
 ## Beveiliging
 

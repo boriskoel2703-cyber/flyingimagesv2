@@ -90,7 +90,7 @@ $("#burger").onclick = () => document.body.classList.toggle(mq.matches ? "open" 
 $("#overlay").onclick = () => document.body.classList.remove("open");
 
 /* ================= router ================= */
-const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen" };
+const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen", hero: "Hero-afbeelding" };
 const NAVSEC = { nieuw: "intakes", intake: "intakes" };
 let ROUTE_SEQ = 0;
 
@@ -103,6 +103,7 @@ async function render() {
   $("#crumb").innerHTML = `System / <b>${TITLES[sec]}</b>`;
   savedLabel("");
   if (sec !== "prijzen") PR = null;
+  if (sec !== "hero") HERO = null;
   document.body.classList.remove("open");
   content.innerHTML = `<p class="lead"><span class="spin"></span></p>`;
   try {
@@ -177,6 +178,13 @@ const PAGES = {
     ]);
     PR = { base, saved: !!saved, savedAt: saved?.savedAt || "", draft: prDraft(base, saved), dirty: false };
     return renderPrices();
+  },
+
+  async hero() {
+    const { site } = await api("getSite");
+    const h = site?.hero || null;
+    HERO = { saved: h, focus: h?.focus || "50% 50%", preview: h ? `/api/site?img=hero&v=${encodeURIComponent(h.savedAt)}` : DEFAULT_HERO, file: null, dirty: false, busy: false };
+    return renderHero();
   },
 
   async "vragenlijst-be"(kind) {
@@ -833,6 +841,93 @@ content.addEventListener("click", async (e) => {
   }
 });
 addEventListener("beforeunload", (e) => { if (PR?.dirty && location.hash.startsWith("#prijzen")) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ================= Hero-afbeelding ================= */
+let HERO = null;
+const DEFAULT_HERO = "/img/drone-brug-1400.jpg";
+const MAX_W = 2400, MAX_BYTES = 3e6;
+
+function renderHero() {
+  const h = HERO, [fx, fy] = h.focus.split(" ");
+  const frame = (cls, label) => `<div class="hero-frame ${cls}"><div class="mini">${label}</div>
+    <div class="hero-frame__img" data-hero-focus><img src="${esc(h.preview)}" alt="" style="object-position:${h.focus}"><span class="hero-dot" style="left:${fx};top:${fy}"></span></div></div>`;
+  return head("Website", "Hero-afbeelding", "De grote achtergrondafbeelding bovenaan de homepage. Upload een eigen foto en klik in de voorbeelden op het belangrijkste punt, zodat dat op elk scherm in beeld blijft. Na opslaan staat het binnen een minuut live.")
+    + `<div class="card"><div class="card__h"><div><h3>Huidige afbeelding ${h.saved ? '<span class="badge">Eigen foto</span>' : '<span class="badge navy">Standaard</span>'}</h3>
+        <p>${h.file ? "Nog niet opgeslagen. Klik op Opslaan om hem live te zetten." : h.saved ? `Laatst opgeslagen: ${fmtDate(h.saved.savedAt)}` : "Nu staat de standaard dronefoto (brug) op de site."}</p></div></div>
+      <div class="hero-frames">${frame("wide", "Desktop")}${frame("tall", "Mobiel")}</div>
+      <p class="hint">Focuspunt: ${esc(h.focus)}. Klik in een voorbeeld om het te verplaatsen. De linkerkant wordt op desktop deels bedekt door de tekst.</p>
+      <div class="row" style="margin-top:14px"><label class="btn ghost sm">${h.saved || h.file ? "Andere foto kiezen" : "Foto uploaden"}<input type="file" accept="image/jpeg,image/png,image/webp" hidden data-hero="file"></label>
+      ${h.saved ? '<button class="btn ghost sm" data-hero-act="remove">Terug naar standaard</button>' : ""}</div>
+      <p class="hint" id="heroMsg">Liggende foto, het liefst minimaal 2000 px breed. Hij wordt automatisch verkleind en gecomprimeerd.</p></div>
+    <div class="sticky-save"><button class="btn dark" data-hero-act="save" id="heroSave" ${h.dirty && !h.busy ? "" : "disabled"}>${h.busy ? "Opslaan…" : h.dirty ? "Opslaan" : "Opgeslagen"}</button></div>`;
+}
+function heroRedraw() { const y = scrollY; content.innerHTML = renderHero(); scrollTo(0, y); }
+
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = async () => {
+      URL.revokeObjectURL(url);
+      const scale = Math.min(1, MAX_W / img.naturalWidth);
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * scale); c.height = Math.round(img.naturalHeight * scale);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      const toBlob = (type, q) => new Promise((r) => c.toBlob(r, type, q));
+      let blob = null;
+      for (const q of [0.82, 0.72, 0.6, 0.5]) {
+        blob = await toBlob("image/webp", q);
+        if (!blob || blob.type !== "image/webp") blob = await toBlob("image/jpeg", q); // browsers zonder webp-encoder
+        if (blob && blob.size <= MAX_BYTES) break;
+      }
+      if (!blob || blob.size > MAX_BYTES) return reject(new Error("De foto blijft te groot, kies een kleinere."));
+      resolve({ blob, w: c.width });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Dit bestand kan niet als afbeelding worden gelezen.")); };
+    img.src = url;
+  });
+}
+
+content.addEventListener("change", async (e) => {
+  const el = e.target; if (!HERO || el.dataset.hero !== "file" || !el.files[0]) return;
+  const msg = $("#heroMsg"); msg.textContent = "Foto verwerken…";
+  try {
+    const { blob, w } = await compressImage(el.files[0]);
+    Object.assign(HERO, { file: blob, preview: URL.createObjectURL(blob), focus: "50% 50%", dirty: true });
+    heroRedraw();
+    $("#heroMsg").textContent = `Klaar: ${w} px breed, ${(blob.size / 1e6).toFixed(1).replace(".", ",")} MB.${w < 1600 ? " Let op: dit is vrij klein voor een hero, hij kan onscherp ogen op grote schermen." : ""}`;
+  } catch (err) { msg.textContent = err.message; }
+});
+content.addEventListener("click", async (e) => {
+  if (!HERO) return;
+  const box = e.target.closest("[data-hero-focus]");
+  if (box) {
+    // Klikpunt omrekenen naar een punt op de foto zelf (object-fit: cover verschuift de foto)
+    const r = box.getBoundingClientRect(), img = box.querySelector("img");
+    const iw = img.naturalWidth || r.width, ih = img.naturalHeight || r.height, sc = Math.max(r.width / iw, r.height / ih);
+    const dw = iw * sc, dh = ih * sc, [fx, fy] = HERO.focus.split(" ").map((v) => parseFloat(v) / 100);
+    const pct = (click, size, disp, f) => Math.round(Math.min(100, Math.max(0, ((click - (size - disp) * f) / disp) * 100)));
+    const x = pct(e.clientX - r.left, r.width, dw, fx), y = pct(e.clientY - r.top, r.height, dh, fy);
+    HERO.focus = `${x}% ${y}%`; HERO.dirty = true; heroRedraw(); return;
+  }
+  const el = e.target.closest("[data-hero-act]"); if (!el) return;
+  const a = el.dataset.heroAct;
+  if (a === "remove") {
+    if (!(await ask("De eigen foto verwijderen en de standaard dronefoto terugzetten op de homepage?", "Terugzetten"))) return;
+    try { await api("removeHero"); HERO = { saved: null, focus: "50% 50%", preview: DEFAULT_HERO, file: null, dirty: false, busy: false }; heroRedraw(); savedLabel("Standaard hero teruggezet"); }
+    catch (err) { alert("Terugzetten mislukt: " + err.message); }
+  } else if (a === "save") {
+    if (!HERO.file && !HERO.saved) return alert("Upload eerst een foto.");
+    HERO.busy = true; heroRedraw();
+    try {
+      const data = { focus: HERO.focus };
+      if (HERO.file) Object.assign(data, { contentType: HERO.file.type, dataBase64: await fileToBase64(HERO.file) });
+      const { hero } = await api("saveHero", data);
+      Object.assign(HERO, { saved: hero, file: null, dirty: false, busy: false });
+      heroRedraw(); $("#heroSave").textContent = "✓ Opgeslagen"; savedLabel("Hero-afbeelding opgeslagen");
+    } catch (err) { HERO.busy = false; heroRedraw(); alert("Opslaan mislukt: " + err.message); }
+  }
+});
+addEventListener("beforeunload", (e) => { if (HERO?.dirty && location.hash.startsWith("#hero")) { e.preventDefault(); e.returnValue = ""; } });
 
 /* ================= start ================= */
 (async function init() {

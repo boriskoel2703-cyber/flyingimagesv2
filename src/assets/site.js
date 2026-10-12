@@ -143,6 +143,27 @@
     }, { passive: true });
   }
 
+  /* Eigen hero-afbeelding uit /system → Hero-afbeelding (anders blijft de standaardfoto staan) */
+  if (heroImg && window.fetch) {
+    fetch('/api/site', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.hero || !d.hero.src) return;
+      var pre = new Image();
+      pre.onload = function () {
+        var pic = heroImg.parentNode;
+        heroImg.style.transition = 'opacity .45s ease';
+        heroImg.style.opacity = '0';
+        setTimeout(function () {
+          if (pic && pic.tagName === 'PICTURE') pic.querySelectorAll('source').forEach(function (s) { s.remove(); });
+          heroImg.removeAttribute('srcset'); heroImg.removeAttribute('sizes');
+          heroImg.src = d.hero.src;
+          heroImg.style.objectPosition = d.hero.focus || '50% 50%';
+          heroImg.style.opacity = '1';
+        }, 300);
+      };
+      pre.src = d.hero.src;
+    }).catch(function () {});
+  }
+
   /* Contactformulier (Web3Forms) */
   var form = document.getElementById('contact-form');
   if (form) {
