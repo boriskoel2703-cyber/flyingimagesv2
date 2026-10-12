@@ -43,18 +43,19 @@ const steps = {
 
 export const services = [
   {
-    slug: 'website-laten-maken', cat: 'web', name: 'Onepage website',
-    short: 'Professionele site, snel online',
-    price: { from: '€200', unit: 'eenmalig', note: "Onepage €200 + €30/mnd · Website tot 8 pagina's €400 + €20/mnd" },
-    title: 'Een website die klopt bij jouw bedrijf.',
-    intro: 'Wij bouwen je website van eerste schets tot livegang. Je krijgt een snelle, mobielvriendelijke site voor een vaste prijs, en je betaalt pas als jij tevreden bent.',
-    includes: ["Onepage of tot 8 pagina's", 'Responsive en mobielvriendelijk ontwerp', 'Contactformulier dat direct in je inbox landt', 'Domeinkoppeling en SSL-certificaat', 'Hosting en onderhoud via het maandbedrag', 'Eén revisieronde inbegrepen'],
-    forWho: "Starters, zzp'ers en mkb'ers die een betrouwbare website willen, zonder technisch gedoe.",
+    slug: 'onepage-website', cat: 'web', name: 'Onepage website',
+    short: 'Alles op één pagina, snel online',
+    price: { from: '€200', unit: 'eenmalig', monthly: '€30' },
+    title: 'Je hele verhaal op één sterke pagina.',
+    intro: 'Een onepage website zet alles wat een bezoeker moet weten overzichtelijk onder elkaar: wie je bent, wat je doet en hoe ze je bereiken. Wij bouwen hem van eerste schets tot livegang, voor een vaste prijs, en je betaalt pas als jij tevreden bent.',
+    includes: ['Eén pagina met alle belangrijke onderdelen', 'Responsive en mobielvriendelijk ontwerp', 'Contactformulier dat direct in je inbox landt', 'Domeinkoppeling en SSL-certificaat', 'Hosting en onderhoud via het maandbedrag', 'Eén revisieronde inbegrepen'],
+    forWho: "Starters, zzp'ers en kleine ondernemers die snel en betaalbaar professioneel online willen staan, zonder technisch gedoe.",
     steps: 'default',
     faq: [
-      ['Hoe snel staat mijn website online?', "Een onepage staat meestal binnen een week online, een website tot 8 pagina's binnen twee tot drie weken. Het tempo hangt vooral af van hoe snel teksten en beelden binnen zijn."],
+      ['Hoe snel staat mijn onepage online?', 'Meestal binnen een week. Het tempo hangt vooral af van hoe snel teksten en beelden binnen zijn.'],
+      ['Is één pagina genoeg?', 'Voor de meeste starters en kleine bedrijven wel. Een goed opgebouwde onepage vertelt je verhaal kort en krachtig en leidt bezoekers direct naar contact.'],
       ['Wat zit er in het maandbedrag?', 'Hosting, het SSL-certificaat, onderhoud en updates. Zo blijft je site veilig en snel, zonder dat jij er iets voor hoeft te doen.'],
-      ['Kan ik later uitbreiden?', 'Zeker. Je kunt altijd pagina’s toevoegen of doorgroeien naar een maatwerk website, een webshop of online marketing.'],
+      ['Kan ik later uitbreiden?', 'Zeker. Je onepage groeit makkelijk mee naar een website met meerdere pagina’s, een maatwerk website of een webshop.'],
     ],
     related: ['maatwerk-website', 'webshop-laten-maken', 'zoekmachine-optimalisatie'],
   },
@@ -72,7 +73,7 @@ export const services = [
       ['Kunnen jullie mijn bestaande producten overzetten?', 'Ja. We zetten producten en klantgegevens over waar dat kan, en zorgen voor doorverwijzingen zodat je vindbaarheid behouden blijft.'],
       ['Wat kost een webshop per maand?', 'Dat hangt af van het platform en de koppelingen. Na het eerste gesprek krijg je een duidelijke opgave van de eenmalige en maandelijkse kosten.'],
     ],
-    related: ['website-laten-maken', 'google-ads', 'data-analyse-rapportage'],
+    related: ['onepage-website', 'google-ads', 'data-analyse-rapportage'],
   },
   {
     slug: 'maatwerk-website', cat: 'web', name: 'Maatwerk website',
@@ -88,7 +89,7 @@ export const services = [
       ['Hoe bepalen jullie de prijs?', 'We maken eerst samen een functionele schets. Op basis daarvan krijg je een vaste prijs, zodat je vooraf weet waar je aan toe bent.'],
       ['Van wie is de website?', 'Van jou. We leggen vooraf vast hoe hosting, beheer en toegang geregeld zijn.'],
     ],
-    related: ['website-laten-maken', 'ai-oplossingen', 'rebranding'],
+    related: ['onepage-website', 'ai-oplossingen', 'rebranding'],
   },
   {
     slug: 'online-marketing', cat: 'vind', name: 'Online marketing',
@@ -152,7 +153,7 @@ export const services = [
       ['Is dit hetzelfde als SEO?', 'Er is overlap, want goede SEO helpt hier ook. Maar AI-assistenten letten extra op duidelijke, gestructureerde informatie en op wat andere bronnen over je zeggen.'],
       ['Garanderen jullie dat ChatGPT mij noemt?', 'Nee, dat kan niemand. Wel vergroten we de kans flink en meten we hoe jouw zichtbaarheid zich ontwikkelt.'],
     ],
-    related: ['zoekmachine-optimalisatie', 'ai-oplossingen', 'website-laten-maken'],
+    related: ['zoekmachine-optimalisatie', 'ai-oplossingen', 'onepage-website'],
   },
   {
     slug: 'ai-oplossingen', cat: 'ai', name: 'AI-oplossingen',
@@ -200,7 +201,7 @@ export const services = [
       ['Wat is een brandbook?', 'Een document met alle merkrichtlijnen: kleuren, lettertypes, logogebruik en toon. Handig voor jezelf, je team en iedereen die voor je werkt.'],
       ['Passen jullie ook mijn website aan?', 'Graag. Een rebranding combineren met een nieuwe website zorgt dat alles direct klopt.'],
     ],
-    related: ['website-laten-maken', 'online-marketing', 'drone-fotografie-video'],
+    related: ['onepage-website', 'online-marketing', 'drone-fotografie-video'],
   },
   {
     slug: 'drone-fotografie-video', cat: 'beeld', name: "Drone foto's & video's",
@@ -216,7 +217,7 @@ export const services = [
       ['Wat gebeurt er bij slecht weer?', 'Dan plannen we samen een nieuw moment in. Veiligheid en beeldkwaliteit gaan voor.'],
       ['Krijg ik de ruwe beelden ook?', 'Je krijgt een bewerkte selectie. Ruwe beelden zijn op aanvraag beschikbaar.'],
     ],
-    related: ['fpv-drone-beelden', 'online-marketing', 'website-laten-maken'],
+    related: ['fpv-drone-beelden', 'online-marketing', 'onepage-website'],
   },
   {
     slug: 'fpv-drone-beelden', cat: 'beeld', name: 'FPV drone beelden',

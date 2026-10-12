@@ -46,7 +46,7 @@ const I = {
   linkedin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M7 10v7M7 7v.01M11 17v-4a3 3 0 0 1 6 0v4M11 10v7"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>',
 };
 const SVC_ICON = {
-  'website-laten-maken': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>',
+  'onepage-website': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>',
   'webshop-laten-maken': '<path d="M5 7h14l-1.5 9h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/><circle cx="9" cy="20" r="1"/><circle cx="16" cy="20" r="1"/>',
   'maatwerk-website': '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
   'online-marketing': '<path d="M4 14V10l12-5v14L4 14Z"/><path d="M8 15v4h3v-3"/>',
@@ -381,7 +381,7 @@ ${ctaBand(u)}`,
   });
 }
 
-const CAT_ICON = { web: 'website-laten-maken', vind: 'zoekmachine-optimalisatie', ai: 'ai-oplossingen', beeld: 'drone-fotografie-video' };
+const CAT_ICON = { web: 'onepage-website', vind: 'zoekmachine-optimalisatie', ai: 'ai-oplossingen', beeld: 'drone-fotografie-video' };
 function specialismsBlock(u) {
   return `<div class="specs">${categories.map((c, i) => {
     const list = byCat(c.id);
@@ -404,7 +404,7 @@ function packagesBlock(u) {
         <div><span class="lbl">${p.label}</span><h3>${p.name}</h3></div>
         <div data-p="pkg" data-i="${packages.indexOf(p)}"><div class="amount">${p.price}</div><div class="unit">${p.unit}</div></div>
         <ul>${p.items.map((i) => `<li>${I.check}<span>${i}</span></li>`).join('')}</ul>
-        <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}?dienst=website-laten-maken">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies ' + p.name.toLowerCase()}</a>
+        <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}${p.label === 'Pakket 1' ? '?dienst=onepage-website' : ''}">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies ' + p.name.toLowerCase()}</a>
       </div>`).join('')}
     </div>`;
 }
@@ -660,7 +660,7 @@ ${ctaBand(u)}`,
 function portfolio() {
   const every = [
     [icon('rebranding'), 'Eigen ontwerp', 'Geen template. Kleuren, typografie en beeld afgestemd op jouw merk.'],
-    [icon('website-laten-maken'), 'Mobielvriendelijk', 'Snel en goed leesbaar op elk scherm.'],
+    [icon('onepage-website'), 'Mobielvriendelijk', 'Snel en goed leesbaar op elk scherm.'],
     [I.card, 'Vaste prijs', 'Je weet vooraf waar je aan toe bent.'],
     [I.shield, 'Pas betalen bij goedkeuring', 'Geen goedkeuring, geen factuur.'],
   ];
