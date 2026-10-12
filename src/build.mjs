@@ -80,7 +80,7 @@ const NAV = [
 ];
 
 /* 'Meest gekozen'-label voor diensten met popular: true (alleen in het menu) */
-const POP = '<span class="pop-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Meest gekozen</span>';
+const POP = '<span class="pop-tag">Meest gekozen</span>';
 
 function header(u, current, overlay) {
   const megaCols = categories.map((c) => `
