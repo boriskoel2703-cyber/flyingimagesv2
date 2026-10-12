@@ -79,12 +79,15 @@ const NAV = [
   ['contact', 'Contact'],
 ];
 
+/* 'Populair'-label voor diensten met popular: true (alleen in het menu) */
+const POP = '<span class="pop-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>Populair</span>';
+
 function header(u, current, overlay) {
   const megaCols = categories.map((c) => `
           <div class="mega-col">
             <h3>${c.name}</h3>
             <p class="cat-desc">${c.desc}</p>
-            ${byCat(c.id).map((s) => `<a class="mega-link" href="${u('diensten/' + s.slug)}"><strong>${s.name}${I.arrow}</strong><small>${s.short}</small></a>`).join('\n            ')}
+            ${byCat(c.id).map((s) => `<a class="mega-link" href="${u('diensten/' + s.slug)}"><strong><span class="ml-name">${s.name}${s.popular ? POP : ''}</span>${I.arrow}</strong><small>${s.short}</small></a>`).join('\n            ')}
           </div>`).join('');
 
   const links = NAV.map(([href, label, mega]) => {
@@ -98,7 +101,7 @@ function header(u, current, overlay) {
   const drawerCats = categories.map((c) => `
         <div>
           <h3>${c.name}</h3>
-          ${byCat(c.id).map((s) => `<a href="${u('diensten/' + s.slug)}">${s.name}</a>`).join('')}
+          ${byCat(c.id).map((s) => `<a href="${u('diensten/' + s.slug)}"><span class="ml-name">${s.name}${s.popular ? POP : ''}</span></a>`).join('')}
         </div>`).join('');
 
   return `
