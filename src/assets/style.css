@@ -669,3 +669,32 @@ ul { margin: 0; padding: 0; list-style: none; }
 .next li .mono { color: var(--sand); padding-top: 3px; }
 .next b { font-weight: 500; }
 .next p { color: var(--mist); font-size: .9rem; }
+
+/* Categoriekleuren */
+[data-cat="web"]   { --cat-bg: var(--navy-700); --cat-fg: var(--sand-300); }
+[data-cat="vind"]  { --cat-bg: var(--sand);     --cat-fg: var(--navy-900); }
+[data-cat="ai"]    { --cat-bg: var(--mist);     --cat-fg: var(--navy-900); }
+[data-cat="beeld"] { --cat-bg: var(--paper);    --cat-fg: var(--navy-900); }
+.svc-card[data-cat] .icon { background: linear-gradient(155deg, color-mix(in srgb, var(--cat-bg) 80%, #fff) 0%, var(--cat-bg) 50%, color-mix(in srgb, var(--cat-bg) 85%, #000) 100%); color: var(--cat-fg); }
+.svc-card[data-cat="beeld"] .icon { box-shadow: inset 0 0 0 1px var(--line); }
+/* Specialismen: elke categorie een eigen vlakkleur */
+.specs > .spec:nth-child(1) { --spec-bg: var(--navy-700); }
+.specs > .spec:nth-child(2) { --spec-bg: var(--sand); }
+.specs > .spec:nth-child(3) { --spec-bg: var(--mist); }
+.specs > .spec:nth-child(4) { --spec-bg: var(--paper); }
+.specs > .spec, .specs > .spec:hover { background: linear-gradient(155deg, color-mix(in srgb, var(--spec-bg) 80%, #fff) 0%, var(--spec-bg) 50%, color-mix(in srgb, var(--spec-bg) 85%, #000) 100%); }
+.specs > .spec:hover { border-color: transparent; }
+/* Lichte vlakken: donkere tekst */
+.specs > .spec:nth-child(n+2) { border-color: transparent; color: var(--ink); }
+.specs > .spec:nth-child(n+2) h3 { color: var(--ink); }
+.specs > .spec:nth-child(n+2) .spec-desc,
+.specs > .spec:nth-child(n+2) .spec-n,
+.specs > .spec:nth-child(n+2) .spec-from { color: rgba(10,23,39,.68); }
+.specs > .spec:nth-child(n+2) li a { color: var(--ink); }
+.specs > .spec:nth-child(n+2) li a:hover { color: var(--navy-700); }
+.specs > .spec:nth-child(n+2) li svg { color: var(--navy-900); }
+.specs > .spec:nth-child(n+2) .spec-icon { background: rgba(10,23,39,.1); color: var(--navy-900); }
+.specs > .spec:nth-child(n+2) .spec-foot { border-top-color: rgba(10,23,39,.14); }
+.specs > .spec:nth-child(n+2) .spec-from strong { color: var(--ink); }
+.specs > .spec:nth-child(n+2) .spec-more { border-color: rgba(10,23,39,.2); color: var(--ink); }
+.specs > .spec:nth-child(n+2):hover .spec-more { background: var(--navy-900); color: var(--white); }

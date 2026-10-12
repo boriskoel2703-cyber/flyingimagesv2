@@ -213,7 +213,7 @@ function pageHero(u, a, { eyebrow, title, lead, crumbs = [], meta = '' }) {
 }
 
 function svcCard(u, s, showCat = false) {
-  return `<a class="svc-card" href="${u('diensten/' + s.slug)}">
+  return `<a class="svc-card" data-cat="${s.cat}" href="${u('diensten/' + s.slug)}">
     <span class="icon">${icon(s.slug)}</span>
     ${showCat ? `<span class="cat">${cat(s.cat).name}</span>` : ''}
     <h3>${s.name}</h3>
