@@ -243,3 +243,20 @@ export const packages = [
   { label: 'Pakket 2', name: 'Website', price: '€400', unit: 'eenmalig + €20/mnd', featured: true, items: ["Tot 8 pagina's", 'Responsive en mobielvriendelijk', 'Contactformulier', 'Domeinkoppeling + SSL', 'Eén revisieronde'] },
   { label: 'Pakket 3', name: 'Custom pakket', price: 'Op maat', unit: 'afhankelijk van je keuzes', items: ['Basis: website zoals Pakket 2', 'Rebranding en brandbook', 'Social media beheer', 'SEO, Google Ads en LLM-vindbaarheid', 'Drone- en FPV-beelden'] },
 ];
+
+// TIJDELIJKE PRIJS
+// Zolang hier een bedrag staat, toont de hele site overal "vanaf <bedrag>" (diensten, categorieën, pakketten).
+// Terug naar de normale prijzen hierboven? Zet de waarde op null en draai `npm run build`.
+export const tijdelijkePrijs = '€1975';
+
+if (tijdelijkePrijs) {
+  for (const c of categories) c.from = tijdelijkePrijs;
+  for (const s of services) {
+    s.price = { ...s.price, from: tijdelijkePrijs };
+    delete s.price.monthly;
+    if (s.price.note && s.price.note.includes('€')) delete s.price.note;
+  }
+  for (const p of packages) {
+    if (p.price.startsWith('€')) { p.price = tijdelijkePrijs; p.unit = 'eenmalig'; }
+  }
+}
