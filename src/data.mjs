@@ -43,7 +43,7 @@ const steps = {
 
 export const services = [
   {
-    slug: 'website-laten-maken', cat: 'web', name: 'Website laten maken',
+    slug: 'website-laten-maken', cat: 'web', name: 'Onepage website',
     short: 'Professionele site, snel online',
     price: { from: '€200', unit: 'eenmalig', note: "Onepage €200 + €30/mnd · Website tot 8 pagina's €400 + €20/mnd" },
     title: 'Een website die klopt bij jouw bedrijf.',
