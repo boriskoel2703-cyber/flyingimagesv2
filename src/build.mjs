@@ -464,7 +464,7 @@ ${pageHero(u, a, { eyebrow: 'Diensten', title: 'Twaalf diensten. Eén aanspreekp
     ${packagesBlock(u)}
   </div>
 </section>
-${guaranteeBlock(true)}
+${guaranteeBlock(true, true)}
 ${ctaBand(u, 'Twijfel je wat je nodig hebt?', 'Vertel ons waar je tegenaan loopt. We geven eerlijk advies, ook als dat betekent dat je minder nodig hebt dan je dacht.')}`,
   });
 }
