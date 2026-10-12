@@ -384,13 +384,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 .faq details p { padding: 0 48px 24px 0; color: var(--ink-2); max-width: 66ch; }
 
 /* Overview (diensten) */
-.cat-block { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 40px; padding-block: 48px; border-top: 1px solid var(--line); }
+.cat-block { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding-block: 48px; border-top: 1px solid var(--line); }
+.cat-block > div:first-child { max-width: 640px; }
 .cat-block:first-child { border-top: 0; padding-top: 0; }
 .cat-block h2 { font-size: 1.8rem; }
 .cat-block .cat-desc { color: var(--ink-2); margin-top: 10px; }
 .cat-block .cat-n { font-family: var(--f-mono); color: var(--sand-strong); font-size: .8rem; margin-bottom: 12px; display: block; }
-.cards-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-@media (max-width: 960px) { .cat-block { grid-template-columns: 1fr; gap: 24px; } }
+.cards-2 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 960px) { .cat-block { gap: 24px; } .cards-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .cards-2 { grid-template-columns: 1fr; } }
 
 /* About */
