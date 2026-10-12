@@ -162,8 +162,6 @@ function footer(u, withSg = true) {
           <li><a href="mailto:${site.email}">${site.email}</a></li>
           <li>KvK ${site.kvk}</li>
           <li>${site.city}, Nederland</li>
-          <li style="margin-top:10px"><a href="${u('werkwijze')}">Werkwijze</a></li>
-          <li><a href="${u('over-ons')}">Over ons</a></li>
         </ul>
       </div>
     </div>
