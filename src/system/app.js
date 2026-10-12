@@ -23,7 +23,7 @@ async function api(action, data = {}) {
 }
 
 const DIENSTEN = [
-  { cat: "Websites & webshops", items: [["website", "Onepage website"], ["webshop", "Webshop"], ["custom-website", "Custom website"]] },
+  { cat: "Websites & webshops", items: [["custom-website", "Custom website"], ["webshop", "Webshop"], ["website", "Onepage website"]] },
   { cat: "Vindbaarheid", items: [["online-marketing", "Online marketing"], ["seo", "SEO"], ["google-ads", "Google Ads"], ["llm", "LLM-vindbaarheid"]] },
   { cat: "AI & data", items: [["ai", "AI-oplossingen"], ["data", "Data-analyse & rapportage"]] },
   { cat: "Branding & beeld", items: [["rebranding", "Rebranding"], ["drone", "Drone foto & video"], ["fpv", "FPV-dronebeelden"]] },
