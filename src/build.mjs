@@ -120,7 +120,7 @@ function header(u, current, overlay) {
         </div>
         <div class="mega-foot">
           <a class="all" href="${u('diensten/index')}">Alle diensten ${I.arrow}</a>
-          <span class="note">Geen goedkeuring, geen factuur. Ook bij onze nieuwe diensten.</span>
+          <span class="note">Geen goedkeuring, geen factuur.</span>
         </div>
       </div>
     </div>
