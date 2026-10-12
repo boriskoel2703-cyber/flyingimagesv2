@@ -789,6 +789,7 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 cpSync(join(ROOT, 'src/assets'), join(OUT, 'assets'), { recursive: true });
 cpSync(join(ROOT, 'src/img'), join(OUT, 'img'), { recursive: true });
+cpSync(join(ROOT, 'src/system'), join(OUT, 'system'), { recursive: true }); // intern dashboard /system
 home();
 dienstenOverview();
 services.forEach(servicePage);
@@ -801,7 +802,7 @@ if (MODE === 'vercel') {
   const pages = ['/', '/diensten', ...services.map((s) => '/diensten/' + s.slug), '/werkwijze', '/portfolio', '/over-ons', '/contact'];
   const today = new Date().toISOString().slice(0, 10);
   writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${site.domain}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
-  writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.domain}/sitemap.xml\n`);
+  writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /system\n\nSitemap: ${site.domain}/sitemap.xml\n`);
 }
 console.log(`Gebouwd (${MODE}) → ${OUT}`);
 
