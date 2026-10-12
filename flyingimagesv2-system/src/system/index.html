@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>System | Flying Images</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/system/system.css">
+</head>
+<body>
+
+<div class="gate" id="gate" hidden>
+  <form class="gate__box" id="gateForm">
+    <div class="logo logo--big">F<i>I</i></div>
+    <h1>System</h1>
+    <p>Voer de toegangscode in.</p>
+    <input class="field" type="password" id="gatePass" autocomplete="current-password" placeholder="Toegangscode" required>
+    <button class="btn" type="submit">Ontgrendelen</button>
+    <p class="gate__err" id="gateErr"></p>
+  </form>
+</div>
+
+<aside class="side">
+  <div class="side__head">
+    <a href="/" class="logo">F<i>I</i></a>
+    <span class="side__tag">System</span>
+  </div>
+  <nav class="nav">
+    <div class="nav__label">Klanten</div>
+    <a href="#intakes" data-sec="intakes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Lopende intakes <span class="count" id="countOpen"></span></a>
+    <a href="#afgerond" data-sec="afgerond">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12l4 4L19 6"/></svg>
+      Afgeronde projecten</a>
+    <a href="#vragenlijsten" data-sec="vragenlijsten">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Vragenlijsten</a>
+    <a href="#workflows" data-sec="workflows">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="18" r="2"/><path d="M8 6h4a4 4 0 0 1 4 4M8 18h4a4 4 0 0 0 4-4"/></svg>
+      Workflows</a>
+    <div class="nav__label">Werkwijze</div>
+    <a href="#workflow-be" data-sec="workflow-be">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 7l4 4"/></svg>
+      Workflow BE <span class="tag">EDIT</span></a>
+    <a href="#vragenlijst-be" data-sec="vragenlijst-be">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13 7l4 4"/></svg>
+      Vragenlijst BE <span class="tag">EDIT</span></a>
+  </nav>
+  <div class="side__foot"><a href="/">← Website</a><button id="lockBtn">Vergrendelen</button></div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<div class="main">
+  <header class="top">
+    <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+    <div class="crumb" id="crumb"></div>
+    <div class="saved" id="saved"></div>
+  </header>
+  <main class="content" id="content"></main>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal__box">
+    <p id="modalText"></p>
+    <div class="modal__acts">
+      <button class="btn ghost" id="modalNo">Annuleren</button>
+      <button class="btn" id="modalYes">Doorgaan</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/system/app.js"></script>
+</body>
+</html>
