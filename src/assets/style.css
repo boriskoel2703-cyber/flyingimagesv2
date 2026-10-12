@@ -219,8 +219,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 860px) { .usp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .usp-item { padding: 24px 16px !important; border-bottom: 1px solid var(--line-dark); } .usp-item:nth-child(2n) { border-right: 0; } }
 
 /* Service explorer (tabs) */
-.explorer { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 40px; align-items: start; }
-.tabs { display: grid; gap: 6px; position: sticky; top: calc(var(--header-h) + 24px); }
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: start; }
+.tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .tab { text-align: left; padding: 18px 20px; border-radius: 14px; border: 1px solid transparent; display: grid; gap: 4px; transition: background .25s, border-color .25s; }
 .tab strong { font-weight: 500; font-size: 1.08rem; display: flex; justify-content: space-between; align-items: center; }
 .tab strong .count { font-family: var(--f-mono); font-size: .75rem; color: var(--ink-2); font-weight: 400; }
@@ -229,13 +229,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 .tab[aria-selected="true"] { background: var(--white); border-color: var(--line); box-shadow: 0 18px 40px -26px rgba(10,23,39,.35); }
 .tab[aria-selected="true"] strong { color: var(--ink); }
 .tab[aria-selected="true"] strong .count { color: var(--sand-strong); }
-.panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .panel[hidden] { display: none; }
 .panel.anim > * { animation: rise .55s var(--ease) both; }
 .panel.anim > *:nth-child(2) { animation-delay: .05s; } .panel.anim > *:nth-child(3) { animation-delay: .1s; } .panel.anim > *:nth-child(4) { animation-delay: .15s; }
 @media (max-width: 960px) {
-  .explorer { grid-template-columns: 1fr; gap: 24px; }
-  .tabs { position: static; display: flex; overflow-x: auto; gap: 8px; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+  .explorer { gap: 24px; }
+  .panel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs { display: flex; overflow-x: auto; gap: 8px; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { flex: none; padding: 12px 18px; }
   .tab span { display: none; }
