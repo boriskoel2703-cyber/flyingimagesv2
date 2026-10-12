@@ -25,7 +25,7 @@ async function api(action, data = {}) {
 const DIENSTEN = [
   { cat: "Websites & webshops", items: [["custom-website", "Custom website"], ["webshop", "Webshop"], ["website", "Onepage website"]] },
   { cat: "Vindbaarheid", items: [["online-marketing", "Online marketing"], ["seo", "SEO"], ["google-ads", "Google Ads"], ["llm", "LLM-vindbaarheid"]] },
-  { cat: "AI & data", items: [["ai", "AI-oplossingen"], ["data", "Data-analyse & rapportage"]] },
+  { cat: "Ai & data", items: [["ai", "Ai-oplossingen"], ["data", "Data-analyse & rapportage"]] },
   { cat: "Branding & beeld", items: [["rebranding", "Rebranding"], ["drone", "Drone foto & video"], ["fpv", "FPV-dronebeelden"]] },
 ];
 const ACTIVE = new Set(["custom-website"]);
@@ -315,7 +315,7 @@ const STEP = [
     const intro = kind === "artiest" ? "Kortere vragenlijst speciaal voor artiesten — zangers, dj's, muzikanten en performers. Loop dit door tijdens het gesprek; doorklikken mag altijd."
       : kind === "product" ? "Vragenlijst voor producten en B2B-oplossingen: product, probleem en resultaat, doelgroep, bewijs, bezwaren, conversie en toon. Doorklikken mag altijd."
       : "Loop dit door tijdens het intakegesprek. Er is geen bestaande website om uit te lezen, dus alles wat hier staat is straks het enige materiaal voor het brandbook én de teksten op de site.";
-    return card("Snel invullen in één veld", "Hieronder staat de hele vragenlijst als template. Typ of plak de antwoorden rechtstreeks in het veld (bijv. van AI-research), klik dan 'Antwoorden verwerken' om de losse velden eronder te vullen.",
+    return card("Snel invullen in één veld", "Hieronder staat de hele vragenlijst als template. Typ of plak de antwoorden rechtstreeks in het veld (bijv. van Ai-research), klik dan 'Antwoorden verwerken' om de losse velden eronder te vullen.",
       `<textarea class="field mono" rows="16" data-f="bulk">${esc(FLOW.bulk)}</textarea>
        <div class="row" style="margin-top:12px"><button class="btn ghost sm" data-f="bulk-reset">↺ Template opnieuw laden</button><button class="btn sm" data-f="bulk-parse">Antwoorden verwerken</button><span class="hint" id="bulkMsg" style="margin:0"></span></div>`)
       + `<div class="card"><p style="color:var(--ink-2);font-size:14px">${intro}</p>

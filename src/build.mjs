@@ -152,7 +152,7 @@ function footer(u, withSg = true) {
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="logo" href="${u('index')}">Flying Images<span></span></a>
-        <p>${site.tagline} Websites, vindbaarheid, AI en beelden vanuit de lucht. Gebouwd door Job en Boris in ${site.city}.</p>
+        <p>${site.tagline} Websites, vindbaarheid, Ai en beelden vanuit de lucht. Gebouwd door Job en Boris in ${site.city}.</p>
       </div>
       ${col(['web', 'beeld'], 'Bouwen & beeld')}
       ${col(['vind', 'ai'], 'Groeien & slimmer werken')}
@@ -290,16 +290,16 @@ function home() {
   })}</script>`;
   doc({
     path: 'index', overlay: true, jsonld,
-    title: 'Flying Images | Websites, vindbaarheid, AI en dronebeelden',
-    desc: 'Website, webshop of maatwerk laten maken in Zeewolde. Plus SEO, Google Ads, LLM-vindbaarheid, AI-oplossingen en drone- en FPV-beelden. Je betaalt pas als je tevreden bent.',
+    title: 'Flying Images | Websites, vindbaarheid, Ai en dronebeelden',
+    desc: 'Website, webshop of maatwerk laten maken in Zeewolde. Plus SEO, Google Ads, LLM-vindbaarheid, Ai-oplossingen en drone- en FPV-beelden. Je betaalt pas als je tevreden bent.',
     body: (u, a) => `
 <section class="hero">
   <div class="hero-media" aria-hidden="true">${picture(a, 'drone-brug', '', { eager: true })}</div>
   <div class="wrap hero-inner">
     <div class="hero-load">
-      <span class="eyebrow">Websites · Marketing · AI · Drone</span>
+      <span class="eyebrow">Websites · Marketing · Ai · Drone</span>
       <h1 style="margin-top:22px">Jouw website. <em>Jouw verhaal.</em></h1>
-      <p class="lead">Van website en webshop tot vindbaarheid in Google en ChatGPT, slimme AI-oplossingen en beelden vanuit de lucht. Persoonlijk, betaalbaar en zonder gedoe.</p>
+      <p class="lead">Van website en webshop tot vindbaarheid in Google en ChatGPT, slimme Ai-oplossingen en beelden vanuit de lucht. Persoonlijk, betaalbaar en zonder gedoe.</p>
       <div class="hero-ctas">
         <a class="btn btn-sand" href="${u('contact')}">Plan een vrijblijvend gesprek ${I.arrow}</a>
         <a class="btn btn-ghost" href="${u('diensten/index')}">Bekijk onze diensten</a>
@@ -445,9 +445,9 @@ function dienstenOverview() {
   doc({
     path: 'diensten/index',
     title: 'Diensten | Flying Images',
-    desc: 'Alle diensten van Flying Images: websites, webshops, maatwerk, SEO, Google Ads, LLM-vindbaarheid, AI-oplossingen, data-analyse, rebranding en drone- en FPV-beelden.',
+    desc: 'Alle diensten van Flying Images: websites, webshops, maatwerk, SEO, Google Ads, LLM-vindbaarheid, Ai-oplossingen, data-analyse, rebranding en drone- en FPV-beelden.',
     body: (u, a) => `
-${pageHero(u, a, { eyebrow: 'Diensten', title: 'Twaalf diensten. Eén aanspreekpunt.', lead: 'Van je eerste website tot gevonden worden in AI en beelden vanuit de lucht. Je kiest wat past bij waar je nu staat.', crumbs: [[null, 'Diensten']] })}
+${pageHero(u, a, { eyebrow: 'Diensten', title: 'Twaalf diensten. Eén aanspreekpunt.', lead: 'Van je eerste website tot gevonden worden in Ai en beelden vanuit de lucht. Je kiest wat past bij waar je nu staat.', crumbs: [[null, 'Diensten']] })}
 <section class="section">
   <div class="wrap">
     ${categories.map((c, i) => `
@@ -549,7 +549,7 @@ ${pageHero(u, a, { eyebrow: 'Werkwijze', title: 'Van gesprek tot lancering.', le
     <div class="route-head reveal">
       <span class="eyebrow">Het proces</span>
       <h2 class="h2">Vier stappen, één vaste route.</h2>
-      <p class="lead">Of het nu gaat om een website, vindbaarheid, AI of dronebeelden: we werken altijd volgens dezelfde heldere route.</p>
+      <p class="lead">Of het nu gaat om een website, vindbaarheid, Ai of dronebeelden: we werken altijd volgens dezelfde heldere route.</p>
       <a class="btn btn-navy" href="${u('contact')}">Start met stap 1 ${I.arrow}</a>
     </div>
     <ol class="route-steps" data-progress>
@@ -587,7 +587,7 @@ ${pageHero(u, a, { eyebrow: 'Werkwijze', title: 'Van gesprek tot lancering.', le
       ['Wat kost het eerste gesprek?', 'Niets. Het eerste gesprek is altijd gratis en vrijblijvend.'],
       ['Wat als ik niet tevreden ben?', 'Dan betaal je niet. We passen het aan tot het klopt, en als het echt niet past, krijg je geen factuur.'],
       ['Werken jullie alleen in Zeewolde?', 'We zitten in Zeewolde en komen graag langs in de regio, maar we werken voor ondernemers in heel Nederland.'],
-      ['Kan ik meerdere diensten combineren?', 'Juist. Veel klanten starten met een website en breiden later uit met vindbaarheid, AI of dronebeelden. Alles via hetzelfde aanspreekpunt.'],
+      ['Kan ik meerdere diensten combineren?', 'Juist. Veel klanten starten met een website en breiden later uit met vindbaarheid, Ai of dronebeelden. Alles via hetzelfde aanspreekpunt.'],
     ])}</div>
   </div>
 </section>
@@ -599,7 +599,7 @@ function overOns() {
   const diff = [
     [I.chat, 'Je praat met de makers', 'Job en Boris doen het werk zelf, van het eerste gesprek tot de lancering. Korte lijnen, snelle antwoorden.'],
     [I.card, 'Betaalbaar én transparant', 'Je weet vooraf wat je betaalt, en je betaalt pas als je tevreden bent.'],
-    [icon('ai-oplossingen'), 'Alles onder één dak', 'Website, vindbaarheid, AI en beeld. Je hoeft niet te schakelen tussen vijf bureaus.'],
+    [icon('ai-oplossingen'), 'Alles onder één dak', 'Website, vindbaarheid, Ai en beeld. Je hoeft niet te schakelen tussen vijf bureaus.'],
     [icon('online-marketing'), 'Jong, fris en eerlijk', 'Een frisse blik en veel energie. Wij weten hoe het voelt om klein te beginnen.'],
     [icon('rebranding'), 'Meer dan een website', 'Elke kleur, elk woord en elk beeld heeft een reden, afgestemd op wie jij bent en wie je wilt aantrekken.'],
     [icon('drone-fotografie-video'), 'Eigen beeld uit de lucht', 'Met drone en FPV maken we beelden die je nergens anders vandaan haalt.'],
@@ -620,7 +620,7 @@ ${pageHero(u, a, { eyebrow: 'Over ons', title: 'Wij zijn Job en Boris, en wij bo
     <div class="team-cards">
       <article class="person reveal">
         <div class="person-tile" aria-hidden="true"><span>B</span><i></i><i></i><i></i><i></i></div>
-        <div><h3>Boris Koelman</h3><p class="role">Ontwerp, bouw &amp; techniek</p><p>Zet jouw verhaal om in een website, merk of AI-oplossing die werkt.</p></div>
+        <div><h3>Boris Koelman</h3><p class="role">Ontwerp, bouw &amp; techniek</p><p>Zet jouw verhaal om in een website, merk of Ai-oplossing die werkt.</p></div>
       </article>
       <article class="person reveal">
         <div class="person-tile" aria-hidden="true"><span>J</span><i></i><i></i><i></i><i></i></div>
@@ -641,7 +641,7 @@ ${pageHero(u, a, { eyebrow: 'Over ons', title: 'Wij zijn Job en Boris, en wij bo
     <div class="section-head reveal"><span class="eyebrow">Voor wie</span><h2 class="h2">Voor ondernemers die verder willen.</h2></div>
     <div class="audience">
       <div class="aud-card reveal"><span class="aud-n mono">01</span><h3>Starters &amp; zzp'ers</h3><p>Ondernemers die voor het eerst online gaan en een betrouwbare, betaalbare partner zoeken zonder technisch jargon.</p><ul class="tags"><li>Eerste website</li><li>Huisstijl</li><li>Google Bedrijfsprofiel</li></ul></div>
-      <div class="aud-card reveal"><span class="aud-n mono">02</span><h3>Lokale mkb'ers</h3><p>Gevestigde ondernemers die hun online aanwezigheid willen versterken, beter gevonden willen worden of een verouderde website willen vervangen.</p><ul class="tags"><li>Nieuwe website</li><li>SEO &amp; Ads</li><li>AI &amp; data</li><li>Dronebeelden</li></ul></div>
+      <div class="aud-card reveal"><span class="aud-n mono">02</span><h3>Lokale mkb'ers</h3><p>Gevestigde ondernemers die hun online aanwezigheid willen versterken, beter gevonden willen worden of een verouderde website willen vervangen.</p><ul class="tags"><li>Nieuwe website</li><li>SEO &amp; Ads</li><li>Ai &amp; data</li><li>Dronebeelden</li></ul></div>
     </div>
   </div>
 </section>
