@@ -686,3 +686,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .specs > .spec:nth-child(4) { --cat-bg: var(--paper);    --cat-fg: var(--navy-900); }
 .specs > .spec .spec-icon { background: linear-gradient(155deg, color-mix(in srgb, var(--cat-bg) 80%, #fff) 0%, var(--cat-bg) 50%, color-mix(in srgb, var(--cat-bg) 85%, #000) 100%); color: var(--cat-fg); }
 .specs > .spec:nth-child(1) .spec-icon { box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+
+/* Prijsblok op dienstpagina (prijzen kunnen live uit /system komen) */
+.aside-card [data-p="aside"] { display: grid; gap: 18px; }

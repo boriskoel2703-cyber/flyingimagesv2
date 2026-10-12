@@ -248,6 +248,15 @@ export const packages = [
 // Zolang hier een bedrag staat, toont de hele site overal "vanaf <bedrag>" (diensten, categorieën, pakketten).
 // Terug naar de normale prijzen hierboven? Zet de waarde op null en draai `npm run build`.
 export const tijdelijkePrijs = '€1975';
+// Let op: zodra er in /system → Prijzen is opgeslagen, gelden die prijzen op de live site (ze worden in de browser ingeladen).
+
+// Normale prijzen (vóór de tijdelijke prijs). /system gebruikt deze als standaardwaarden.
+export const basisPrijzen = {
+  tijdelijkePrijs: tijdelijkePrijs || '',
+  services: services.map((s) => ({ slug: s.slug, name: s.name, cat: s.cat, ...s.price })),
+  categories: categories.map((c) => ({ id: c.id, name: c.name, from: c.from || '' })),
+  packages: packages.map((p) => ({ name: p.name, price: p.price, unit: p.unit })),
+};
 
 if (tijdelijkePrijs) {
   for (const c of categories) c.from = tijdelijkePrijs;

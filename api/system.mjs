@@ -8,6 +8,7 @@ import crypto from "node:crypto";
 
 const BUCKET = "referenties";
 const CONFIG_PATH = "config/system-config.json";
+const PRICES_PATH = "config/prices.json";
 const SESSION_DAYS = 7;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const COLS = "id,bedrijfsnaam,workflow_type,huidige_stap,status,bijgewerkt_op,aangemaakt_op";
@@ -177,6 +178,36 @@ const actions = {
       if (e.upstream === 400 || e.upstream === 404) return { config: null };
       throw e;
     }
+  },
+
+  async getPrices(b) {
+    requireSession(b);
+    try {
+      return { prices: await sb(`/storage/v1/object/authenticated/${BUCKET}/${PRICES_PATH}`) };
+    } catch (e) {
+      if (e.upstream === 400 || e.upstream === 404) return { prices: null };
+      throw e;
+    }
+  },
+
+  async savePrices(b) {
+    requireSession(b);
+    const p = b.prices;
+    if (!p || typeof p !== "object") throw new HttpError(400, "Ongeldige prijzen.");
+    const txt = (v, n = 80) => String(v ?? "").trim().slice(0, n);
+    const slug = /^[a-z0-9-]{1,60}$/;
+    const services = {}, categories = {};
+    for (const [k, v] of Object.entries(p.services || {})) {
+      if (!slug.test(k) || !v || typeof v !== "object") continue;
+      services[k] = { from: txt(v.from, 20), unit: txt(v.unit, 40), monthly: txt(v.monthly, 20), note: txt(v.note, 200) };
+    }
+    for (const [k, v] of Object.entries(p.categories || {})) if (slug.test(k)) categories[k] = txt(v, 20);
+    const clean = { tijdelijkePrijs: txt(p.tijdelijkePrijs, 20), services, categories, savedAt: new Date().toISOString() };
+    await sb(`/storage/v1/object/${BUCKET}/${PRICES_PATH}`, {
+      method: "POST", body: Buffer.from(JSON.stringify(clean)), raw: true,
+      headers: { "Content-Type": "application/json", "x-upsert": "true", "cache-control": "no-cache" },
+    });
+    return { ok: true, savedAt: clean.savedAt };
   },
 
   async saveConfig(b) {

@@ -6,6 +6,8 @@ De intake-workflow (Custom website, klant zónder website) draait nu in de eigen
 
 ```
 api/system.mjs          serverfunctie (Vercel) — praat met Supabase
+api/prices.mjs          publieke prijzen voor de website (alleen-lezen)
+src/assets/prices.js        laadt de prijzen uit System op de website
 src/system/index.html       het dashboard
 src/system/app.js           schermen, stepper, Workflow BE, Vragenlijst BE
 src/system/intake-core.js   vragenlijsten + prompt-opbouw (overgenomen uit de intake-tool)
@@ -33,6 +35,7 @@ De service role key staat alleen op de server, nooit in de browser. Na het toevo
 - Intakes: tabel `intakes` (zelfde tabel als de oude tool).
 - Logo's en referentie-screenshots: storage-bucket `referenties`.
 - Aanpassingen uit Workflow BE en Vragenlijst BE: bestand `config/system-config.json` in dezelfde bucket. Geen nieuwe tabellen nodig.
+- Prijzen (System → Website → Prijzen): bestand `config/prices.json` in dezelfde bucket. De website haalt ze op via `/api/prices` (30 sec cache) en vervangt de prijzen uit `src/data.mjs`. Zolang er niets is opgeslagen, gelden de prijzen uit `src/data.mjs`. Let op: meta-omschrijvingen voor Google gebruiken de prijzen uit `src/data.mjs`.
 
 ## Beveiliging
 

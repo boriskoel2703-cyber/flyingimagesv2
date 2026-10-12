@@ -90,7 +90,7 @@ $("#burger").onclick = () => document.body.classList.toggle(mq.matches ? "open" 
 $("#overlay").onclick = () => document.body.classList.remove("open");
 
 /* ================= router ================= */
-const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE" };
+const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen" };
 const NAVSEC = { nieuw: "intakes", intake: "intakes" };
 let ROUTE_SEQ = 0;
 
@@ -102,6 +102,7 @@ async function render() {
   document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.sec === (NAVSEC[sec] || sec)));
   $("#crumb").innerHTML = `System / <b>${TITLES[sec]}</b>`;
   savedLabel("");
+  if (sec !== "prijzen") PR = null;
   document.body.classList.remove("open");
   content.innerHTML = `<p class="lead"><span class="spin"></span></p>`;
   try {
@@ -167,6 +168,15 @@ const PAGES = {
   async "workflow-be"() {
     BE = { kind: "steps", draft: C.DEFAULT_STEP_TITLES.map((t, i) => ({ title: CFG.steps?.[i]?.title || "", explain: CFG.steps?.[i]?.explain || "", confirm: CFG.steps?.[i]?.confirm || "" })), dirty: false };
     return renderStepsBE();
+  },
+
+  async prijzen() {
+    const [base, saved] = await Promise.all([
+      fetch("/assets/prices-base.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error("Standaardprijzen niet gevonden."); return r.json(); }),
+      api("getPrices").then((r) => r.prices).catch(() => null),
+    ]);
+    PR = { base, saved: !!saved, savedAt: saved?.savedAt || "", draft: prDraft(base, saved), dirty: false };
+    return renderPrices();
   },
 
   async "vragenlijst-be"(kind) {
@@ -748,6 +758,81 @@ async function saveBE(btn) {
   } catch (err) { alert("Opslaan mislukt: " + err.message); btn.disabled = false; btn.textContent = "Opslaan"; }
 }
 addEventListener("beforeunload", (e) => { if (BE?.dirty && location.hash.includes("-be")) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ================= Prijzen ================= */
+let PR = null;
+function prDraft(base, saved) {
+  const d = { tijdelijkePrijs: saved ? saved.tijdelijkePrijs || "" : base.tijdelijkePrijs || "", services: {}, categories: {} };
+  for (const sv of base.services) {
+    const o = saved?.services?.[sv.slug] || {};
+    d.services[sv.slug] = { from: o.from || sv.from || "", unit: o.unit || sv.unit || "", monthly: o.monthly ?? sv.monthly ?? "", note: o.note ?? sv.note ?? "" };
+  }
+  for (const c of base.categories) d.categories[c.id] = saved?.categories?.[c.id] || c.from || "";
+  return d;
+}
+const money = (v) => { v = String(v || "").trim(); return /^\d[\d.,]*$/.test(v) ? "€" + v : v; };
+function prLive(slug) {
+  const p = PR.draft.services[slug], t = money(PR.draft.tijdelijkePrijs);
+  const from = t || money(p.from), monthly = t ? "" : money(p.monthly);
+  return `vanaf <b>${esc(from || "—")}</b> ${esc(p.unit)}${monthly ? ` + ${esc(monthly)}/mnd` : ""}`;
+}
+function renderPrices() {
+  const d = PR.draft, t = money(d.tijdelijkePrijs);
+  const cats = PR.base.categories.map((c) => {
+    const list = PR.base.services.filter((sv) => sv.cat === c.id);
+    return `<div class="card"><div class="card__h"><div><h3>${esc(c.name)}</h3><p>${list.length} diensten</p></div>
+        <label class="pr-cat"><span class="mini">Vanaf op homepage</span><input class="field" data-pr="cat" data-id="${c.id}" value="${esc(d.categories[c.id])}" placeholder="${esc(c.from)}" ${t ? "disabled" : ""}></label></div>
+      ${list.map((sv) => { const p = d.services[sv.slug]; return `<div class="ed pr-row"><div class="ed__f">
+        <div class="pr-top"><b>${esc(sv.name)}</b><span class="pr-live" id="live-${sv.slug}">${prLive(sv.slug)}</span></div>
+        <div class="pr-grid">
+          <label><span class="mini">Vanaf</span><input class="field" data-pr="from" data-slug="${sv.slug}" value="${esc(p.from)}" placeholder="${esc(sv.from)}"></label>
+          <label><span class="mini">Eenheid</span><input class="field" data-pr="unit" data-slug="${sv.slug}" value="${esc(p.unit)}" placeholder="eenmalig"></label>
+          <label><span class="mini">Per maand</span><input class="field" data-pr="monthly" data-slug="${sv.slug}" value="${esc(p.monthly)}" placeholder="geen"></label>
+        </div>
+        <label><span class="mini">Notitie op de dienstpagina</span><input class="field" data-pr="note" data-slug="${sv.slug}" value="${esc(p.note)}" placeholder="Optioneel, bijv. exclusief advertentiebudget"></label>
+      </div></div>`; }).join("")}</div>`;
+  }).join("");
+  return head("Website", "Prijzen", "Pas per dienst de prijs aan die op flyingimages.nl staat: op de dienstkaarten, de dienstpagina en de homepage. Na opslaan staat het binnen een minuut live.")
+    + `<div class="card pr-temp${t ? " on" : ""}"><div class="card__h"><div><h3>Tijdelijke prijs ${t ? '<span class="badge">Actief</span>' : '<span class="badge navy">Uit</span>'}</h3>
+        <p>Staat hier een bedrag, dan toont de hele site overal "vanaf" dit bedrag, ook bij de pakketten. Maandbedragen worden dan verborgen. Leeg laten = de prijzen per dienst hieronder.</p></div></div>
+      <div class="row"><input class="field" style="max-width:220px" data-pr="temp" value="${esc(d.tijdelijkePrijs)}" placeholder="bijv. €1975">
+      ${t ? '<button class="btn ghost sm" data-pr-act="temp-off">Tijdelijke prijs uitzetten</button>' : ""}</div></div>`
+    + cats
+    + `<p class="hint">${PR.saved ? `Laatst opgeslagen: ${fmtDate(PR.savedAt)}` : "Nog niet opgeslagen in System. De site toont nu de prijzen uit de code."} Bedragen zonder €-teken krijgen die automatisch.</p>`
+    + `<div class="sticky-save"><button class="btn ghost" data-pr-act="reset">Standaard herstellen</button><button class="btn dark" data-pr-act="save" id="prSave" ${PR.dirty ? "" : "disabled"}>${PR.dirty ? "Opslaan" : "Opgeslagen"}</button></div>`;
+}
+function prDirty() { if (!PR.dirty) { PR.dirty = true; const b = $("#prSave"); if (b) { b.disabled = false; b.textContent = "Opslaan"; } } }
+function prRedraw() { const y = scrollY; content.innerHTML = renderPrices(); scrollTo(0, y); }
+content.addEventListener("input", (e) => {
+  const el = e.target, k = el.dataset.pr; if (!PR || !k) return;
+  if (k === "temp") { const was = !!money(PR.draft.tijdelijkePrijs); PR.draft.tijdelijkePrijs = el.value; prDirty(); if (was !== !!money(el.value)) { prRedraw(); const f = $('[data-pr="temp"]'); f.focus(); f.setSelectionRange(f.value.length, f.value.length); } else PR.base.services.forEach((sv) => { const l = $(`#live-${sv.slug}`); if (l) l.innerHTML = prLive(sv.slug); }); return; }
+  if (k === "cat") PR.draft.categories[el.dataset.id] = el.value;
+  else { PR.draft.services[el.dataset.slug][k] = el.value; const l = $(`#live-${el.dataset.slug}`); if (l) l.innerHTML = prLive(el.dataset.slug); }
+  prDirty();
+});
+content.addEventListener("click", async (e) => {
+  const el = e.target.closest("[data-pr-act]"); if (!el || !PR) return;
+  const a = el.dataset.prAct;
+  if (a === "temp-off") { PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw(); }
+  else if (a === "reset") {
+    if (!(await ask("Alle prijzen terugzetten naar de standaardprijzen uit de code? Dit wordt pas actief na opslaan."))) return;
+    PR.draft = prDraft(PR.base, null); PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw();
+  } else if (a === "save") {
+    const d = PR.draft;
+    const empty = PR.base.services.find((sv) => !money(d.services[sv.slug].from));
+    if (empty && !money(d.tijdelijkePrijs)) return alert(`Vul een vanaf-prijs in bij ${empty.name}.`);
+    el.disabled = true; el.textContent = "Opslaan…";
+    const prices = { tijdelijkePrijs: money(d.tijdelijkePrijs), categories: {}, services: {} };
+    for (const [id, v] of Object.entries(d.categories)) prices.categories[id] = money(v);
+    for (const [slug, p] of Object.entries(d.services)) prices.services[slug] = { from: money(p.from), unit: p.unit.trim(), monthly: money(p.monthly), note: p.note.trim() };
+    try {
+      const r = await api("savePrices", { prices });
+      Object.assign(PR, { saved: true, savedAt: r.savedAt, dirty: false }); prRedraw();
+      $("#prSave").textContent = "✓ Opgeslagen"; savedLabel("Prijzen opgeslagen");
+    } catch (err) { alert("Opslaan mislukt: " + err.message); el.disabled = false; el.textContent = "Opslaan"; }
+  }
+});
+addEventListener("beforeunload", (e) => { if (PR?.dirty && location.hash.startsWith("#prijzen")) { e.preventDefault(); e.returnValue = ""; } });
 
 /* ================= start ================= */
 (async function init() {

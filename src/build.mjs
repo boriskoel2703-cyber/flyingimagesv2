@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, cpSync, rmSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, categories, services, stepSets, packages } from './data.mjs';
+import { site, categories, services, stepSets, packages, basisPrijzen } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MODE = process.argv[2] === 'preview' ? 'preview' : 'vercel';
@@ -218,7 +218,7 @@ function svcCard(u, s, showCat = false) {
     ${showCat ? `<span class="cat">${cat(s.cat).name}</span>` : ''}
     <h3>${s.name}</h3>
     <p>${s.intro.split('. ')[0]}.</p>
-    <div class="foot"><span class="from">vanaf<strong>${s.price.from}</strong> ${unitText(s.price)}</span><span class="arrow">${I.arrow}</span></div>
+    <div class="foot"><span class="from" data-p="card" data-slug="${s.slug}">vanaf<strong>${s.price.from}</strong> ${unitText(s.price)}</span><span class="arrow">${I.arrow}</span></div>
   </a>`;
 }
 
@@ -268,6 +268,7 @@ ${main}
 </main>
 ${cta ? `<div class="closing">${supergraphic('sg-close')}<div class="closing-glow" aria-hidden="true"></div>${cta}${footer(u, false)}</div>` : footer(u)}
 <script src="${a('assets/site.js')}?v=${ASSET_V}" defer></script>
+<script src="${a('assets/prices.js')}?v=${ASSET_V}" defer></script>
 </body>
 </html>
 `;
@@ -348,7 +349,7 @@ function home() {
       <h2 class="h2" style="margin-top:16px">Beelden die je nergens anders vandaan haalt.</h2>
       <p class="lead" style="margin-top:20px">Onze naam is geen toeval. Met drone en FPV leggen we je bedrijf vast vanuit een perspectief dat blijft hangen. Voor je website, je socials of je volgende presentatie.</p>
       <div class="drone-list">
-        ${['drone-fotografie-video', 'fpv-drone-beelden'].map((slug) => { const s = svc(slug); return `<a href="${u('diensten/' + slug)}"><span><strong>${s.name}</strong><small>${s.short}</small></span><span class="from">vanaf<b>${s.price.from}</b></span></a>`; }).join('')}
+        ${['drone-fotografie-video', 'fpv-drone-beelden'].map((slug) => { const s = svc(slug); return `<a href="${u('diensten/' + slug)}"><span><strong>${s.name}</strong><small>${s.short}</small></span><span class="from" data-p="mini" data-slug="${slug}">vanaf<b>${s.price.from}</b></span></a>`; }).join('')}
       </div>
     </div>
   </div>
@@ -390,7 +391,7 @@ function specialismsBlock(u) {
         <div class="spec-top"><span class="spec-icon">${icon(CAT_ICON[c.id])}</span><span class="spec-n">0${i + 1}</span></div>
         <div><h3>${c.name}</h3><p class="spec-desc">${c.desc}</p></div>
         <ul>${list.map((s) => `<li><a href="${u('diensten/' + s.slug)}">${I.check}<span>${s.name}</span></a></li>`).join('')}</ul>
-        <div class="spec-foot"><span class="spec-from">vanaf <strong>${c.from || '€' + min}</strong></span><a class="spec-more" href="${u('diensten/index')}#${c.id}" aria-label="Bekijk ${c.name}">${I.arrow}</a></div>
+        <div class="spec-foot"><span class="spec-from" data-p="cat" data-cat="${c.id}">vanaf <strong>${c.from || '€' + min}</strong></span><a class="spec-more" href="${u('diensten/index')}#${c.id}" aria-label="Bekijk ${c.name}">${I.arrow}</a></div>
       </div>`;
   }).join('')}
     </div>`;
@@ -401,7 +402,7 @@ function packagesBlock(u) {
       <div class="pkg reveal${p.featured ? ' featured' : ''}">
         ${p.featured ? '<span class="badge">Meest gekozen</span>' : ''}
         <div><span class="lbl">${p.label}</span><h3>${p.name}</h3></div>
-        <div><div class="amount">${p.price}</div><div class="unit">${p.unit}</div></div>
+        <div data-p="pkg" data-i="${packages.indexOf(p)}"><div class="amount">${p.price}</div><div class="unit">${p.unit}</div></div>
         <ul>${p.items.map((i) => `<li>${I.check}<span>${i}</span></li>`).join('')}</ul>
         <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}?dienst=website-laten-maken">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies ' + p.name.toLowerCase()}</a>
       </div>`).join('')}
@@ -479,7 +480,7 @@ function servicePage(s) {
 ${pageHero(u, a, {
   eyebrow: c.name, title: s.title, lead: s.intro,
   crumbs: [['diensten/index', 'Diensten'], [null, s.name]],
-  meta: `<div class="ph-meta"><span class="chip">vanaf <strong>${s.price.from}</strong> ${unitText(s.price)}</span><a class="btn btn-sand btn-sm" href="${u('contact')}?dienst=${s.slug}">Vraag een voorstel aan ${I.arrow}</a></div>`,
+  meta: `<div class="ph-meta"><span class="chip" data-p="chip" data-slug="${s.slug}">vanaf <strong>${s.price.from}</strong> ${unitText(s.price)}</span><a class="btn btn-sand btn-sm" href="${u('contact')}?dienst=${s.slug}">Vraag een voorstel aan ${I.arrow}</a></div>`,
 })}
 <section class="section">
   <div class="wrap detail">
@@ -490,9 +491,9 @@ ${pageHero(u, a, {
     </div>
     <aside class="aside-card reveal">
       <span class="eyebrow">Prijs</span>
-      <div class="amount"><small style="margin:0 6px 0 0">vanaf</small>${s.price.from}<small>${s.price.unit}</small></div>
+      <div data-p="aside" data-slug="${s.slug}"><div class="amount"><small style="margin:0 6px 0 0">vanaf</small>${s.price.from}<small>${s.price.unit}</small></div>
       ${s.price.monthly ? `<p class="monthly">+ <strong>${s.price.monthly}</strong> per maand</p>` : ''}
-      ${s.price.note ? `<p class="note">${s.price.note}</p>` : ''}
+      ${s.price.note ? `<p class="note">${s.price.note}</p>` : ''}</div>
       <p class="who"><b>Voor wie</b>${s.forWho}</p>
       <a class="btn btn-sand" href="${u('contact')}?dienst=${s.slug}">Plan een vrijblijvend gesprek ${I.arrow}</a>
       <p class="fine">Prijzen excl. btw. Je betaalt pas als je tevreden bent.</p>
@@ -790,6 +791,7 @@ mkdirSync(OUT, { recursive: true });
 cpSync(join(ROOT, 'src/assets'), join(OUT, 'assets'), { recursive: true });
 cpSync(join(ROOT, 'src/img'), join(OUT, 'img'), { recursive: true });
 cpSync(join(ROOT, 'src/system'), join(OUT, 'system'), { recursive: true }); // intern dashboard /system
+writeFileSync(join(OUT, 'assets/prices-base.json'), JSON.stringify(basisPrijzen)); // standaardprijzen voor /system en prices.js
 home();
 dienstenOverview();
 services.forEach(servicePage);
