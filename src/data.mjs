@@ -240,9 +240,27 @@ export const services = [
 export const stepSets = steps;
 
 export const packages = [
-  { label: 'Pakket 1', name: 'Onepage website', price: '€200', unit: 'eenmalig + €30/mnd', items: ['Eén pagina website', 'Responsive en mobielvriendelijk', 'Contactformulier', 'Domeinkoppeling + SSL', 'Eén revisieronde'] },
-  { label: 'Pakket 2', name: 'Website', price: '€400', unit: 'eenmalig + €20/mnd', featured: true, items: ["Tot 8 pagina's", 'Responsive en mobielvriendelijk', 'Contactformulier', 'Domeinkoppeling + SSL', 'Eén revisieronde'] },
-  { label: 'Pakket 3', name: 'Custom pakket', price: 'Op maat', unit: 'afhankelijk van je keuzes', items: ['Basis: website zoals Pakket 2', 'Rebranding en brandbook', 'Social media beheer', 'SEO, Google Ads en LLM-vindbaarheid', 'Drone- en FPV-beelden'] },
+  // Elk pakket bundelt 3 of 4 diensten (slug uit `services` + korte toelichting wat er in het pakket zit).
+  { label: 'Pakket 1', name: 'Starter', price: '€200', unit: 'eenmalig + €30/mnd', intro: 'Snel en goed online, en meteen vindbaar.',
+    services: [
+      ['onepage-website', 'Eén sterke pagina, responsive met contactformulier'],
+      ['zoekmachine-optimalisatie', 'Basis SEO: titels, teksten en techniek op orde'],
+      ['llm-vindbaarheid', 'Zo vinden ChatGPT en Google Ai je ook'],
+    ] },
+  { label: 'Pakket 2', name: 'Groei', price: '€400', unit: 'eenmalig + €20/mnd', featured: true, intro: 'Een complete website die klanten binnenhaalt.',
+    services: [
+      ['maatwerk-website', "Tot 8 pagina's, volledig op maat ontworpen"],
+      ['zoekmachine-optimalisatie', 'SEO per pagina, gericht op jouw regio'],
+      ['google-ads', 'Opzet van je eerste campagne'],
+      ['drone-fotografie-video', "Eén opname met drone foto's voor je site"],
+    ] },
+  { label: 'Pakket 3', name: 'Compleet', price: 'Op maat', unit: 'afhankelijk van je keuzes', intro: 'Merk, website en marketing uit één hand.',
+    services: [
+      ['rebranding', 'Nieuwe huisstijl met brandbook'],
+      ['webshop-laten-maken', 'Website of webshop op basis van je nieuwe merk'],
+      ['online-marketing', 'Social media en campagnes doorlopend geregeld'],
+      ['ai-oplossingen', 'Slimme automatisering die je tijd bespaart'],
+    ] },
 ];
 
 // TIJDELIJKE PRIJS

@@ -402,10 +402,10 @@ function packagesBlock(u) {
   return `<div class="pkgs">${packages.map((p) => `
       <div class="pkg reveal${p.featured ? ' featured' : ''}">
         ${p.featured ? '<span class="badge">Meest gekozen</span>' : ''}
-        <div><span class="lbl">${p.label}</span><h3>${p.name}</h3></div>
+        <div><span class="lbl">${p.label} · ${p.services.length} diensten</span><h3>${p.name}</h3>${p.intro ? `<p class="pkg-intro">${p.intro}</p>` : ''}</div>
         <div data-p="pkg" data-i="${packages.indexOf(p)}"><div class="amount">${p.price}</div><div class="unit">${p.unit}</div></div>
-        <ul>${p.items.map((i) => `<li>${I.check}<span>${i}</span></li>`).join('')}</ul>
-        <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}${p.label === 'Pakket 1' ? '?dienst=onepage-website' : ''}">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies ' + p.name.toLowerCase()}</a>
+        <ul class="pkg-svcs">${p.services.map(([slug, note]) => `<li>${I.check}<span><a href="${u('diensten/' + slug)}">${svc(slug).name}</a><small>${note}</small></span></li>`).join('')}</ul>
+        <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}?dienst=${p.services[0][0]}">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies pakket ' + p.name}</a>
       </div>`).join('')}
     </div>`;
 }
@@ -458,7 +458,7 @@ ${pageHero(u, a, { eyebrow: 'Diensten', title: 'Twaalf diensten. Eén aanspreekp
 <section class="section navy on-dark pkgs-dark has-sg">
   ${supergraphic('sg-soft')}
   <div class="wrap">
-    <div class="section-head reveal"><span class="eyebrow">Websitepakketten</span><h2 class="h2">Liever een vast pakket?</h2></div>
+    <div class="section-head reveal"><span class="eyebrow">Websitepakketten</span><h2 class="h2">Meerdere diensten. Eén pakket.</h2></div>
     ${packagesBlock(u)}
   </div>
 </section>
