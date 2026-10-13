@@ -8,7 +8,7 @@ export const site = {
   kvk: '83674993',
   city: 'Zeewolde',
   // Web3Forms access key voor het contactformulier (https://web3forms.com)
-  web3formsKey: 'VUL-HIER-JE-WEB3FORMS-KEY-IN',
+  web3formsKey: '88f5d3a5-b3cb-4735-8e04-14b9aa6143dc',
   // Vul je profiel-URL's in; lege waarden worden niet getoond
   socials: { instagram: '', linkedin: '' },
 };
