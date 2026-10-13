@@ -770,7 +770,7 @@ addEventListener("beforeunload", (e) => { if (BE?.dirty && location.hash.include
 /* ================= Prijzen ================= */
 let PR = null;
 function prDraft(base, saved) {
-  const d = { tijdelijkePrijs: saved ? saved.tijdelijkePrijs || "" : base.tijdelijkePrijs || "", services: {}, categories: {} };
+  const d = { zichtbaar: saved && typeof saved.zichtbaar === "boolean" ? saved.zichtbaar : base.zichtbaar !== false, tijdelijkePrijs: saved ? saved.tijdelijkePrijs || "" : base.tijdelijkePrijs || "", services: {}, categories: {} };
   for (const sv of base.services) {
     const o = saved?.services?.[sv.slug] || {};
     d.services[sv.slug] = { from: o.from || sv.from || "", unit: o.unit || sv.unit || "", monthly: o.monthly ?? sv.monthly ?? "", note: o.note ?? sv.note ?? "" };
@@ -801,6 +801,9 @@ function renderPrices() {
       </div></div>`; }).join("")}</div>`;
   }).join("");
   return head("Website", "Prijzen", "Pas per dienst de prijs aan die op flyingimages.nl staat: op de dienstkaarten, de dienstpagina en de homepage. Na opslaan staat het binnen een minuut live.")
+    + `<div class="card pr-temp${d.zichtbaar ? " on" : ""}"><div class="card__h"><div><h3>Prijzen op de website ${d.zichtbaar ? '<span class="badge">Zichtbaar</span>' : '<span class="badge navy">Verborgen</span>'}</h3>
+        <p>${d.zichtbaar ? "De site toont de prijzen hieronder." : "De site toont overal \"Prijs op aanvraag\", ook bij de pakketten. Stel de prijzen rustig in en zet ze aan als ze kloppen."}</p></div></div>
+      <div class="row"><button class="btn ${d.zichtbaar ? "ghost" : "dark"} sm" data-pr-act="vis">${d.zichtbaar ? "Prijzen verbergen" : "Prijzen tonen"}</button></div></div>`
     + `<div class="card pr-temp${t ? " on" : ""}"><div class="card__h"><div><h3>Tijdelijke prijs ${t ? '<span class="badge">Actief</span>' : '<span class="badge navy">Uit</span>'}</h3>
         <p>Staat hier een bedrag, dan toont de hele site overal "vanaf" dit bedrag, ook bij de pakketten. Maandbedragen worden dan verborgen. Leeg laten = de prijzen per dienst hieronder.</p></div></div>
       <div class="row"><input class="field" style="max-width:220px" data-pr="temp" value="${esc(d.tijdelijkePrijs)}" placeholder="bijv. €1975">
@@ -821,16 +824,17 @@ content.addEventListener("input", (e) => {
 content.addEventListener("click", async (e) => {
   const el = e.target.closest("[data-pr-act]"); if (!el || !PR) return;
   const a = el.dataset.prAct;
-  if (a === "temp-off") { PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw(); }
+  if (a === "vis") { PR.draft.zichtbaar = !PR.draft.zichtbaar; PR.dirty = true; prRedraw(); }
+  else if (a === "temp-off") { PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw(); }
   else if (a === "reset") {
     if (!(await ask("Alle prijzen terugzetten naar de standaardprijzen uit de code? Dit wordt pas actief na opslaan."))) return;
-    PR.draft = prDraft(PR.base, null); PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw();
+    const vis = PR.draft.zichtbaar; PR.draft = prDraft(PR.base, null); PR.draft.tijdelijkePrijs = ""; PR.draft.zichtbaar = vis; PR.dirty = true; prRedraw();
   } else if (a === "save") {
     const d = PR.draft;
     const empty = PR.base.services.find((sv) => !money(d.services[sv.slug].from));
-    if (empty && !money(d.tijdelijkePrijs)) return alert(`Vul een vanaf-prijs in bij ${empty.name}.`);
+    if (d.zichtbaar && empty && !money(d.tijdelijkePrijs)) return alert(`Vul een vanaf-prijs in bij ${empty.name}.`);
     el.disabled = true; el.textContent = "Opslaan…";
-    const prices = { tijdelijkePrijs: money(d.tijdelijkePrijs), categories: {}, services: {} };
+    const prices = { zichtbaar: !!d.zichtbaar, tijdelijkePrijs: money(d.tijdelijkePrijs), categories: {}, services: {} };
     for (const [id, v] of Object.entries(d.categories)) prices.categories[id] = money(v);
     for (const [slug, p] of Object.entries(d.services)) prices.services[slug] = { from: money(p.from), unit: p.unit.trim(), monthly: money(p.monthly), note: p.note.trim() };
     try {

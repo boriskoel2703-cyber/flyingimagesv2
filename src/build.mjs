@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, cpSync, rmSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, categories, services, stepSets, packages, basisPrijzen } from './data.mjs';
+import { site, categories, services, stepSets, packages, basisPrijzen, prijzenZichtbaar } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MODE = process.argv[2] === 'preview' ? 'preview' : 'vercel';
@@ -16,6 +16,12 @@ const svc = (slug) => services.find((s) => s.slug === slug);
 const cat = (id) => categories.find((c) => c.id === id);
 const byCat = (id) => services.filter((s) => s.cat === id);
 const unitText = (p) => p.unit + (p.monthly ? ` + ${p.monthly}/mnd` : '');
+// Prijzen verborgen? Dan overal 'op aanvraag'. prices.js wisselt dit live als /system de prijzen aanzet.
+const PV = prijzenZichtbaar;
+const OA = { card: 'prijs<strong>op aanvraag</strong>', chip: 'prijs <strong>op aanvraag</strong>', mini: 'prijs<b>op aanvraag</b>', cat: 'prijs <strong>op aanvraag</strong>',
+  aside: '<div class="amount">Op aanvraag</div><p class="note">Je krijgt vooraf een helder voorstel met vaste prijs.</p>', pkg: '<div class="amount">Op aanvraag</div><div class="unit">voorstel op maat</div>' };
+// Tekst die afhangt van zichtbare prijzen: wisselt mee in prices.js
+const pt = (on, off) => `<span data-pt-on="${on}" data-pt-off="${off}">${PV ? on : off}</span>`;
 
 function makeUrl(from) {
   const depth = from.split('/').length - 1;
@@ -219,7 +225,7 @@ function svcCard(u, s, showCat = false) {
     ${showCat ? `<span class="cat">${cat(s.cat).name}</span>` : ''}
     <h3>${s.name}</h3>
     <p>${s.intro.split('. ')[0]}.</p>
-    <div class="foot"><span class="from" data-p="card" data-slug="${s.slug}">vanaf<strong>${s.price.from}</strong> ${unitText(s.price)}</span><span class="arrow">${I.arrow}</span></div>
+    <div class="foot"><span class="from" data-p="card" data-slug="${s.slug}">${PV ? `vanaf<strong>${s.price.from}</strong> ${unitText(s.price)}` : OA.card}</span><span class="arrow">${I.arrow}</span></div>
   </a>`;
 }
 
@@ -284,7 +290,7 @@ function home() {
     '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.name, url: site.domain, email: site.email,
     slogan: site.tagline, address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'NL' },
     founder: [{ '@type': 'Person', name: 'Boris Koelman' }, { '@type': 'Person', name: 'Job Koelman' }],
-    hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Diensten', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name }, priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', minPrice: Number(s.price.from.replace(/[^0-9]/g, '')) } })) },
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Diensten', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name }, ...(PV ? { priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', minPrice: Number(s.price.from.replace(/[^0-9]/g, '')) } } : {}) })) },
   })}</script>`;
   doc({
     path: 'index', overlay: true, jsonld,
@@ -324,7 +330,7 @@ function home() {
   <div class="wrap">
     <div class="section-head split reveal">
       <div style="display:grid;gap:16px"><span class="eyebrow">Diensten</span><h2 class="h2">Alles wat je online nodig hebt, van één team.</h2></div>
-      <p class="lead">Kies wat je nu nodig hebt en breid uit wanneer je groeit. Elke dienst heeft een duidelijke vanaf-prijs.</p>
+      <p class="lead">Kies wat je nu nodig hebt en breid uit wanneer je groeit. ${pt('Elke dienst heeft een duidelijke vanaf-prijs.', 'Elke dienst krijgt een helder voorstel met vaste prijs.')}</p>
     </div>
     <div class="explorer">
       <div class="tabs" role="tablist" aria-label="Dienstcategorieën">
@@ -350,7 +356,7 @@ function home() {
       <h2 class="h2" style="margin-top:16px">Beelden die je nergens anders vandaan haalt.</h2>
       <p class="lead" style="margin-top:20px">Onze naam is geen toeval. Met drone en FPV leggen we je bedrijf vast vanuit een perspectief dat blijft hangen. Voor je website, je socials of je volgende presentatie.</p>
       <div class="drone-list">
-        ${['drone-fotografie-video', 'fpv-drone-beelden'].map((slug) => { const s = svc(slug); return `<a href="${u('diensten/' + slug)}"><span><strong>${s.name}</strong><small>${s.short}</small></span><span class="from" data-p="mini" data-slug="${slug}">vanaf<b>${s.price.from}</b></span></a>`; }).join('')}
+        ${['drone-fotografie-video', 'fpv-drone-beelden'].map((slug) => { const s = svc(slug); return `<a href="${u('diensten/' + slug)}"><span><strong>${s.name}</strong><small>${s.short}</small></span><span class="from" data-p="mini" data-slug="${slug}">${PV ? `vanaf<b>${s.price.from}</b>` : OA.mini}</span></a>`; }).join('')}
       </div>
     </div>
   </div>
@@ -392,7 +398,7 @@ function specialismsBlock(u) {
         <div class="spec-top"><span class="spec-icon">${icon(CAT_ICON[c.id])}</span><span class="spec-n">0${i + 1}</span></div>
         <div><h3>${c.name}</h3><p class="spec-desc">${c.desc}</p></div>
         <ul>${list.map((s) => `<li><a href="${u('diensten/' + s.slug)}">${I.check}<span>${s.name}</span></a></li>`).join('')}</ul>
-        <div class="spec-foot"><span class="spec-from" data-p="cat" data-cat="${c.id}">vanaf <strong>${c.from || '€' + min}</strong></span><a class="spec-more" href="${u('diensten/index')}#${c.id}" aria-label="Bekijk ${c.name}">${I.arrow}</a></div>
+        <div class="spec-foot"><span class="spec-from" data-p="cat" data-cat="${c.id}">${PV ? `vanaf <strong>${c.from || '€' + min}</strong>` : OA.cat}</span><a class="spec-more" href="${u('diensten/index')}#${c.id}" aria-label="Bekijk ${c.name}">${I.arrow}</a></div>
       </div>`;
   }).join('')}
     </div>`;
@@ -403,7 +409,7 @@ function packagesBlock(u) {
       <div class="pkg reveal${p.featured ? ' featured' : ''}">
         ${p.featured ? '<span class="badge">Meest gekozen</span>' : ''}
         <div><span class="lbl">${p.label} · ${p.services.length} diensten</span><h3>${p.name}</h3>${p.intro ? `<p class="pkg-intro">${p.intro}</p>` : ''}</div>
-        <div data-p="pkg" data-i="${packages.indexOf(p)}"><div class="amount">${p.price}</div><div class="unit">${p.unit}</div></div>
+        <div data-p="pkg" data-i="${packages.indexOf(p)}">${PV ? `<div class="amount">${p.price}</div><div class="unit">${p.unit}</div>` : OA.pkg}</div>
         <ul class="pkg-svcs">${p.services.map(([slug, note]) => `<li>${I.check}<span><a href="${u('diensten/' + slug)}">${svc(slug).name}</a><small>${note}</small></span></li>`).join('')}</ul>
         <a class="btn ${p.featured ? 'btn-sand' : 'btn-line'}" href="${u('contact')}?dienst=${p.services[0][0]}">${p.price === 'Op maat' ? 'Stel je pakket samen' : 'Kies pakket ' + p.name}</a>
       </div>`).join('')}
@@ -470,18 +476,18 @@ ${ctaBand(u, 'Twijfel je wat je nodig hebt?', 'Vertel ons waar je tegenaan loopt
 function servicePage(s) {
   const c = cat(s.cat);
   const jsonld = `<script type="application/ld+json">${JSON.stringify([
-    { '@context': 'https://schema.org', '@type': 'Service', name: s.name, description: s.intro, areaServed: 'NL', provider: { '@type': 'ProfessionalService', name: site.name, url: site.domain }, offers: { '@type': 'Offer', priceCurrency: 'EUR', priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', minPrice: Number(s.price.from.replace(/[^0-9]/g, '')) } } },
+    { '@context': 'https://schema.org', '@type': 'Service', name: s.name, description: s.intro, areaServed: 'NL', provider: { '@type': 'ProfessionalService', name: site.name, url: site.domain }, ...(PV ? { offers: { '@type': 'Offer', priceCurrency: 'EUR', priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', minPrice: Number(s.price.from.replace(/[^0-9]/g, '')) } } } : {}) },
     { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: s.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ])}</script>`;
   doc({
     path: 'diensten/' + s.slug, jsonld,
     title: `${s.name} | Flying Images`,
-    desc: `${s.intro.split('. ')[0]}. Vanaf ${s.price.from} ${unitText(s.price)}. Geen goedkeuring, geen factuur.`,
+    desc: `${s.intro.split('. ')[0]}.${PV ? ` Vanaf ${s.price.from} ${unitText(s.price)}.` : ''} Geen goedkeuring, geen factuur.`,
     body: (u, a) => `
 ${pageHero(u, a, {
   eyebrow: c.name, title: s.title, lead: s.intro,
   crumbs: [['diensten/index', 'Diensten'], [null, s.name]],
-  meta: `<div class="ph-meta"><span class="chip" data-p="chip" data-slug="${s.slug}">vanaf <strong>${s.price.from}</strong> ${unitText(s.price)}</span><a class="btn btn-sand btn-sm" href="${u('contact')}?dienst=${s.slug}">Vraag een voorstel aan ${I.arrow}</a></div>`,
+  meta: `<div class="ph-meta"><span class="chip" data-p="chip" data-slug="${s.slug}">${PV ? `vanaf <strong>${s.price.from}</strong> ${unitText(s.price)}` : OA.chip}</span><a class="btn btn-sand btn-sm" href="${u('contact')}?dienst=${s.slug}">Vraag een voorstel aan ${I.arrow}</a></div>`,
 })}
 <section class="section">
   <div class="wrap detail">
@@ -492,12 +498,12 @@ ${pageHero(u, a, {
     </div>
     <aside class="aside-card reveal">
       <span class="eyebrow">Prijs</span>
-      <div data-p="aside" data-slug="${s.slug}"><div class="amount"><small style="margin:0 6px 0 0">vanaf</small>${s.price.from}<small>${s.price.unit}</small></div>
+      <div data-p="aside" data-slug="${s.slug}">${PV ? `<div class="amount"><small style="margin:0 6px 0 0">vanaf</small>${s.price.from}<small>${s.price.unit}</small></div>
       ${s.price.monthly ? `<p class="monthly">+ <strong>${s.price.monthly}</strong> per maand</p>` : ''}
-      ${s.price.note ? `<p class="note">${s.price.note}</p>` : ''}</div>
+      ${s.price.note ? `<p class="note">${s.price.note}</p>` : ''}` : OA.aside}</div>
       <p class="who"><b>Voor wie</b>${s.forWho}</p>
       <a class="btn btn-sand" href="${u('contact')}?dienst=${s.slug}">Plan een vrijblijvend gesprek ${I.arrow}</a>
-      <p class="fine">Prijzen excl. btw. Je betaalt pas als je tevreden bent.</p>
+      <p class="fine">${pt('Prijzen excl. btw. ', '')}Je betaalt pas als je tevreden bent.</p>
     </aside>
   </div>
 </section>

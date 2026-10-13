@@ -275,9 +275,16 @@ for (const p of packages) p.price = pakketPrijs(p.services, p.korting ?? PAKKET_
 export const tijdelijkePrijs = '€1975';
 // Let op: zodra er in /system → Prijzen is opgeslagen, gelden die prijzen op de live site (ze worden in de browser ingeladen).
 
+// PRIJZEN TONEN
+// false = de hele site toont 'Prijs op aanvraag' i.p.v. bedragen (ook in Google-omschrijvingen en structured data).
+// Aanzetten kan zonder deploy in /system → Prijzen → 'Prijzen op de website'. Zet dit later ook hier op true,
+// dan krijgen ook de Google-omschrijvingen de prijzen.
+export const prijzenZichtbaar = false;
+
 // Normale prijzen (vóór de tijdelijke prijs). /system gebruikt deze als standaardwaarden.
 export const basisPrijzen = {
   tijdelijkePrijs: tijdelijkePrijs || '',
+  zichtbaar: prijzenZichtbaar,
   services: services.map((s) => ({ slug: s.slug, name: s.name, cat: s.cat, ...s.price })),
   categories: categories.map((c) => ({ id: c.id, name: c.name, from: c.from || '' })),
   packages: packages.map((p) => ({ name: p.name, price: p.price, unit: p.unit })),

@@ -204,7 +204,7 @@ const actions = {
       services[k] = { from: txt(v.from, 20), unit: txt(v.unit, 40), monthly: txt(v.monthly, 20), note: txt(v.note, 200) };
     }
     for (const [k, v] of Object.entries(p.categories || {})) if (slug.test(k)) categories[k] = txt(v, 20);
-    const clean = { tijdelijkePrijs: txt(p.tijdelijkePrijs, 20), services, categories, savedAt: new Date().toISOString() };
+    const clean = { zichtbaar: p.zichtbaar === true, tijdelijkePrijs: txt(p.tijdelijkePrijs, 20), services, categories, savedAt: new Date().toISOString() };
     await sb(`/storage/v1/object/${BUCKET}/${PRICES_PATH}`, {
       method: "POST", body: Buffer.from(JSON.stringify(clean)), raw: true,
       headers: { "Content-Type": "application/json", "x-upsert": "true", "cache-control": "no-cache" },

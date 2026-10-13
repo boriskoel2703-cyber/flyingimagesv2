@@ -20,7 +20,13 @@
   }
   var unitText = function (p) { return esc(p.unit) + (p.monthly ? ' + ' + esc(p.monthly) + '/mnd' : ''); };
 
+  var OA = { card: 'prijs<strong>op aanvraag</strong>', chip: 'prijs <strong>op aanvraag</strong>', mini: 'prijs<b>op aanvraag</b>', cat: 'prijs <strong>op aanvraag</strong>',
+    aside: '<div class="amount">Op aanvraag</div><p class="note">Je krijgt vooraf een helder voorstel met vaste prijs.</p>', pkg: '<div class="amount">Op aanvraag</div><div class="unit">voorstel op maat</div>' };
+  function texts(on) { document.querySelectorAll('[data-pt-on]').forEach(function (el) { el.textContent = el.getAttribute(on ? 'data-pt-on' : 'data-pt-off'); }); }
+  function hide() { document.querySelectorAll('[data-p]').forEach(function (el) { var k = OA[el.getAttribute('data-p')]; if (k) el.innerHTML = k; }); texts(false); }
+
   function apply(e) {
+    texts(true);
     document.querySelectorAll('[data-p]').forEach(function (el) {
       var kind = el.getAttribute('data-p'), p = e.services[el.getAttribute('data-slug')];
       if (kind === 'card' && p) el.innerHTML = 'vanaf<strong>' + esc(p.from) + '</strong> ' + unitText(p);
@@ -36,7 +42,11 @@
 
   if (!document.querySelector('[data-p]')) return;
   Promise.all([get(root + 'assets/prices-base.json'), get('/api/prices')]).then(function (r) {
-    if (r[0] && r[1] && r[1].config) apply(effective(r[0], r[1].config));
+    var b = r[0], cfg = r[1] && r[1].config; if (!b) return;
+    // Zichtbaar: keuze uit /system wint, anders die uit de code (src/data.mjs → prijzenZichtbaar)
+    var on = cfg && typeof cfg.zichtbaar === 'boolean' ? cfg.zichtbaar : b.zichtbaar !== false;
+    if (!on) { if (b.zichtbaar !== false) hide(); return; }
+    apply(effective(b, cfg || { tijdelijkePrijs: b.tijdelijkePrijs }));
   });
   window.FIPrices = { effective: effective };
 })();

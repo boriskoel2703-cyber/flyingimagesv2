@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     });
     if (!r.ok) return res.status(200).json({ config: null });
     const c = await r.json();
-    return res.status(200).json({ config: { tijdelijkePrijs: c.tijdelijkePrijs || "", services: c.services || {}, categories: c.categories || {} } });
+    return res.status(200).json({ config: { zichtbaar: typeof c.zichtbaar === 'boolean' ? c.zichtbaar : null, tijdelijkePrijs: c.tijdelijkePrijs || "", services: c.services || {}, categories: c.categories || {} } });
   } catch {
     return res.status(200).json({ config: null });
   }
