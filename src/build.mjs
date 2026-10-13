@@ -166,7 +166,7 @@ function footer(u, withSg = true) {
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="year">2026</span> Flying Images · Job &amp; Boris Koelman · Prijzen excl. btw</span>
+      <span>© <span id="year">2026</span> Flying Images · Job &amp; Boris Koelman · Prijzen excl. btw · <a href="${u('privacy')}">Privacyverklaring</a></span>
       ${soc.length ? `<div class="socials">${soc.join('')}</div>` : ''}
     </div>
   </div>
@@ -752,7 +752,7 @@ ${pageHero(u, a, { eyebrow: 'Contact', title: 'Klaar om te beginnen?', lead: 'Pl
       </div>
       <div class="field"><label for="f-bericht">Je bericht</label><textarea id="f-bericht" name="bericht" placeholder="Vertel kort over je bedrijf en wat je wilt bereiken." required></textarea></div>
       <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <div class="form-foot"><button class="btn btn-sand" type="submit">Verstuur je bericht</button><p class="form-note">Liever zelf mailen? Dat mag ook: ${site.email}</p></div>
+      <div class="form-foot"><button class="btn btn-sand" type="submit">Verstuur je bericht</button><p class="form-note">Liever zelf mailen? Dat mag ook: ${site.email}<br>We gebruiken je gegevens alleen om je vraag te beantwoorden. Lees de <a href="${u('privacy')}">privacyverklaring</a>.</p></div>
       <p class="form-status" id="form-status" role="status" hidden></p>
     </form>
     <aside class="contact-aside reveal">
@@ -787,6 +787,64 @@ ${pageHero(u, a, { eyebrow: 'Contact', title: 'Klaar om te beginnen?', lead: 'Pl
   });
 }
 
+function privacy() {
+  const updated = '13 oktober 2026';
+  const sec = (id, t, body) => `<section class="legal-sec" id="${id}"><h2>${t}</h2>${body}</section>`;
+  const sections = [
+    ['wie', 'Wie zijn wij', `<p>Flying Images bouwt websites en verzorgt vindbaarheid, Ai-oplossingen en dronebeelden voor ondernemers. Wij zijn verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in deze privacyverklaring.</p>
+      <dl class="legal-dl"><div><dt>Bedrijf</dt><dd>Flying Images (Job &amp; Boris Koelman)</dd></div><div><dt>Vestiging</dt><dd>${site.city}, Nederland</dd></div><div><dt>KvK</dt><dd>${site.kvk}</dd></div><div><dt>E-mail</dt><dd><a href="mailto:${site.email}">${site.email}</a></dd></div></dl>
+      <p>Heb je een vraag over je privacy? Mail ons, dan reageren we zelf. Geen ticketsysteem.</p>`],
+    ['gegevens', 'Welke gegevens we verwerken', `<p>We verwerken alleen gegevens die we echt nodig hebben:</p>
+      <ul><li><b>Contactformulier:</b> je naam, e-mailadres, telefoonnummer (optioneel), de dienst of het specialisme dat je kiest en je bericht.</li>
+      <li><b>E-mail en telefoon:</b> de gegevens die je zelf met ons deelt als je ons mailt of belt.</li>
+      <li><b>Als je klant wordt:</b> bedrijfs- en contactgegevens, factuurgegevens en het materiaal dat je aanlevert voor je project, zoals teksten, logo's en foto's.</li>
+      <li><b>Technische gegevens:</b> bij elk bezoek verwerkt onze hostingpartij gegevens zoals je IP-adres en browsertype, nodig om de website te tonen en te beveiligen.</li></ul>
+      <p>We vragen nooit om bijzondere persoonsgegevens en verwerken bewust geen gegevens van kinderen jonger dan 16 jaar.</p>`],
+    ['doelen', 'Waarom we dat doen', `<ul><li><b>Je vraag beantwoorden</b> en een voorstel maken. Grondslag: jouw verzoek, voorafgaand aan een overeenkomst.</li>
+      <li><b>Je project uitvoeren</b>, opleveren en onderhouden. Grondslag: uitvoering van de overeenkomst.</li>
+      <li><b>Factureren en onze administratie</b> bijhouden. Grondslag: wettelijke verplichting.</li>
+      <li><b>De website veilig en werkend houden.</b> Grondslag: ons gerechtvaardigd belang.</li></ul>
+      <p>We gebruiken je gegevens niet voor nieuwsbrieven of reclame zonder dat je daar zelf om vraagt, en we verkopen ze nooit.</p>`],
+    ['bewaren', 'Hoe lang we gegevens bewaren', `<ul><li><b>Aanvragen die niet tot een opdracht leiden:</b> maximaal 12 maanden.</li>
+      <li><b>Klant- en factuurgegevens:</b> 7 jaar, vanwege de fiscale bewaarplicht.</li>
+      <li><b>Projectmateriaal:</b> zolang we je website of dienst beheren, daarna verwijderen we het op verzoek.</li>
+      <li><b>Technische logbestanden:</b> kort, zolang onze hostingpartij die bewaart voor beveiliging.</li></ul>`],
+    ['derden', 'Met wie we gegevens delen', `<p>We delen gegevens alleen met partijen die we nodig hebben om ons werk te doen. Zij mogen je gegevens alleen voor dat doel gebruiken:</p>
+      <ul><li><b>Web3Forms:</b> stuurt berichten uit het contactformulier door naar onze mailbox.</li>
+      <li><b>Vercel:</b> host deze website.</li>
+      <li><b>Supabase:</b> slaat de gegevens op in ons interne systeem waarmee we aanvragen en projecten beheren.</li>
+      <li><b>Hostinger en Google (Gmail):</b> verwerken onze zakelijke e-mail.</li>
+      <li><b>Google Fonts:</b> levert de lettertypes van deze site. Daarbij ontvangt Google je IP-adres.</li>
+      <li><b>Boekhouder en Belastingdienst</b>, voor zover dat wettelijk nodig is.</li></ul>
+      <p>Sommige van deze partijen zitten (ook) buiten de Europese Economische Ruimte, bijvoorbeeld in de Verenigde Staten. Dat gebeurt alleen met passende waarborgen, zoals het EU-VS Data Privacy Framework of de standaardcontractbepalingen van de Europese Commissie.</p>`],
+    ['cookies', 'Cookies', `<p>Deze website gebruikt <b>geen tracking-, analyse- of marketingcookies</b>. We volgen je dus niet en bouwen geen profiel van je op. Je ziet daarom ook geen cookiebanner.</p>
+      <p>Alleen in ons afgeschermde interne systeem gebruiken we functionele opslag om ingelogd te blijven. Dat geldt niet voor bezoekers van de website.</p>`],
+    ['beveiliging', 'Beveiliging', `<p>We gaan zorgvuldig om met je gegevens. De website draait volledig via een beveiligde verbinding (https), ons interne systeem is afgeschermd met een login, en alleen Job en Boris hebben toegang tot je gegevens. Denk je dat er iets misgaat? Laat het ons direct weten via <a href="mailto:${site.email}">${site.email}</a>.</p>`],
+    ['rechten', 'Jouw rechten', `<p>Je hebt altijd het recht om:</p>
+      <ul><li>je gegevens in te zien;</li><li>onjuiste gegevens te laten aanpassen;</li><li>je gegevens te laten verwijderen;</li><li>de verwerking te laten beperken;</li><li>je gegevens over te laten dragen;</li><li>bezwaar te maken tegen de verwerking.</li></ul>
+      <p>Stuur je verzoek naar <a href="mailto:${site.email}">${site.email}</a>. We reageren binnen een maand. Om misbruik te voorkomen kunnen we je vragen je te identificeren.</p>
+      <p>Ben je niet tevreden over hoe we met je gegevens omgaan? Dan kun je een klacht indienen bij de <a href="https://autoriteitpersoonsgegevens.nl" rel="noopener">Autoriteit Persoonsgegevens</a>. We horen het natuurlijk liever eerst zelf.</p>`],
+    ['wijzigingen', 'Wijzigingen', `<p>We passen deze privacyverklaring aan als onze werkwijze of de wet verandert. Op deze pagina staat altijd de nieuwste versie.</p>`],
+  ];
+  doc({
+    path: 'privacy',
+    title: 'Privacyverklaring | Flying Images',
+    desc: 'Hoe Flying Images omgaat met je persoonsgegevens: welke gegevens we verwerken, waarom, hoe lang en welke rechten je hebt.',
+    body: (u, a) => `
+${pageHero(u, a, { eyebrow: 'Privacy', title: 'Privacyverklaring.', lead: 'Helder en zonder kleine lettertjes: welke gegevens we verwerken, waarom, en wat jouw rechten zijn.', crumbs: [[null, 'Privacyverklaring']] })}
+<section class="section">
+  <div class="wrap legal">
+    <aside class="legal-toc">
+      <span class="eyebrow">Inhoud</span>
+      <ol>${sections.map(([id, t]) => `<li><a href="#${id}">${t}</a></li>`).join('')}</ol>
+      <p class="legal-date">Laatst bijgewerkt: ${updated}</p>
+    </aside>
+    <div class="legal-body">${sections.map(([id, t, b]) => sec(id, t, b)).join('')}</div>
+  </div>
+</section>`,
+  });
+}
+
 /* ---------- run ---------- */
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
@@ -801,9 +859,10 @@ werkwijze();
 overOns();
 portfolio();
 contact();
+privacy();
 
 if (MODE === 'vercel') {
-  const pages = ['/', '/diensten', ...services.map((s) => '/diensten/' + s.slug), '/werkwijze', '/portfolio', '/over-ons', '/contact'];
+  const pages = ['/', '/diensten', ...services.map((s) => '/diensten/' + s.slug), '/werkwijze', '/portfolio', '/over-ons', '/contact', '/privacy'];
   const today = new Date().toISOString().slice(0, 10);
   writeFileSync(join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${site.domain}${p === '/' ? '/' : p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`);
   writeFileSync(join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /system\n\nSitemap: ${site.domain}/sitemap.xml\n`);
