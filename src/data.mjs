@@ -308,7 +308,7 @@ for (const p of packages) p.price = pakketPrijs(p.services, p.korting ?? PAKKET_
 // TIJDELIJKE PRIJS
 // Zolang hier een bedrag staat, toont de hele site overal "vanaf <bedrag>" (diensten, categorieën, pakketten).
 // Terug naar de normale prijzen hierboven? Zet de waarde op null en draai `npm run build`.
-export const tijdelijkePrijs = '€1975';
+export const tijdelijkePrijs = null;
 // Let op: zodra er in /system → Prijzen is opgeslagen, gelden die prijzen op de live site (ze worden in de browser ingeladen).
 
 // PRIJZEN TONEN
