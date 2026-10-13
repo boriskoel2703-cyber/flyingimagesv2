@@ -49,7 +49,7 @@ export const services = [
     title: 'Maatwerk voor wat standaard niet kan.',
     intro: 'Een eigen boekingsflow, klantportaal, calculator of koppeling nodig? Dan bouwen we een website die precies doet wat jouw bedrijf vraagt, met een ontwerp dat volledig op jouw merk is afgestemd.',
     includes: ['Volledig eigen ontwerp, geen template', 'Functies op maat: calculators, formulieren, portals', 'Koppelingen met je bestaande systemen', 'Beheeromgeving om zelf content aan te passen', 'Snelle, moderne techniek', 'Documentatie bij oplevering'],
-    forWho: 'Bedrijven met specifieke wensen of processen die niet in een standaard website passen.',
+    forWho: "Starters, zzp'ers en kleine ondernemers die professioneel online willen staan, zonder technisch gedoe. En bedrijven met specifieke wensen of processen die niet in een standaard website passen.",
     steps: 'default',
     faq: [
       ['Wanneer heb ik maatwerk nodig?', 'Als je site meer moet doen dan informeren en contact laten opnemen. Denk aan offertes berekenen, afspraken laten inplannen of klanten laten inloggen.'],
