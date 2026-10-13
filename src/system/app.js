@@ -90,7 +90,7 @@ $("#burger").onclick = () => document.body.classList.toggle(mq.matches ? "open" 
 $("#overlay").onclick = () => document.body.classList.remove("open");
 
 /* ================= router ================= */
-const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen", hero: "Hero-afbeelding" };
+const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen", hero: "Hero-afbeelding", fibrand: "FIBrand" };
 const NAVSEC = { nieuw: "intakes", intake: "intakes" };
 let ROUTE_SEQ = 0;
 
@@ -120,6 +120,13 @@ addEventListener("hashchange", render);
 
 /* ================= pagina's ================= */
 const PAGES = {
+  async fibrand() {
+    return `<div class="row" style="justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <p class="lead" style="margin:0">Brandbook-bron van Flying Images: logo, kleuren, typografie, radius en toon.</p>
+        <a class="btn ghost sm" href="/system/fibrand.html" target="_blank" rel="noopener">Open in nieuw tabblad ↗</a>
+      </div>
+      <iframe src="/system/fibrand.html" title="FIBrand" style="display:block;width:100%;height:calc(100vh - 190px);min-height:600px;border:1px solid var(--border);border-radius:18px;background:#fff"></iframe>`;
+  },
   async intakes() { return intakeList("lopend"); },
   async afgerond() { return intakeList("afgerond"); },
 

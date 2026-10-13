@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>FIBrand · Flying Images</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: navy-kop, daarna afwisselend papier/wit/navy-secties zoals de live site; visueel eerst, tekst als onderbouwing. Eén bewuste look (merk = site). */
+:root{
+  color-scheme:light;
+  --navy-950:#060E19;--navy-900:#0A1727;--navy-800:#11233A;--navy-700:#1A3352;
+  --sand:#CBA266;--sand-strong:#B88A47;--sand-300:#E3CA9E;--sand-100:#F4EADA;
+  --paper:#F6F3EE;--white:#FFFFFF;--ink:#0A1727;--ink-2:#4E6079;--mist:#A8B6C8;
+  --line:rgba(10,23,39,.1);--line-dark:rgba(255,255,255,.12);
+  --f-sans:'Outfit',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-weight:500;line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1220px;margin-inline:auto;padding-inline:clamp(16px,4vw,36px)}
+section{padding-block:clamp(56px,7vw,96px)}
+section.paper{background:var(--paper)}
+section.navy{background:var(--navy-900);color:var(--white)}
+.eyebrow{font-size:.78rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--sand-strong);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:32px;height:2px;background:var(--sand)}
+.navy .eyebrow{color:var(--sand)}
+.head{display:grid;gap:14px;margin-bottom:40px;max-width:760px}
+.head h2{font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem);font-weight:300;letter-spacing:-.03em}
+.why{font-size:1.02rem;color:var(--ink-2);max-width:62ch}
+.navy .why{color:var(--mist)}
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.03em}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tile{border-radius:18px;border:1px solid var(--line);background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tile .stage{display:grid;place-items:center;min-height:200px;padding:28px}
+.tile .cap{padding:16px 20px 18px;border-top:1px solid var(--line);display:grid;gap:4px}
+.tile .cap h3{font-size:1.05rem}
+.tile .cap p{font-size:.9rem;color:var(--ink-2)}
+.navy .tile{background:var(--navy-800);border-color:var(--line-dark)}
+.navy .tile .cap{border-color:var(--line-dark)}
+.navy .tile .cap p{color:var(--mist)}
+.on-navy{background:var(--navy-900)}
+.on-paper{background:var(--paper)}
+.on-950{background:var(--navy-950)}
+.note{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--sand);padding-left:14px;max-width:70ch}
+.navy .note{color:var(--mist)}
+
+/* Hero */
+.hero{background:var(--navy-900);color:var(--white);position:relative;overflow:hidden;padding-block:clamp(72px,10vw,128px) clamp(56px,7vw,88px)}
+.hero .sg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;display:grid;gap:22px}
+.hero h1{font-size:clamp(2.6rem,1.6rem + 4.6vw,5rem);font-weight:300;letter-spacing:-.035em;line-height:1;max-width:13ch}
+.hero .lead{font-size:clamp(1.05rem,1rem + .35vw,1.25rem);color:var(--mist);max-width:56ch}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--line-dark);border-radius:999px;padding:6px 14px;font-size:.82rem;color:var(--sand-300)}
+
+/* Prioriteit-tabel */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--white)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:12px 16px;border-top:1px solid var(--line);vertical-align:middle}
+th{border-top:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:500;background:var(--paper)}
+td .sw{display:inline-block;width:18px;height:18px;border-radius:5px;vertical-align:-4px;margin-right:8px;border:1px solid var(--line)}
+td.win{font-weight:500}
+.tag{display:inline-block;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--sand);background:var(--sand-100);color:#8A6430;font-weight:500}
+
+/* Kleur */
+.sw-card{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--white);display:flex;flex-direction:column;min-width:0}
+.sw-card .chip-c{height:132px;display:flex;align-items:flex-end;padding:14px;font-size:.78rem;font-weight:500}
+.sw-card .info{padding:14px 16px 16px;display:grid;gap:3px}
+.sw-card .info h3{font-size:1rem}
+.sw-card .info .mono{color:var(--ink-2)}
+.sw-card .info p{font-size:.86rem;color:var(--ink-2)}
+.ramp{display:flex;border-radius:16px;overflow:hidden;border:1px solid var(--line);height:96px}
+.ramp div{flex:1;display:flex;align-items:flex-end;padding:10px;font-family:var(--f-mono);font-size:.68rem}
+.ratio{display:flex;height:72px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.ratio div{display:flex;align-items:flex-end;padding:8px 10px;font-size:.75rem;font-weight:500}
+.cat{border-radius:18px;padding:22px;display:grid;gap:14px;border:1px solid var(--line);background:var(--white)}
+.cat .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-weight:600}
+.cat h3{font-size:1.02rem}
+.cat p{font-size:.86rem;color:var(--ink-2)}
+.pair{border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:500}
+.pair span.mono{opacity:.8}
+
+/* Type */
+.type-row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding-block:22px;border-top:1px solid var(--line)}
+.type-row:first-child{border-top:0}
+.type-row .lbl{display:grid;gap:2px}
+.type-row .lbl strong{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.type-row .lbl span{font-size:.8rem;color:var(--ink-2);font-family:var(--f-mono)}
+.type-row .smp{min-width:0;overflow-wrap:anywhere}
+@media (max-width:640px){.type-row{grid-template-columns:1fr;gap:8px}}
+.face{border-radius:22px;padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:280px}
+.face .big{font-size:clamp(5rem,4rem + 4vw,8rem);line-height:.9;font-weight:300}
+.weights{display:flex;flex-wrap:wrap;gap:18px;font-size:1.6rem}
+
+/* Radius */
+.rad{display:grid;gap:10px;justify-items:start}
+.rad .box{width:100%;height:120px;background:var(--paper);border:1.5px solid var(--navy-700)}
+.rad h3{font-size:1rem}
+.rad p{font-size:.84rem;color:var(--ink-2)}
+
+/* Schaduw */
+.elev{height:130px;border-radius:18px;background:var(--white);display:grid;place-items:center;font-size:.85rem;color:var(--ink-2)}
+
+/* Componenten */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:500;font-size:.98rem;white-space:nowrap;font-family:var(--f-sans);border:0;cursor:pointer;transition:filter .35s var(--ease),box-shadow .25s,background .25s,border-color .25s}
+.btn-sand{background:linear-gradient(120deg,var(--sand-300) 0%,var(--sand) 45%,var(--sand-strong) 100%);color:var(--navy-950)}
+.btn-sand:hover{filter:brightness(1.12) saturate(.92);box-shadow:0 10px 30px -10px rgba(203,162,102,.7)}
+.btn-navy{background:var(--navy-900);color:var(--white)}
+.btn-navy:hover{background:var(--navy-700)}
+.btn-ghost{border:1px solid rgba(255,255,255,.35);color:var(--white);background:transparent}
+.btn-ghost:hover{border-color:var(--white)}
+.btn-line{border:1px solid var(--line);color:var(--ink);background:var(--white)}
+.btn-line:hover{border-color:var(--ink)}
+.btn:focus-visible,.field:focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+.field{width:100%;font:inherit;color:var(--ink);background:var(--white);border:1px solid rgba(10,23,39,.16);border-radius:12px;padding:14px 16px}
+.field:focus{border-color:var(--sand-strong);box-shadow:0 0 0 4px rgba(203,162,102,.18);outline:none}
+.status{font-size:.92rem;padding:12px 14px;border-radius:12px}
+.comp-stage{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:28px;border-radius:18px}
+
+/* Logo-stage */
+.logo-wm{display:inline-flex;flex-direction:column;line-height:1;font-weight:500;letter-spacing:-.01em}
+.logo-wm i{display:block;height:2px;margin-top:6px;border-radius:2px;background:linear-gradient(90deg,var(--sand) 0%,var(--sand) 35%,rgba(203,162,102,0) 100%)}
+.lockup{display:flex;align-items:flex-start;gap:12px}
+.dont{position:relative}
+.dont .x{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:#FBEDEA;color:#8A2E1E;display:grid;place-items:center;font-weight:600;font-size:.9rem}
+.anim .bar{height:2px;width:100%;max-width:260px;border-radius:2px;background:var(--sand);transform-origin:left;animation:draw 2.6s var(--ease) infinite}
+@keyframes draw{0%{transform:scaleX(0)}40%,100%{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.anim .bar{animation:none}}
+
+.tov{display:grid;gap:10px;padding:24px;border-radius:18px}
+.tov h3{font-size:1.1rem}
+.tov p{font-size:.95rem}
+.list{display:grid;gap:10px;font-size:.95rem}
+.list li{padding-left:18px;position:relative;list-style:none}
+.list li::before{content:'';position:absolute;left:0;top:.7em;width:8px;height:2px;background:var(--sand)}
+ul.list{padding:0;margin:0}
+footer{background:var(--navy-950);color:var(--mist);padding-block:40px;font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="fi-ft" viewBox="0 0 130 120"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="sg" viewBox="0 0 1440 640" preserveAspectRatio="xMaxYMid slice" fill="none" aria-hidden="true">
+    <path d="M0 308 H1440" stroke="#CBA266" stroke-opacity=".35" stroke-width="1.5"/>
+    <g transform="translate(860 -40) scale(5.8)" stroke-width=".26">
+      <path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE" fill-opacity=".04" stroke="#F6F3EE" stroke-opacity=".2"/>
+      <path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#F6F3EE" stroke-opacity=".09"/>
+      <path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".08" stroke="#CBA266" stroke-opacity=".75"/>
+      <path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".35"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <p class="eyebrow">Brandbook-bron · versie 13 oktober 2026</p>
+    <h1>Flying Images, alles op één plek.</h1>
+    <p class="lead">Alle merkinformatie voor het volledige brandbook: logo, kleuren, typografie, radius, schaduw, componenten, supergraphic en toon. Waar bronnen elkaar tegenspreken, geldt de meest recente: de live website v2 van 13 oktober.</p>
+    <div class="meta"><span class="chip">Websites · Marketing · Ai · Drone</span><span class="chip">Zeewolde</span><span class="chip">Boris &amp; Job Koelman</span></div>
+  </div>
+</header>
+
+<!-- PRIORITEIT -->
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Bronnen en prioriteit</p>
+      <h2>Wat geldt er bij een conflict?</h2>
+      <p class="why">Drie bronnen: het oude palet (zomer 2026), Brandbook v2.0 (deck, 13 okt ochtend) en de CSS van flyingimages.nl (13 okt, later). De site is het nieuwste én het merk zoals klanten het zien, dus die wint. Het deck en de logo-SVG's gebruiken nog de oude hexwaarden en moeten worden bijgetrokken.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Rol</th><th>Oud / Brandbook v2.0</th><th>Nu geldend (site v2)</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Navy basis</td><td><span class="sw" style="background:#0D1B2A"></span>#0D1B2A</td><td class="win"><span class="sw" style="background:#0A1727"></span>#0A1727 navy-900</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Sand accent</td><td><span class="sw" style="background:#C8AD87"></span>#C8AD87</td><td class="win"><span class="sw" style="background:#CBA266"></span>#CBA266 sand</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Lichte achtergrond</td><td><span class="sw" style="background:#F7F5F2"></span>#F7F5F2 Warm White</td><td class="win"><span class="sw" style="background:#F6F3EE"></span>#F6F3EE paper</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Secundair op navy</td><td><span class="sw" style="background:#8A9BB0"></span>#8A9BB0 Muted</td><td class="win"><span class="sw" style="background:#A8B6C8"></span>#A8B6C8 mist</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Navy diepte (logo)</td><td><span class="sw" style="background:#2A3D55"></span>#2A3D55</td><td class="win"><span class="sw" style="background:#2A3A55"></span>#2A3A55</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Sand diepte (logo)</td><td><span class="sw" style="background:#A68C66"></span>#A68C66</td><td class="win"><span class="sw" style="background:#A58A66"></span>#A58A66</td><td><span class="tag">bijwerken</span></td></tr>
+          <tr><td>Aanspreekvorm</td><td>ik-vorm (eenmanszaak)</td><td class="win">wij-vorm, jij (Boris + Job)</td><td>vastgesteld</td></tr>
+          <tr><td>Display-gewicht</td><td>300 Light</td><td class="win">300 Light (hero), koppen 500</td><td>gelijk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Logo · beeldmerk</p>
+      <h2>FI blok met dieptelijn</h2>
+      <p class="why">Een rechtopstaande F in navy en een I in sand, horizontaal doorgesneden op halve hoogte. Boven is het scherm, onder de basis: het merk leest ook als een opengeklapte laptop. De onderste helften zijn één tint donkerder; diepte zonder schaduw of verloop, zodat het merk ook op 16 px scherp blijft.</p>
+    </div>
+    <div class="grid g4">
+      <div class="tile"><div class="stage">
+        <svg viewBox="0 0 130 120" width="130" height="120" aria-label="Primair beeldmerk"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+      </div><div class="cap"><h3>Primair</h3><p>Op wit en paper. Standaardversie.</p></div></div>
+      <div class="tile"><div class="stage on-navy">
+        <svg viewBox="0 0 130 120" width="130" height="120" aria-label="Negatief beeldmerk"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+      </div><div class="cap"><h3>Negatief</h3><p>Op navy. F in paper, onderkant in mist.</p></div></div>
+      <div class="tile"><div class="stage on-paper">
+        <div style="width:120px;height:120px;border-radius:28px;background:#0A1727;display:grid;place-items:center">
+          <svg viewBox="0 0 130 120" width="68" height="63" aria-label="App-icoon"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+        </div>
+      </div><div class="cap"><h3>App-icoon</h3><p>Favicon, socials, profielfoto. Radius 23% van de tegel.</p></div></div>
+      <div class="tile"><div class="stage">
+        <svg viewBox="-3 -3 136 126" width="136" height="126" aria-label="Outline-beeldmerk"><g fill="none" stroke-width="2.5" stroke-linejoin="round"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" stroke="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#0A1727" stroke-opacity=".45"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" stroke="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".55"/></g></svg>
+      </div><div class="cap"><h3>Outline</h3><p>Alleen groot (vanaf 64 px): posters, supergraphic.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Logo · woordmerk en lockup</p>
+      <h2>Woordmerk, lockup en constructie</h2>
+      <p class="why">Het woordmerk is "Flying Images" in Outfit Medium met een sand streep eronder die naar rechts uitloopt, als een vliegspoor. In de lockup staat het beeldmerk ervoor, even hoog als de F tot onderkant streep, met dezelfde tussenruimte als tussen "Flying" en "Images".</p>
+    </div>
+    <div class="grid g3">
+      <div class="tile"><div class="stage on-navy">
+        <span class="logo-wm" style="font-size:2rem;color:#fff">Flying Images<i></i></span>
+      </div><div class="cap"><h3>Woordmerk</h3><p>Outfit 500 · tracking −0,01em · streep 2 px, sand 0–35%, dan fade.</p></div></div>
+      <div class="tile"><div class="stage on-navy">
+        <div class="lockup">
+          <svg viewBox="0 0 130 120" width="49" height="45" aria-hidden="true"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+          <span class="logo-wm" style="font-size:2rem;color:#fff">Flying Images<i></i></span>
+        </div>
+      </div><div class="cap"><h3>Horizontale lockup</h3><p>Header en e-mail. Header-PNG wacht nog op jouw akkoord.</p></div></div>
+      <div class="tile"><div class="stage">
+        <svg viewBox="-20 -14 170 150" width="230" height="200" aria-label="Constructie van het beeldmerk" font-family="IBM Plex Mono, monospace" font-size="5.5">
+          <g stroke="#A8B6C8" stroke-width=".3">
+            <path d="M-20 0 H150 M-20 58 H150 M-20 62 H150 M-20 120 H150 M0 -14 V136 M30 -14 V136 M90 -14 V136 M100 -14 V136 M130 -14 V136" stroke-dasharray="1.5 1.5"/>
+          </g>
+          <path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727" fill-opacity=".9"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/>
+          <text x="-18" y="61.5" fill="#B88A47">snede 4</text>
+          <text x="102" y="134" fill="#4E6079">I = 30</text>
+          <text x="36" y="134" fill="#4E6079">gat 10</text>
+          <text x="2" y="-5" fill="#4E6079">130 × 120 · hoek r4</text>
+        </svg>
+      </div><div class="cap"><h3>Constructie</h3><p>Raster 130×120. Stam en I 30 breed, gat 10, snede 4 op y 58–62, hoeken r4.</p></div></div>
+    </div>
+
+    <div class="grid g4" style="margin-top:20px">
+      <div class="tile"><div class="stage" style="min-height:150px">
+        <div style="border:1.5px dashed #CBA266;padding:22px;display:flex;align-items:center;gap:12px">
+          <svg viewBox="0 0 130 120" width="40" height="37" aria-hidden="true"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+          <span class="logo-wm" style="font-size:1.35rem">Flying Images<i></i></span>
+        </div>
+      </div><div class="cap"><h3>Vrije ruimte</h3><p>Rondom minimaal de breedte van de I.</p></div></div>
+      <div class="tile"><div class="stage" style="min-height:150px;gap:18px;display:flex;align-items:flex-end;justify-content:center">
+        <svg viewBox="0 0 130 120" width="16" height="15" aria-label="16 px"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+        <svg viewBox="0 0 130 120" width="32" height="30" aria-label="32 px"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
+        <svg viewBox="-2 -2 134 124" width="64" height="59" aria-label="64 px outline"><g fill="none" stroke-width="3"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" stroke="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#0A1727" stroke-opacity=".45"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" stroke="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".55"/></g></svg>
+      </div><div class="cap"><h3>Minimale maat</h3><p>Gevuld vanaf 16 px, outline vanaf 64 px.</p></div></div>
+      <div class="tile dont"><span class="x" aria-hidden="true">×</span><div class="stage" style="min-height:150px">
+        <svg viewBox="0 0 130 120" width="80" height="74" aria-label="Fout: kleuren omgedraaid"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#CBA266"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A58A66"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#0A1727"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#2A3A55"/></svg>
+      </div><div class="cap"><h3>Niet: kleuren wisselen</h3><p>F is altijd navy of paper, I altijd sand.</p></div></div>
+      <div class="tile dont"><span class="x" aria-hidden="true">×</span><div class="stage" style="min-height:150px">
+        <svg viewBox="0 0 130 120" width="130" height="62" preserveAspectRatio="none" aria-label="Fout: uitgerekt en zonder snede"><defs><linearGradient id="bad" x1="0" x2="1"><stop offset="0" stop-color="#0A1727"/><stop offset="1" stop-color="#1A3352"/></linearGradient></defs><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="url(#bad)"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#CBA266"/></svg>
+      </div><div class="cap"><h3>Niet: rekken, verloop, snede weg</h3><p>Ook geen schaduw of schuin zetten.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KLEUR -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Kleur · kernpalet</p>
+      <h2>Navy luchtlagen, warm papier, één accent</h2>
+      <p class="why">Navy staat voor de lucht en vakmanschap, sand voor het warme, persoonlijke en het "gouden randje". De versterkte v2-tinten zijn dieper en verzadigder dan het oude palet: meer contrast, en sand oogt nu als goud in plaats van beige.</p>
+    </div>
+    <div class="grid g5">
+      <div class="sw-card"><div class="chip-c" style="background:#0A1727;color:#E3CA9E">Aa</div><div class="info"><h3>Navy</h3><span class="mono">#0A1727 · navy-900</span><p>Basis: tekst, header, donkere secties, F.</p></div></div>
+      <div class="sw-card"><div class="chip-c" style="background:#CBA266;color:#060E19">Aa</div><div class="info"><h3>Sand</h3><span class="mono">#CBA266 · sand</span><p>Enige accent: I, knoppen, lijnen, labels op navy.</p></div></div>
+      <div class="sw-card"><div class="chip-c" style="background:#F6F3EE;color:#0A1727">Aa</div><div class="info"><h3>Paper</h3><span class="mono">#F6F3EE · paper</span><p>Lichte secties, afwisseling met wit.</p></div></div>
+      <div class="sw-card"><div class="chip-c" style="background:#FFFFFF;color:#0A1727;border-bottom:1px solid var(--line)">Aa</div><div class="info"><h3>Wit</h3><span class="mono">#FFFFFF · white</span><p>Hoofdachtergrond, kaarten, formulieren.</p></div></div>
+      <div class="sw-card"><div class="chip-c" style="background:#A8B6C8;color:#0A1727">Aa</div><div class="info"><h3>Mist</h3><span class="mono">#A8B6C8 · mist</span><p>Secundaire tekst op navy, AI-categorie.</p></div></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:40px">
+      <div class="grid" style="gap:12px">
+        <h3 style="font-size:1.1rem">Navy-schaal</h3>
+        <div class="ramp">
+          <div style="background:#060E19;color:#A8B6C8">950<br>#060E19</div>
+          <div style="background:#0A1727;color:#A8B6C8">900<br>#0A1727</div>
+          <div style="background:#11233A;color:#A8B6C8">800<br>#11233A</div>
+          <div style="background:#1A3352;color:#E3CA9E">700<br>#1A3352</div>
+          <div style="background:#2A3A55;color:#E3CA9E">diepte<br>#2A3A55</div>
+        </div>
+        <p class="note">950 voor footer en diepste vlakken, 900 voor secties en header, 800 voor kaarten op navy, 700 voor hover en de web-categorie. Diepte alleen in logo en supergraphic.</p>
+      </div>
+      <div class="grid" style="gap:12px">
+        <h3 style="font-size:1.1rem">Sand-schaal</h3>
+        <div class="ramp">
+          <div style="background:#F4EADA;color:#8A6430">100<br>#F4EADA</div>
+          <div style="background:#E3CA9E;color:#060E19">300<br>#E3CA9E</div>
+          <div style="background:#CBA266;color:#060E19">sand<br>#CBA266</div>
+          <div style="background:#B88A47;color:#060E19">strong<br>#B88A47</div>
+          <div style="background:#A58A66;color:#060E19">diepte<br>#A58A66</div>
+        </div>
+        <p class="note">100 voor tag- en icoonvlakken, 300 als lichte kant van het knopverloop, strong voor sand-tekst op wit (eyebrows), want gewone sand haalt daar te weinig contrast.</p>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:40px">
+      <div class="grid" style="gap:12px">
+        <h3 style="font-size:1.1rem">Tekst en lijnen</h3>
+        <div class="grid g3" style="gap:12px">
+          <div class="pair" style="background:#fff;border:1px solid var(--line);color:#0A1727">Ink <span class="mono">#0A1727</span></div>
+          <div class="pair" style="background:#fff;border:1px solid var(--line);color:#4E6079">Ink-2 <span class="mono">#4E6079</span></div>
+          <div class="pair" style="background:#fff;border:1px solid var(--line);color:#8A6430">Tag <span class="mono">#8A6430</span></div>
+          <div class="pair" style="background:#fff;border:1px solid rgba(10,23,39,.1);color:#4E6079">Lijn licht <span class="mono">navy 10%</span></div>
+          <div class="pair" style="background:#0A1727;border:1px solid rgba(255,255,255,.12);color:#A8B6C8">Lijn donker <span class="mono">wit 10%</span></div>
+          <div class="pair" style="background:#fff;border:1px solid rgba(10,23,39,.16);color:#4E6079">Invoerveld <span class="mono">navy 16%</span></div>
+        </div>
+      </div>
+      <div class="grid" style="gap:12px">
+        <h3 style="font-size:1.1rem">Functioneel (alleen voor status)</h3>
+        <div class="grid g3" style="gap:12px">
+          <div class="pair" style="background:#E8F3EC;color:#1F5A35">Gelukt <span class="mono">#1F5A35</span></div>
+          <div class="pair" style="background:#FBEDEA;color:#8A2E1E">Fout <span class="mono">#8A2E1E</span></div>
+        </div>
+        <p class="note">Bewust gedempte groen en rood met lichte vlakken, zodat ze naast navy en sand niet schreeuwen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Kleur · gebruik</p>
+      <h2>Verhouding en categoriekleuren</h2>
+      <p class="why">Veel rust, één helder accent. Op de site wisselen donkere navy-lagen en licht papier elkaar af, zodat de pagina ritme heeft zonder extra kleuren. Sand blijft schaars, daardoor valt het op waar het moet: knoppen, cijfers, de I.</p>
+    </div>
+    <div class="ratio">
+      <div style="flex:45;background:#FFFFFF;color:#4E6079">45% wit</div>
+      <div style="flex:30;background:#0A1727;color:#A8B6C8">30% navy</div>
+      <div style="flex:15;background:#F6F3EE;color:#4E6079">15% paper</div>
+      <div style="flex:6;background:#CBA266;color:#060E19">6%</div>
+      <div style="flex:4;background:#A8B6C8;color:#0A1727">4%</div>
+    </div>
+    <p class="note" style="margin-top:12px">Richtlijn per pagina of post. Wit + paper samen ongeveer 60%, navy 30%, sand en mist samen maximaal 10%.</p>
+
+    <div class="grid g4" style="margin-top:36px">
+      <div class="cat"><div class="ic" style="background:linear-gradient(155deg,#48607C 0%,#1A3352 50%,#162B46 100%);color:#E3CA9E">W</div><h3>Websites &amp; webshops</h3><p>navy-700 + sand-300</p></div>
+      <div class="cat"><div class="ic" style="background:linear-gradient(155deg,#D5B585 0%,#CBA266 50%,#AC8A57 100%);color:#0A1727">G</div><h3>Gevonden worden</h3><p>sand + navy-900</p></div>
+      <div class="cat"><div class="ic" style="background:linear-gradient(155deg,#B9C5D3 0%,#A8B6C8 50%,#8F9BAA 100%);color:#0A1727">A</div><h3>Ai &amp; data</h3><p>mist + navy-900</p></div>
+      <div class="cat"><div class="ic" style="background:linear-gradient(155deg,#F8F5F1 0%,#F6F3EE 50%,#D1CFCA 100%);color:#0A1727;border:1px solid var(--line)">M</div><h3>Merk &amp; beeld</h3><p>paper + navy-900</p></div>
+    </div>
+    <p class="note" style="margin-top:12px">Alleen op icoontegels, nooit op hele kaarten. Verloop 155°: 20% lichter boven, basis in het midden, 15% donkerder onder. Zo krijgt elke dienstgroep herkenning zonder nieuwe kleuren toe te voegen.</p>
+  </div>
+</section>
+
+<!-- TYPOGRAFIE -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Typografie</p>
+      <h2>Eén familie, hiërarchie via gewicht</h2>
+      <p class="why">Outfit is geometrisch en vriendelijk: modern genoeg voor tech en Ai, rond genoeg om persoonlijk te blijven. Light 300 voor grote koppen geeft rust en luxe, Medium 500 voor kleinere koppen en knoppen geeft houvast. IBM Plex Mono alleen voor technische details zoals de drone-HUD.</p>
+    </div>
+    <div class="grid g2">
+      <div class="face on-navy" style="color:#fff">
+        <span class="big">Aa</span>
+        <div style="display:grid;gap:10px">
+          <h3 style="font-size:1.6rem">Outfit</h3>
+          <div class="weights"><span style="font-weight:300">Light 300</span><span style="font-weight:400">Regular 400</span><span style="font-weight:500">Medium 500</span><span style="font-weight:600">600</span></div>
+          <p style="color:#A8B6C8;font-size:.9rem">Google Fonts · koppen tracking −0,02 tot −0,035em</p>
+        </div>
+      </div>
+      <div class="face on-paper">
+        <span class="big" style="font-family:var(--f-mono);font-weight:400;font-size:clamp(4rem,3rem + 4vw,6.5rem)">Aa</span>
+        <div style="display:grid;gap:10px">
+          <h3 style="font-size:1.6rem">IBM Plex Mono</h3>
+          <div class="weights" style="font-family:var(--f-mono);font-size:1.2rem"><span>Regular 400</span><span style="font-weight:500">Medium 500</span></div>
+          <p style="color:#4E6079;font-size:.9rem">Alleen data, HUD en technische labels · 12–13 px</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px">
+      <div class="type-row"><div class="lbl"><strong>Display</strong><span>44 → 86 px · 300 · −0,035em · lh 1</span></div><p class="smp" style="font-size:clamp(2.75rem,1.6rem + 5vw,5.4rem);font-weight:300;letter-spacing:-.035em;line-height:1">Jouw verhaal.</p></div>
+      <div class="type-row"><div class="lbl"><strong>H1 pagina</strong><span>37 → 67 px · 300 · −0,03em</span></div><p class="smp" style="font-size:clamp(2.3rem,1.5rem + 3.4vw,4.2rem);font-weight:300;letter-spacing:-.03em;line-height:1.08">Onze werkwijze</p></div>
+      <div class="type-row"><div class="lbl"><strong>H2 sectie</strong><span>30 → 46 px · 500 · −0,02em</span></div><p class="smp" style="font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem);font-weight:500;letter-spacing:-.02em;line-height:1.08">Wat wij voor je doen</p></div>
+      <div class="type-row"><div class="lbl"><strong>H3 kaart</strong><span>21 px · 500</span></div><p class="smp" style="font-size:1.3rem;font-weight:500">Maatwerk website</p></div>
+      <div class="type-row"><div class="lbl"><strong>Lead</strong><span>17 → 20 px · 400 · lh 1.6 · ink-2</span></div><p class="smp" style="font-size:clamp(1.08rem,1rem + .35vw,1.25rem);color:#4E6079;max-width:58ch">Wij bouwen jouw website. Jij keurt hem goed, pas dan betaal je.</p></div>
+      <div class="type-row"><div class="lbl"><strong>Body</strong><span>16 px · 400 · lh 1.6 · max 65 tekens</span></div><p class="smp">Een website die past bij hoe jij werkt, gebouwd met een slimme Ai-workflow en persoonlijk opgeleverd.</p></div>
+      <div class="type-row"><div class="lbl"><strong>Eyebrow</strong><span>12,5 px · 500 · caps · 0,16em</span></div><p class="smp" style="font-size:.78rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#B88A47">Websites · Marketing · Ai · Drone</p></div>
+      <div class="type-row"><div class="lbl"><strong>Cijfer</strong><span>38–48 px · 300 · sand · tabular</span></div><p class="smp" style="font-size:2.6rem;font-weight:300;color:#B88A47;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1">€ 400</p></div>
+      <div class="type-row"><div class="lbl"><strong>Mono</strong><span>12,5 px · Plex Mono · 0,04em</span></div><p class="smp mono">4K · 30 FPS · 52.3746° N</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RADIUS -->
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Vorm · radius</p>
+      <h2>Zachte hoeken, ronde knoppen</h2>
+      <p class="why">Het beeldmerk heeft afgeronde blokhoeken, dus de interface ook. Hoe groter het vlak, hoe ruimer de hoek. Alles wat je aanklikt is een pil (999 px), zodat knoppen meteen herkenbaar zijn naast de rechthoekige kaarten.</p>
+    </div>
+    <div class="grid g5">
+      <div class="rad"><div class="box" style="border-radius:999px;height:64px;align-self:center"></div><h3>999 px · pil</h3><p>Knoppen, nav-links, chips, tags</p></div>
+      <div class="rad"><div class="box" style="border-radius:22px"></div><h3>22 px · XL</h3><p>Formulierkaart, contactblok, portfolio</p></div>
+      <div class="rad"><div class="box" style="border-radius:20px"></div><h3>20 px · L</h3><p>Megamenu, teamkaarten, doelgroepkaarten</p></div>
+      <div class="rad"><div class="box" style="border-radius:18px"></div><h3>18 px · M</h3><p>Pakketten, specialismen, USP- en routekaarten</p></div>
+      <div class="rad"><div class="box" style="border-radius:16px"></div><h3>16 px · S</h3><p>Mini-garantie, kleine panelen</p></div>
+      <div class="rad"><div class="box" style="border-radius:14px"></div><h3>14 px · basis</h3><p><span class="mono">--radius</span> · dienstkaarten, stappen</p></div>
+      <div class="rad"><div class="box" style="border-radius:12px;height:64px;width:64px"></div><h3>12 px · XS</h3><p>Icoontegels 44–46 px, invoervelden, meldingen</p></div>
+      <div class="rad"><div class="box" style="border-radius:10px;height:64px"></div><h3>10 px</h3><p>Links in het megamenu</p></div>
+      <div class="rad"><div class="box" style="border-radius:6px;height:64px"></div><h3>4–8 px</h3><p>Focusring, skip-link, kleine elementen</p></div>
+      <div class="rad"><div class="box" style="border-radius:50%;height:64px;width:64px"></div><h3>50% · cirkel</h3><p>Hamburger, avatars, REC-stip</p></div>
+    </div>
+    <p class="note" style="margin-top:24px">Advies voor het brandbook: noem 18 px de standaard kaartradius en schrap 14/16/20 waar het kan, zodat er drie stappen overblijven: 12 (klein), 18 (kaart), 22 (groot paneel) plus de pil.</p>
+  </div>
+</section>
+
+<!-- SCHADUW & RUIMTE -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Diepte en ruimte</p>
+      <h2>Schaduw, raster en witruimte</h2>
+      <p class="why">Schaduwen zijn lang, zacht en navy getint, met een negatieve spreiding: het element zweeft licht boven de pagina in plaats van er hard op te liggen. Dat past bij "Flying" en blijft rustig.</p>
+    </div>
+    <div class="grid g4">
+      <div class="grid" style="gap:10px"><div class="elev" style="box-shadow:inset 0 0 0 1px rgba(10,23,39,.1)">Niveau 0</div><p class="mono" style="color:#4E6079">rand 1 px navy 10%</p></div>
+      <div class="grid" style="gap:10px"><div class="elev" style="box-shadow:0 24px 50px -34px rgba(10,23,39,.4)">Niveau 1 · hover</div><p class="mono" style="color:#4E6079">0 24 50 −34 · navy 40%</p></div>
+      <div class="grid" style="gap:10px"><div class="elev" style="box-shadow:0 30px 60px -30px rgba(10,23,39,.4)">Niveau 2 · kaart</div><p class="mono" style="color:#4E6079">0 30 60 −30 · navy 40%</p></div>
+      <div class="grid" style="gap:10px"><div class="elev" style="box-shadow:0 40px 80px -30px rgba(6,14,25,.55),0 0 0 1px rgba(10,23,39,.06)">Niveau 3 · menu</div><p class="mono" style="color:#4E6079">0 40 80 −30 · navy-950 55%</p></div>
+    </div>
+    <div class="grid g4" style="margin-top:20px">
+      <div class="grid" style="gap:10px"><div class="elev" style="box-shadow:0 40px 80px -40px rgba(203,162,102,.35);border:1px solid #CBA266">Gloed · uitgelicht</div><p class="mono" style="color:#4E6079">"Meest gekozen" · sand 35%</p></div>
+      <div class="tile" style="padding:20px;gap:8px;display:grid"><h3 style="font-size:1rem">Raster</h3><p class="mono" style="color:#4E6079">max 1220 px · goot 16–36 px</p></div>
+      <div class="tile" style="padding:20px;gap:8px;display:grid"><h3 style="font-size:1rem">Secties</h3><p class="mono" style="color:#4E6079">padding 72–128 px verticaal</p></div>
+      <div class="tile" style="padding:20px;gap:8px;display:grid"><h3 style="font-size:1rem">Header</h3><p class="mono" style="color:#4E6079">76 px · navy, op scroll 92% + blur 14</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTEN -->
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Componenten</p>
+      <h2>Knoppen, tags en velden</h2>
+      <p class="why">De sand-knop is de enige plek met een verloop: licht goud naar diep goud onder 120°. Zo is de hoofdactie op elke pagina meteen te vinden. Alle andere knoppen zijn vlak.</p>
+    </div>
+    <div class="grid g2">
+      <div class="comp-stage" style="background:#fff;border:1px solid var(--line)">
+        <button class="btn btn-sand" type="button">Plan een kennismaking →</button>
+        <button class="btn btn-navy" type="button">Bekijk diensten</button>
+        <button class="btn btn-line" type="button">Meer info</button>
+        <span class="tag">Meest gekozen</span>
+      </div>
+      <div class="comp-stage on-navy">
+        <button class="btn btn-sand" type="button">Start je project →</button>
+        <button class="btn btn-ghost" type="button">Onze werkwijze</button>
+        <span style="font-size:.78rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#CBA266">Eyebrow op navy</span>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="tile" style="padding:22px;display:grid;gap:10px">
+        <label for="demo-naam" style="font-size:.9rem;font-weight:500">Naam</label>
+        <input id="demo-naam" class="field" placeholder="Klik voor de focusstijl">
+        <p class="mono" style="color:#4E6079">focus: rand sand-strong + ring 4 px sand 18%</p>
+      </div>
+      <div class="tile" style="padding:22px;display:grid;gap:10px;align-content:start">
+        <div class="status" style="background:#E8F3EC;color:#1F5A35">Bedankt, we nemen binnen 24 uur contact op.</div>
+        <div class="status" style="background:#FBEDEA;color:#8A2E1E">Vul een geldig e-mailadres in.</div>
+      </div>
+      <div class="tile" style="padding:22px;display:grid;gap:14px;align-content:start">
+        <div class="anim"><span class="logo-wm" style="font-size:1.4rem">Flying Images</span><div class="bar" style="margin-top:6px"></div></div>
+        <p style="font-size:.88rem;color:#4E6079">Beweging: één curve voor alles, <span class="mono">cubic-bezier(.2,.7,.2,1)</span>, 0,25–1,8 s. Logostreep tekent in en krijgt elke 4,2 s een glans.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPERGRAPHIC -->
+<section class="navy" style="position:relative;overflow:hidden">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Supergraphic en patronen</p>
+      <h2>De dieptelijn</h2>
+      <p class="why">Het beeldmerk groot uitgesneden als lijntekening, met één sand lijn over de volle breedte precies door de snede. Hij geeft elke donkere sectie herkenning zonder foto, en tekent zich bij het laden in: eerst de lijn, dan F en I.</p>
+    </div>
+    <div class="grid g2">
+      <div class="tile"><div class="stage" style="padding:0;min-height:0;aspect-ratio:16/9;position:relative;overflow:hidden;background:#0A1727">
+        <svg viewBox="0 0 1440 810" preserveAspectRatio="xMaxYMid slice" fill="none" style="position:absolute;inset:0;width:100%;height:100%" aria-label="Supergraphic in een hero">
+          <path d="M0 308 H1440" stroke="#CBA266" stroke-opacity=".35" stroke-width="3"/>
+          <g transform="translate(825 -40) scale(5.8)" stroke-width=".5">
+            <path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE" fill-opacity=".04" stroke="#F6F3EE" stroke-opacity=".2"/>
+            <path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#F6F3EE" stroke-opacity=".09"/>
+            <path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".08" stroke="#CBA266" stroke-opacity=".75"/>
+            <path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".35"/>
+          </g>
+          <rect x="96" y="420" width="560" height="44" rx="8" fill="#F6F3EE" fill-opacity=".85"/><rect x="96" y="486" width="400" height="44" rx="8" fill="#F6F3EE" fill-opacity=".85"/><rect x="96" y="580" width="300" height="18" rx="6" fill="#A8B6C8" fill-opacity=".7"/><rect x="96" y="640" width="200" height="56" rx="28" fill="#CBA266"/>
+        </svg>
+      </div><div class="cap"><h3>In een paginakop</h3><p>Tekst links, graphic rechts. Op mobiel 55% sterkte.</p></div></div>
+      <div class="grid" style="gap:14px;align-content:start">
+        <ul class="list" style="color:#fff">
+          <li><b>Uitsnede:</b> merk loopt rechts en boven van het vlak af, de I blijft altijd heel.</li>
+          <li><b>Lijn:</b> sand 35%, 1,5 px, volle breedte, door de snede.</li>
+          <li><b>Opbouw:</b> F-lijn 20% boven / 9% onder, I-lijn 75% / 35%. Vulling F 4%, I 8%.</li>
+          <li><b>Zacht:</b> in pakketten en footer op 38–40% sterkte.</li>
+          <li><b>Ondergrond:</b> alleen navy. Op licht gebruik je het herhaalpatroon.</li>
+          <li><b>Niet:</b> tekst over de I, supergraphic op de homepage-hero (die houdt de dronefoto).</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="tile"><div class="stage" style="padding:0;min-height:160px">
+        <svg viewBox="0 0 400 160" width="100%" height="160" preserveAspectRatio="xMidYMid slice" aria-label="Herhaalpatroon licht"><defs><pattern id="pl" width="80" height="70" patternUnits="userSpaceOnUse"><g transform="translate(10 10) scale(.18)"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727" fill-opacity=".08"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#0A1727" fill-opacity=".035"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".5"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#CBA266" fill-opacity=".25"/></g><g transform="translate(50 45) scale(.18)"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727" fill-opacity=".08"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#0A1727" fill-opacity=".035"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".5"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#CBA266" fill-opacity=".25"/></g></pattern></defs><rect width="400" height="160" fill="#F6F3EE"/><rect width="400" height="160" fill="url(#pl)"/></svg>
+      </div><div class="cap"><h3>Herhaalpatroon licht</h3><p>Secties op paper of wit.</p></div></div>
+      <div class="tile"><div class="stage" style="padding:0;min-height:160px">
+        <svg viewBox="0 0 400 160" width="100%" height="160" preserveAspectRatio="xMidYMid slice" aria-label="Herhaalpatroon donker"><defs><pattern id="pd" width="80" height="70" patternUnits="userSpaceOnUse"><g transform="translate(10 10) scale(.18)"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE" fill-opacity=".07"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#F6F3EE" fill-opacity=".03"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".4"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#CBA266" fill-opacity=".18"/></g><g transform="translate(50 45) scale(.18)"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE" fill-opacity=".07"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#F6F3EE" fill-opacity=".03"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".4"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#CBA266" fill-opacity=".18"/></g></pattern></defs><rect width="400" height="160" fill="#060E19"/><rect width="400" height="160" fill="url(#pd)"/></svg>
+      </div><div class="cap"><h3>Herhaalpatroon donker</h3><p>Footers en kaarten op navy.</p></div></div>
+      <div class="tile"><div class="stage" style="padding:0;min-height:160px">
+        <svg viewBox="0 0 400 160" width="100%" height="160" preserveAspectRatio="xMidYMid slice" aria-label="Gesplitste blokken"><defs><pattern id="pb" width="100" height="110" patternUnits="userSpaceOnUse"><path d="M7 18 Q7 16 9 16 H23 Q25 16 25 18 V52 H7 Z" fill="#F6F3EE" fill-opacity=".08"/><path d="M7 55 H25 V89 Q25 91 23 91 H9 Q7 91 7 89 Z" fill="#F6F3EE" fill-opacity=".035"/><path d="M32 18 Q32 16 34 16 H48 Q50 16 50 18 V52 H32 Z" fill="#F6F3EE" fill-opacity=".08"/><path d="M32 55 H50 V89 Q50 91 48 91 H34 Q32 91 32 89 Z" fill="#F6F3EE" fill-opacity=".035"/><path d="M57 18 Q57 16 59 16 H73 Q75 16 75 18 V52 H57 Z" fill="#F6F3EE" fill-opacity=".08"/><path d="M57 55 H75 V89 Q75 91 73 91 H59 Q57 91 57 89 Z" fill="#F6F3EE" fill-opacity=".035"/><path d="M82 18 Q82 16 84 16 H98 Q100 16 100 18 V52 H82 Z" fill="#CBA266" fill-opacity=".5"/><path d="M82 55 H100 V89 Q100 91 98 91 H84 Q82 91 82 89 Z" fill="#CBA266" fill-opacity=".25"/></pattern></defs><rect width="400" height="160" fill="#0A1727"/><rect width="400" height="160" fill="url(#pb)"/></svg>
+      </div><div class="cap"><h3>Gesplitste blokken</h3><p>Rustige variant voor banners.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEELD -->
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Fotografie</p>
+      <h2>Eigen dronebeeld, vanuit de lucht</h2>
+      <p class="why">De homepage-hero is een eigen dronefoto (brug, van bovenaf). Eigen beeld bewijst de drone-dienst en is niet te verwarren met stock. Altijd met een donkere navy-overlay aan de bovenkant, zodat de witte header leesbaar blijft.</p>
+    </div>
+    <div class="grid g3">
+      <div class="tile" style="padding:22px;display:grid;gap:8px"><h3 style="font-size:1rem">Wel</h3><ul class="list"><li>Eigen drone- en FPV-beelden</li><li>Koel daglicht, ruime lucht</li><li>Navy verloop 55% → 0 bovenaan</li><li>Uitsnede via focuspunt in /system</li></ul></div>
+      <div class="tile" style="padding:22px;display:grid;gap:8px"><h3 style="font-size:1rem">Niet</h3><ul class="list"><li>Stockfoto's met mensen achter laptops</li><li>Filters die sand of navy verkleuren</li><li>HUD-overlays (REC, 4K) op de hero</li><li>Supergraphic over een foto</li></ul></div>
+      <div class="tile" style="padding:22px;display:grid;gap:8px"><h3 style="font-size:1rem">Formaten</h3><p class="mono" style="color:#4E6079">hero max 2400 px · 3 MB<br>webp + jpg · 800 / 1400 / 2400<br>social 1080 × 1080 en 1080 × 1350</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOON -->
+<section style="background:#CBA266;color:#0A1727">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow" style="color:#0A1727">Tone of voice</p>
+      <h2>Zo klinken wij</h2>
+      <p class="why" style="color:#0A1727">Twee broers die zelf bouwen en zelf aan tafel zitten. Daarom praten we zoals we praten: direct, warm en zonder bureautaal.</p>
+    </div>
+    <div class="grid g3">
+      <div class="tov" style="background:#F6F3EE"><h3>Wij en jij</h3><p>Wij-vorm (Boris en Job), altijd jij, nooit u.</p></div>
+      <div class="tov" style="background:#F6F3EE"><h3>Kort en concreet</h3><p>Eén heldere zin wint van drie vage. Cijfers alleen als ze kloppen.</p></div>
+      <div class="tov" style="background:#F6F3EE"><h3>Schrijfregels</h3><p>"Ai" in plaats van "AI" in lopende tekst, geen gedachtestreepjes, prijzen als "vanaf € 400".</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:20px">
+      <div class="tov" style="background:#F6F3EE"><p class="eyebrow" style="color:#0A1727">Zo wel</p><p style="font-size:1.2rem">"Wij bouwen jouw website. Jij keurt hem goed, pas dan betaal je."</p></div>
+      <div class="tov" style="background:#0A1727;color:#fff"><p class="eyebrow">Zo niet</p><p style="font-size:1.2rem">"Ons team realiseert uw online aanwezigheid conform uw wensen."</p></div>
+    </div>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="tov" style="background:rgba(255,255,255,.35)"><p class="eyebrow" style="color:#0A1727">Tagline</p><h3 style="font-size:1.5rem;font-weight:300">Jouw website. Jouw verhaal.</h3></div>
+      <div class="tov" style="background:rgba(255,255,255,.35)"><p class="eyebrow" style="color:#0A1727">Belofte</p><h3 style="font-size:1.5rem;font-weight:300">Geen goedkeuring, geen factuur.</h3></div>
+      <div class="tov" style="background:rgba(255,255,255,.35)"><p class="eyebrow" style="color:#0A1727">Karakter</p><h3 style="font-size:1.5rem;font-weight:300">Persoonlijk, direct, vakkundig.</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN -->
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Nog te regelen</p>
+      <h2>Voordat het brandbook af is</h2>
+    </div>
+    <ul class="list">
+      <li>Brandbook v2.0-deck en logo-SVG's omzetten naar de v2-hexwaarden (tabel bovenaan).</li>
+      <li>Supergraphic in de site-code gebruikt nog #C8AD87 en #F7F5F2; gelijktrekken met sand en paper.</li>
+      <li>Header-lockup (beeldmerk + woordmerk) wacht op jouw akkoord op de PNG.</li>
+      <li>Radius terugbrengen naar 12 / 18 / 22 + pil.</li>
+      <li>Iconenstijl is nog niet vastgelegd: kies één set (lijn, 1,5 px, ronde uiteinden past bij Outfit).</li>
+      <li>Colofon: bedrijfsnaam en KvK aanpassen zodra de VOF met Job er is (nu KvK 83674993).</li>
+    </ul>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Flying Images · Brandbook-bron · 13 oktober 2026</span><span>flyingimages.nl · info@flyingimages.nl</span></div></footer>
+
+</body>
+</html>
