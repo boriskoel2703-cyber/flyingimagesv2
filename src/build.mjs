@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, cpSync, rmSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, categories, services, stepSets, packages, basisPrijzen, prijzenZichtbaar, prijsMelding } from './data.mjs';
+import { site, pageMeta, categories, services, stepSets, packages, basisPrijzen, prijzenZichtbaar, prijsMelding } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MODE = process.argv[2] === 'preview' ? 'preview' : 'vercel';
@@ -248,6 +248,8 @@ function doc({ path, title, desc, body, overlay = false, jsonld = '' }) {
   const u = makeUrl(path);
   const a = makeAsset(path);
   const canonical = site.domain + u(path);
+  const esc = (v) => String(v).replace(/&(?![a-z#0-9]+;)/gi, '&amp;').replace(/"/g, '&quot;');
+  title = esc(title); desc = esc(desc);
   // CTA-blok onderaan gaat samen met de footer in één doorlopend vlak
   let main = body(u, a);
   let cta = '';
@@ -299,8 +301,8 @@ function home() {
   })}</script>`;
   doc({
     path: 'index', overlay: true, jsonld,
-    title: 'Flying Images | Websites, vindbaarheid, Ai en dronebeelden',
-    desc: 'Website, webshop of maatwerk laten maken in Zeewolde. Plus SEO, Google Ads, LLM-vindbaarheid, Ai-oplossingen en drone- en FPV-beelden. Je betaalt pas als je tevreden bent.',
+    title: pageMeta['index'].metaTitle,
+    desc: pageMeta['index'].metaDesc,
     body: (u, a) => `
 <section class="hero">
   <div class="hero-media" aria-hidden="true">${picture(a, 'drone-brug', '', { eager: true })}</div>
@@ -453,8 +455,8 @@ function guaranteeBlock(light = false, logo3d = false) {
 function dienstenOverview() {
   doc({
     path: 'diensten/index',
-    title: 'Diensten | Flying Images',
-    desc: 'Alle diensten van Flying Images: websites, webshops, maatwerk, SEO, Google Ads, LLM-vindbaarheid, Ai-oplossingen, data-analyse, rebranding en drone- en FPV-beelden.',
+    title: pageMeta['diensten/index'].metaTitle,
+    desc: pageMeta['diensten/index'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Diensten', title: 'Twaalf diensten. Eén aanspreekpunt.', lead: 'Van je eerste website tot gevonden worden in Ai en beelden vanuit de lucht. Je kiest wat past bij waar je nu staat.', crumbs: [[null, 'Diensten']] })}
 <section class="section">
@@ -486,8 +488,8 @@ function servicePage(s) {
   ])}</script>`;
   doc({
     path: 'diensten/' + s.slug, jsonld,
-    title: `${s.name} | Flying Images`,
-    desc: `${s.intro.split('. ')[0]}.${PV ? ` Vanaf ${s.price.from} ${unitText(s.price)}.` : ''} Geen goedkeuring, geen factuur.`,
+    title: s.metaTitle,
+    desc: s.metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, {
   eyebrow: c.name, title: s.title, lead: s.intro,
@@ -549,8 +551,8 @@ function werkwijze() {
   ];
   doc({
     path: 'werkwijze',
-    title: 'Werkwijze | Flying Images',
-    desc: 'Van vrijblijvend gesprek tot lancering in vier heldere stappen. Je betaalt pas als je tevreden bent.',
+    title: pageMeta['werkwijze'].metaTitle,
+    desc: pageMeta['werkwijze'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Werkwijze', title: 'Van gesprek tot lancering.', lead: 'Vier stappen. Je weet altijd waar we staan en wat er komt.', crumbs: [[null, 'Werkwijze']] })}
 <section class="section">
@@ -616,8 +618,8 @@ function overOns() {
   ];
   doc({
     path: 'over-ons',
-    title: 'Over ons | Flying Images',
-    desc: 'Flying Images wordt gerund door de broers Job en Boris uit Zeewolde. Persoonlijk, direct, betaalbaar en menselijk.',
+    title: pageMeta['over-ons'].metaTitle,
+    desc: pageMeta['over-ons'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Over ons', title: 'Wij zijn Job en Boris, en wij bouwen het zelf.', lead: 'Flying Images wordt gerund door twee broers uit Zeewolde. Persoonlijk, direct, betaalbaar en menselijk.', crumbs: [[null, 'Over ons']] })}
 <section class="section">
@@ -679,8 +681,8 @@ function portfolio() {
   ];
   doc({
     path: 'portfolio',
-    title: 'Portfolio | Flying Images',
-    desc: 'Recent werk van Flying Images. Websites, branding en beelden vanuit de lucht.',
+    title: pageMeta['portfolio'].metaTitle,
+    desc: pageMeta['portfolio'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Portfolio', title: 'Recent werk.', lead: 'Elke website is anders, omdat elke ondernemer anders is. Binnenkort delen we hier onze eerste publieke projecten.', crumbs: [[null, 'Portfolio']] })}
 <section class="section">
@@ -735,8 +737,8 @@ function contact() {
   ];
   doc({
     path: 'contact',
-    title: 'Contact | Flying Images',
-    desc: 'Plan een vrijblijvend gesprek met Flying Images. Het eerste contact is altijd gratis.',
+    title: pageMeta['contact'].metaTitle,
+    desc: pageMeta['contact'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Contact', title: 'Klaar om te beginnen?', lead: 'Plan een vrijblijvend gesprek. Het eerste contact is altijd gratis.', crumbs: [[null, 'Contact']] })}
 <section class="section contact-sec">
@@ -839,8 +841,8 @@ function privacy() {
   ];
   doc({
     path: 'privacy',
-    title: 'Privacyverklaring | Flying Images',
-    desc: 'Hoe Flying Images omgaat met je persoonsgegevens: welke gegevens we verwerken, waarom, hoe lang en welke rechten je hebt.',
+    title: pageMeta['privacy'].metaTitle,
+    desc: pageMeta['privacy'].metaDesc,
     body: (u, a) => `
 ${pageHero(u, a, { eyebrow: 'Privacy', title: 'Privacyverklaring.', lead: 'Helder en zonder kleine lettertjes: welke gegevens we verwerken, waarom, en wat jouw rechten zijn.', crumbs: [[null, 'Privacyverklaring']] })}
 <section class="section">

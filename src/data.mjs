@@ -41,9 +41,23 @@ const steps = {
   ],
 };
 
+// Handgeschreven meta title (max ~60 tekens) en meta description (max ~155 tekens) per vaste pagina.
+// Dienstpagina's hebben hun eigen metaTitle/metaDesc in `services` hieronder.
+export const pageMeta = {
+  'index': { metaTitle: 'Website laten maken in Zeewolde | Flying Images', metaDesc: 'Website, webshop of maatwerk laten maken in Zeewolde. Plus SEO, Google Ads, Ai en dronebeelden. Persoonlijk en direct. Je betaalt pas als je tevreden bent.' },
+  'diensten/index': { metaTitle: 'Diensten: websites, SEO, Ai en drone | Flying Images', metaDesc: 'Websites, webshops, SEO, Google Ads, LLM-vindbaarheid, Ai-oplossingen, rebranding en drone- en FPV-beelden. Alles bij één aanspreekpunt in Zeewolde.' },
+  'werkwijze': { metaTitle: 'Werkwijze: van gesprek tot lancering | Flying Images', metaDesc: 'In vier heldere stappen van vrijblijvend gesprek naar een live website. Je keurt eerst goed en betaalt pas als je tevreden bent. Inclusief revisieronde.' },
+  'over-ons': { metaTitle: 'Over ons: Job en Boris uit Zeewolde | Flying Images', metaDesc: 'Flying Images is een webbureau van de broers Job en Boris uit Zeewolde. Persoonlijk, direct en betaalbaar, en we bouwen alles zelf. Maak kennis met ons.' },
+  'portfolio': { metaTitle: 'Portfolio: websites, branding en drone | Flying Images', metaDesc: 'Bekijk recent werk van Flying Images: websites, webshops, huisstijlen en drone- en FPV-beelden voor ondernemers in Zeewolde en omgeving.' },
+  'contact': { metaTitle: 'Contact: plan een gratis gesprek | Flying Images', metaDesc: 'Plan een vrijblijvend kennismakingsgesprek met Flying Images in Zeewolde. Het eerste contact is altijd gratis. Mail naar info@flyingimages.nl.' },
+  'privacy': { metaTitle: 'Privacyverklaring | Flying Images', metaDesc: 'Lees hoe Flying Images omgaat met je persoonsgegevens: welke gegevens we verwerken, waarom, hoe lang we ze bewaren en welke rechten je hebt.' },
+};
+
 export const services = [
   {
-    slug: 'maatwerk-website', cat: 'web', name: 'Maatwerk website', popular: true, // 'Meest gekozen'-label in het menu
+    slug: 'maatwerk-website',
+    metaTitle: 'Maatwerk website laten maken | Flying Images',
+    metaDesc: 'Een website met eigen functies, zoals een boekingsflow, klantportaal of calculator. Volledig eigen ontwerp, geen template. Je betaalt pas na goedkeuring.', cat: 'web', name: 'Maatwerk website', popular: true, // 'Meest gekozen'-label in het menu
     short: 'Uniek ontwerp, eigen functies',
     price: { from: '€990', unit: 'eenmalig' },
     title: 'Maatwerk voor wat standaard niet kan.',
@@ -59,7 +73,9 @@ export const services = [
     related: ['onepage-website', 'ai-oplossingen', 'rebranding'],
   },
   {
-    slug: 'webshop-laten-maken', cat: 'web', name: 'Webshop laten maken',
+    slug: 'webshop-laten-maken',
+    metaTitle: 'Webshop laten maken in Zeewolde | Flying Images',
+    metaDesc: 'Een snelle webshop met iDEAL, verzending en btw goed ingericht. Makkelijk zelf te beheren en gebouwd om te verkopen. Je betaalt pas na goedkeuring.', cat: 'web', name: 'Webshop laten maken',
     short: 'Online verkopen zonder gedoe',
     price: { from: '€2100', unit: 'eenmalig' },
     title: 'Een webshop die verkoopt.',
@@ -75,7 +91,9 @@ export const services = [
     related: ['onepage-website', 'google-ads', 'data-analyse-rapportage'],
   },
   {
-    slug: 'onepage-website', cat: 'web', name: 'Onepage website',
+    slug: 'onepage-website',
+    metaTitle: 'Onepage website laten maken | Flying Images',
+    metaDesc: "Je hele verhaal op één sterke pagina: wie je bent, wat je doet en hoe klanten je bereiken. Ideaal voor starters en zzp'ers. Betalen na goedkeuring.", cat: 'web', name: 'Onepage website',
     short: 'Alles op één pagina, snel online',
     price: { from: '€200', unit: 'eenmalig', monthly: '€30' },
     title: 'Je hele verhaal op één sterke pagina.',
@@ -92,7 +110,9 @@ export const services = [
     related: ['maatwerk-website', 'webshop-laten-maken', 'zoekmachine-optimalisatie'],
   },
   {
-    slug: 'online-marketing', cat: 'vind', name: 'Online marketing',
+    slug: 'online-marketing',
+    metaTitle: 'Online marketing uitbesteden | Flying Images',
+    metaDesc: 'Een marketingplan dat werkt: social media, e-mail, advertenties en content. Wij voeren het uit, meten wat het oplevert en sturen maandelijks bij.', cat: 'vind', name: 'Online marketing',
     short: 'Meer bereik, meer klanten',
     price: { from: '€560', unit: 'per maand' },
     title: 'Online marketing met een plan.',
@@ -108,7 +128,9 @@ export const services = [
     related: ['zoekmachine-optimalisatie', 'google-ads', 'drone-fotografie-video'],
   },
   {
-    slug: 'zoekmachine-optimalisatie', cat: 'vind', name: 'Zoekmachine optimalisatie',
+    slug: 'zoekmachine-optimalisatie',
+    metaTitle: 'SEO laten doen in Zeewolde | Flying Images',
+    metaDesc: 'Gevonden worden op wat jouw klanten zoeken. Zoekwoordenonderzoek, technische SEO, sterke teksten en lokale vindbaarheid via je Google Bedrijfsprofiel.', cat: 'vind', name: 'Zoekmachine optimalisatie',
     short: 'Hoger in Google',
     price: { from: '€450', unit: 'eenmalig', monthly: '€199' },
     title: 'Gevonden worden op wat jouw klanten zoeken.',
@@ -124,7 +146,9 @@ export const services = [
     related: ['llm-vindbaarheid', 'google-ads', 'data-analyse-rapportage'],
   },
   {
-    slug: 'google-ads', cat: 'vind', name: 'Google Ads',
+    slug: 'google-ads',
+    metaTitle: 'Google Ads uitbesteden | Flying Images',
+    metaDesc: 'Google Ads-campagnes gericht op mensen die nú naar jouw dienst zoeken. Conversiemeting, scherpe biedingen en een heldere maandrapportage.', cat: 'vind', name: 'Google Ads',
     short: 'Direct zichtbaar bovenaan',
     price: { from: '€450', unit: 'eenmalig', monthly: '€259', note: 'Opzet en beheer, exclusief advertentiebudget' },
     title: 'Google Ads die iets opleveren.',
@@ -140,7 +164,9 @@ export const services = [
     related: ['zoekmachine-optimalisatie', 'online-marketing', 'data-analyse-rapportage'],
   },
   {
-    slug: 'llm-vindbaarheid', cat: 'vind', name: 'LLM-vindbaarheid',
+    slug: 'llm-vindbaarheid',
+    metaTitle: 'Gevonden worden in ChatGPT en Ai | Flying Images',
+    metaDesc: 'Zorg dat ChatGPT, Gemini en Perplexity jouw bedrijf goed aanbevelen. Met gestructureerde data en content die Ai-assistenten kunnen lezen en citeren.', cat: 'vind', name: 'LLM-vindbaarheid',
     short: 'Gevonden in ChatGPT en Ai',
     price: { from: '€650', unit: 'eenmalig', monthly: '€199' },
     title: 'Zichtbaar in ChatGPT, Gemini en Perplexity.',
@@ -156,7 +182,9 @@ export const services = [
     related: ['zoekmachine-optimalisatie', 'ai-oplossingen', 'onepage-website'],
   },
   {
-    slug: 'ai-oplossingen', cat: 'ai', name: 'Ai-oplossingen',
+    slug: 'ai-oplossingen',
+    metaTitle: 'Ai-oplossingen voor je bedrijf | Flying Images',
+    metaDesc: 'Ai die je echt tijd bespaart: een chatbot voor klantvragen, automatische offertes of slimme verwerking van e-mails. Op maat voor jouw bedrijf.', cat: 'ai', name: 'Ai-oplossingen',
     short: 'Slimmer werken met Ai',
     price: { from: '€495', unit: 'eenmalig' },
     title: 'Ai die je echt tijd bespaart.',
@@ -172,7 +200,9 @@ export const services = [
     related: ['data-analyse-rapportage', 'maatwerk-website', 'llm-vindbaarheid'],
   },
   {
-    slug: 'data-analyse-rapportage', cat: 'ai', name: 'Data-analyse & rapportage',
+    slug: 'data-analyse-rapportage',
+    metaTitle: 'Data-analyse & rapportage | Flying Images',
+    metaDesc: 'Al je cijfers uit website, advertenties, webshop en administratie in één helder dashboard. Zo zie je in één oogopslag wat werkt en wat niet.', cat: 'ai', name: 'Data-analyse & rapportage',
     short: 'Inzicht in je cijfers',
     price: { from: '€560', unit: 'eenmalig', monthly: '€199' },
     title: 'Je cijfers, eindelijk overzichtelijk.',
@@ -188,7 +218,9 @@ export const services = [
     related: ['ai-oplossingen', 'google-ads', 'zoekmachine-optimalisatie'],
   },
   {
-    slug: 'rebranding', cat: 'beeld', name: 'Rebranding',
+    slug: 'rebranding',
+    metaTitle: 'Rebranding & huisstijl laten maken | Flying Images',
+    metaDesc: 'Een merk dat laat zien wie je bent: merkverhaal, logo, kleuren, typografie en tone of voice, vastgelegd in een brandbook. Overal herkenbaar.', cat: 'beeld', name: 'Rebranding',
     short: 'Een merk dat klopt',
     price: { from: '€950', unit: 'eenmalig' },
     title: 'Een merk dat laat zien wie je bent.',
@@ -204,7 +236,9 @@ export const services = [
     related: ['onepage-website', 'online-marketing', 'drone-fotografie-video'],
   },
   {
-    slug: 'drone-fotografie-video', cat: 'beeld', name: "Drone foto's & video's",
+    slug: 'drone-fotografie-video',
+    metaTitle: "Drone foto's en video's laten maken | Flying Images",
+    metaDesc: "Luchtfoto's en 4K-dronevideo van je bedrijf, project of pand. Laat ligging, schaal en omgeving zien, klaar voor je website en social media.", cat: 'beeld', name: "Drone foto's & video's",
     short: 'Je bedrijf vanuit de lucht',
     price: { from: '€195', unit: 'per opname' },
     title: 'Je bedrijf vanuit een ander perspectief.',
@@ -220,7 +254,9 @@ export const services = [
     related: ['fpv-drone-beelden', 'online-marketing', 'onepage-website'],
   },
   {
-    slug: 'fpv-drone-beelden', cat: 'beeld', name: 'FPV drone beelden',
+    slug: 'fpv-drone-beelden',
+    metaTitle: 'FPV drone video laten maken | Flying Images',
+    metaDesc: 'Een vloeiende FPV-dronevlucht door je pand, over je terrein of tussen je mensen door. Gemonteerd met muziek, klaar voor website, Reels en TikTok.', cat: 'beeld', name: 'FPV drone beelden',
     short: 'Vliegende fly-through video',
     price: { from: '€349', unit: 'per opname' },
     title: 'Vlieg je publiek door je bedrijf heen.',
