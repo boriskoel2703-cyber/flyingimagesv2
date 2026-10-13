@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Supergraphic · Flying Images</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: navy-kop, daarna afwisselend papier/wit/navy-secties zoals de live site; visueel eerst, tekst als onderbouwing. Eén bewuste look (merk = site). */
+:root{
+  color-scheme:light;
+  --navy-950:#060E19;--navy-900:#0A1727;--navy-800:#11233A;--navy-700:#1A3352;
+  --sand:#CBA266;--sand-strong:#B88A47;--sand-300:#E3CA9E;--sand-100:#F4EADA;
+  --paper:#F6F3EE;--white:#FFFFFF;--ink:#0A1727;--ink-2:#4E6079;--mist:#A8B6C8;
+  --line:rgba(10,23,39,.1);--line-dark:rgba(255,255,255,.12);
+  --f-sans:'Outfit',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-weight:500;line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1220px;margin-inline:auto;padding-inline:clamp(16px,4vw,36px)}
+section{padding-block:clamp(56px,7vw,96px)}
+section.paper{background:var(--paper)}
+section.navy{background:var(--navy-900);color:var(--white)}
+.eyebrow{font-size:.78rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--sand-strong);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:32px;height:2px;background:var(--sand)}
+.navy .eyebrow{color:var(--sand)}
+.head{display:grid;gap:14px;margin-bottom:40px;max-width:760px}
+.head h2{font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem);font-weight:300;letter-spacing:-.03em}
+.why{font-size:1.02rem;color:var(--ink-2);max-width:62ch}
+.navy .why{color:var(--mist)}
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.03em}
+.grid{display:grid;gap:20px}
+.grid>.grid{align-content:start}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tile{border-radius:18px;border:1px solid var(--line);background:var(--white);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tile .stage{display:grid;place-items:center;min-height:200px;padding:28px}
+.tile .cap{padding:16px 20px 18px;border-top:1px solid var(--line);display:grid;gap:4px}
+.tile .cap h3{font-size:1.05rem}
+.tile .cap p{font-size:.9rem;color:var(--ink-2)}
+.navy .tile{background:var(--navy-800);border-color:var(--line-dark)}
+.navy .tile .cap{border-color:var(--line-dark)}
+.navy .tile .cap p{color:var(--mist)}
+.on-navy{background:var(--navy-900)}
+.on-paper{background:var(--paper)}
+.on-950{background:var(--navy-950)}
+.note{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--sand);padding-left:14px;max-width:70ch}
+.navy .note{color:var(--mist)}
+
+/* Hero */
+.hero{background:var(--navy-900);color:var(--white);position:relative;overflow:hidden;padding-block:clamp(72px,10vw,128px) clamp(56px,7vw,88px)}
+.hero .sg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;display:grid;gap:22px}
+.hero h1{font-size:clamp(2.6rem,1.6rem + 4.6vw,5rem);font-weight:300;letter-spacing:-.035em;line-height:1;max-width:13ch}
+.hero .lead{font-size:clamp(1.05rem,1rem + .35vw,1.25rem);color:var(--mist);max-width:56ch}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--line-dark);border-radius:999px;padding:6px 14px;font-size:.82rem;color:var(--sand-300)}
+
+/* Prioriteit-tabel */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--white)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:12px 16px;border-top:1px solid var(--line);vertical-align:middle}
+th{border-top:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);font-weight:500;background:var(--paper)}
+td .sw{display:inline-block;width:18px;height:18px;border-radius:5px;vertical-align:-4px;margin-right:8px;border:1px solid var(--line)}
+td.win{font-weight:500}
+.tag{display:inline-block;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--sand);background:var(--sand-100);color:#8A6430;font-weight:500}
+
+/* Kleur */
+.sw-card{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--white);display:flex;flex-direction:column;min-width:0}
+.sw-card .chip-c{height:132px;display:flex;align-items:flex-end;padding:14px;font-size:.78rem;font-weight:500}
+.sw-card .info{padding:14px 16px 16px;display:grid;gap:3px}
+.sw-card .info h3{font-size:1rem}
+.sw-card .info .mono{color:var(--ink-2)}
+.sw-card .info p{font-size:.86rem;color:var(--ink-2)}
+.ramp{display:flex;border-radius:16px;overflow:hidden;border:1px solid var(--line);height:96px}
+.ramp div{flex:1;display:flex;align-items:flex-end;padding:10px;font-family:var(--f-mono);font-size:.68rem}
+.ratio{display:flex;height:72px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.ratio div{display:flex;align-items:flex-end;padding:8px 10px;font-size:.75rem;font-weight:500}
+.cat{border-radius:18px;padding:22px;display:grid;gap:14px;border:1px solid var(--line);background:var(--white)}
+.cat .ic{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-weight:600}
+.cat h3{font-size:1.02rem}
+.cat p{font-size:.86rem;color:var(--ink-2)}
+.pair{border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:500}
+.pair span.mono{opacity:.8}
+
+/* Type */
+.type-row{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding-block:22px;border-top:1px solid var(--line)}
+.type-row:first-child{border-top:0}
+.type-row .lbl{display:grid;gap:2px}
+.type-row .lbl strong{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.type-row .lbl span{font-size:.8rem;color:var(--ink-2);font-family:var(--f-mono)}
+.type-row .smp{min-width:0;overflow-wrap:anywhere}
+@media (max-width:640px){.type-row{grid-template-columns:1fr;gap:8px}}
+.face{border-radius:22px;padding:32px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:280px}
+.face .big{font-size:clamp(5rem,4rem + 4vw,8rem);line-height:.9;font-weight:300}
+.weights{display:flex;flex-wrap:wrap;gap:18px;font-size:1.6rem}
+
+/* Radius */
+.rad{display:grid;gap:10px;justify-items:start}
+.rad .box{width:100%;height:120px;background:var(--paper);border:1.5px solid var(--navy-700)}
+.rad h3{font-size:1rem}
+.rad p{font-size:.84rem;color:var(--ink-2)}
+
+/* Schaduw */
+.elev{height:130px;border-radius:18px;background:var(--white);display:grid;place-items:center;font-size:.85rem;color:var(--ink-2)}
+
+/* Componenten */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:500;font-size:.98rem;white-space:nowrap;font-family:var(--f-sans);border:0;cursor:pointer;transition:filter .35s var(--ease),box-shadow .25s,background .25s,border-color .25s}
+.btn-sand{background:linear-gradient(120deg,var(--sand-300) 0%,var(--sand) 45%,var(--sand-strong) 100%);color:var(--navy-950)}
+.btn-sand:hover{filter:brightness(1.12) saturate(.92);box-shadow:0 10px 30px -10px rgba(203,162,102,.7)}
+.btn-navy{background:var(--navy-900);color:var(--white)}
+.btn-navy:hover{background:var(--navy-700)}
+.btn-ghost{border:1px solid rgba(255,255,255,.35);color:var(--white);background:transparent}
+.btn-ghost:hover{border-color:var(--white)}
+.btn-line{border:1px solid var(--line);color:var(--ink);background:var(--white)}
+.btn-line:hover{border-color:var(--ink)}
+.btn:focus-visible,.field:focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+.field{width:100%;font:inherit;color:var(--ink);background:var(--white);border:1px solid rgba(10,23,39,.16);border-radius:12px;padding:14px 16px}
+.field:focus{border-color:var(--sand-strong);box-shadow:0 0 0 4px rgba(203,162,102,.18);outline:none}
+.status{font-size:.92rem;padding:12px 14px;border-radius:12px}
+.comp-stage{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:28px;border-radius:18px}
+
+/* Logo-stage */
+.logo-wm{display:inline-flex;flex-direction:column;line-height:1;font-weight:500;letter-spacing:-.01em}
+.logo-wm i{display:block;height:2px;margin-top:6px;border-radius:2px;background:linear-gradient(90deg,var(--sand) 0%,var(--sand) 35%,rgba(203,162,102,0) 100%)}
+.lockup{display:flex;align-items:flex-start;gap:12px}
+.dont{position:relative}
+.dont .x{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:#FBEDEA;color:#8A2E1E;display:grid;place-items:center;font-weight:600;font-size:.9rem}
+.anim .bar{height:2px;width:100%;max-width:260px;border-radius:2px;background:var(--sand);transform-origin:left;animation:draw 2.6s var(--ease) infinite}
+@keyframes draw{0%{transform:scaleX(0)}40%,100%{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.anim .bar{animation:none}}
+
+.tov{display:grid;gap:10px;padding:24px;border-radius:18px}
+.tov h3{font-size:1.1rem}
+.tov p{font-size:.95rem}
+.list{display:grid;gap:10px;font-size:.95rem}
+.list li{padding-left:18px;position:relative;list-style:none}
+.list li::before{content:'';position:absolute;left:0;top:.7em;width:8px;height:2px;background:var(--sand)}
+ul.list{padding:0;margin:0}
+.dl{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.dl-l{font-size:.8rem;color:var(--ink-2);min-width:42px}
+.dl a{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--line);font-size:.8rem;font-weight:500;color:var(--ink);text-decoration:none;background:var(--white);transition:border-color .2s,background .2s}
+.dl a::before{content:"";width:10px;height:10px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 3v13M6 11l6 6 6-6M4 21h16'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 3v13M6 11l6 6 6-6M4 21h16'/%3E%3C/svg%3E") center/contain no-repeat}
+.dl a:hover{border-color:var(--sand);background:var(--sand-100)}
+.dl a:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
+footer{background:var(--navy-950);color:var(--mist);padding-block:40px;font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+</style>
+<style>
+.sizes{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));align-items:start}
+.sizes .tile .stage{display:flex;justify-content:center}
+.sizes .tile img{max-height:420px;width:auto!important;max-width:100%}
+.hero h1{max-width:16ch}
+</style>
+</head>
+<body>
+<header class="hero">
+  <svg class="sg" viewBox="0 0 1440 640" preserveAspectRatio="xMaxYMid slice" fill="none" aria-hidden="true">
+    <path d="M0 308 H1440" stroke="#CBA266" stroke-opacity=".35" stroke-width="1.5"/>
+    <g transform="translate(860 -40) scale(5.8)" stroke-width=".26">
+      <path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE" fill-opacity=".04" stroke="#F6F3EE" stroke-opacity=".2"/>
+      <path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#F6F3EE" stroke-opacity=".09"/>
+      <path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266" fill-opacity=".08" stroke="#CBA266" stroke-opacity=".75"/>
+      <path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".35"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <p class="eyebrow">Merk · supergraphic</p>
+    <h1>De dieptelijn, klaar voor gebruik.</h1>
+    <p class="lead">Het beeldmerk groot uitgesneden als lijntekening, met één sand lijn door de snede. Hier staan alle formaten en patronen om te downloaden als SVG (schaalbaar, voor web en drukwerk) of PNG (direct te plaatsen).</p>
+    <div class="meta"><span class="chip">Sand #CBA266</span><span class="chip">Paper #F6F3EE</span><span class="chip">Navy #0A1727</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Liggend 16:9</p>
+      <h2>Website, presentaties en banners</h2>
+      <p class="why">1920 × 1080 px. Gebruik de standaardversie voor paginakoppen en presentaties, de zachte versie achter prijzen of tekstblokken, en de transparante versie als laag over een eigen donker vlak of foto.</p>
+    </div>
+    <div class="grid g3"><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-supergraphic-16x9.svg" alt="Standaard" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Standaard</h3><p>Op navy. Paginakoppen, presentaties, banners.</p><div class="dl"><a href="supergraphic/fi-supergraphic-16x9.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-16x9.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-supergraphic-16x9-zacht.svg" alt="Zacht" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Zacht</h3><p>40% sterkte. Achter pakketten, footer en veel tekst.</p><div class="dl"><a href="supergraphic/fi-supergraphic-16x9-zacht.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-16x9-zacht.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:repeating-conic-gradient(#1A3352 0% 25%, #11233A 0% 50%) 50%/24px 24px"><img src="supergraphic/fi-supergraphic-16x9-transparant.svg" alt="Transparant" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Transparant</h3><p>Alleen de lijnen, zonder achtergrond. Leg hem op navy of een donkere foto.</p><div class="dl"><a href="supergraphic/fi-supergraphic-16x9-transparant.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-16x9-transparant.png" download>PNG</a></div></div></div></div>
+  </div>
+</section>
+
+<section class="paper">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Social media</p>
+      <h2>Posts en stories</h2>
+      <p class="why">De lijn ligt in elk formaat boven het midden. Zo blijft er onderin ruimte voor kop, tekst en logo, net als in de websitekop.</p>
+    </div>
+    <div class="sizes"><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-supergraphic-post-1x1.svg" alt="Post 1:1" style="display:block;width:100%;aspect-ratio:1/1;object-fit:contain"></div><div class="cap"><h3>Post 1:1</h3><p>1080 × 1080 px. Instagram- en LinkedIn-post.</p><div class="dl"><a href="supergraphic/fi-supergraphic-post-1x1.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-post-1x1.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-supergraphic-post-4x5.svg" alt="Post 4:5" style="display:block;width:100%;aspect-ratio:4/5;object-fit:contain"></div><div class="cap"><h3>Post 4:5</h3><p>1080 × 1350 px. Staande Instagram-post.</p><div class="dl"><a href="supergraphic/fi-supergraphic-post-4x5.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-post-4x5.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-supergraphic-story-9x16.svg" alt="Story 9:16" style="display:block;width:100%;aspect-ratio:9/16;object-fit:contain"></div><div class="cap"><h3>Story 9:16</h3><p>1080 × 1920 px. Stories en reels-cover.</p><div class="dl"><a href="supergraphic/fi-supergraphic-story-9x16.svg" download>SVG</a><a href="supergraphic/fi-supergraphic-story-9x16.png" download>PNG</a></div></div></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Patronen</p>
+      <h2>Voor rustige vlakken</h2>
+      <p class="why">Waar de grote supergraphic te druk is, of op een lichte ondergrond, gebruik je een van de patronen. Ze zijn naadloos, dus je kunt ze ook als herhalende achtergrond inzetten.</p>
+    </div>
+    <div class="grid g3"><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#F6F3EE"><img src="supergraphic/fi-patroon-licht.svg" alt="Herhaalpatroon licht" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Herhaalpatroon licht</h3><p>Secties op paper of wit. Enige variant voor lichte achtergronden.</p><div class="dl"><a href="supergraphic/fi-patroon-licht.svg" download>SVG</a><a href="supergraphic/fi-patroon-licht.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-patroon-donker.svg" alt="Herhaalpatroon donker" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Herhaalpatroon donker</h3><p>Footers en kaarten op navy-950.</p><div class="dl"><a href="supergraphic/fi-patroon-donker.svg" download>SVG</a><a href="supergraphic/fi-patroon-donker.png" download>PNG</a></div></div></div><div class="tile"><div class="stage" style="padding:0;min-height:0;background:#0A1727"><img src="supergraphic/fi-patroon-blokken.svg" alt="Gesplitste blokken" style="display:block;width:100%;aspect-ratio:16/9;object-fit:contain"></div><div class="cap"><h3>Gesplitste blokken</h3><p>Rustige variant voor banners en footers.</p><div class="dl"><a href="supergraphic/fi-patroon-blokken.svg" download>SVG</a><a href="supergraphic/fi-patroon-blokken.png" download>PNG</a></div></div></div></div>
+  </div>
+</section>
+
+<section class="navy">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Regels</p>
+      <h2>Zo zet je hem in</h2>
+    </div>
+    <div class="grid g2">
+      <ul class="list" style="color:#fff">
+        <li><b>Uitsnede:</b> het merk loopt rechts en boven van het vlak af.</li>
+        <li><b>Lijn:</b> sand 35%, over de volle breedte, precies door de snede van F en I.</li>
+        <li><b>Opbouw:</b> F-lijn 20% boven / 9% onder, I-lijn 75% / 35%. Vulling F 4%, I 8%.</li>
+      </ul>
+      <ul class="list" style="color:#fff">
+        <li><b>Tekst:</b> links of onderin, nooit over de I.</li>
+        <li><b>Ondergrond:</b> alleen navy. Op licht gebruik je het herhaalpatroon.</li>
+        <li><b>Niet:</b> draaien, inkleuren, verloop toevoegen of over de homepage-hero zetten.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Flying Images · Supergraphic · 13 oktober 2026</span><span>flyingimages.nl</span></div></footer>
+</body>
+</html>
