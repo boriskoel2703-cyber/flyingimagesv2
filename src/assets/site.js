@@ -230,8 +230,8 @@
   if (notice) {
     setTimeout(function () { notice.classList.add('is-open'); }, reduce ? 0 : 700);
     var closeNotice = function () { notice.classList.remove('is-open'); window.removeEventListener('scroll', onNoticeScroll); };
-    var startY = window.scrollY;
-    var onNoticeScroll = function () { if (Math.abs(window.scrollY - startY) > 40) closeNotice(); };
+    var maxY = window.scrollY; // alleen bij omhoog scrollen inklappen
+    var onNoticeScroll = function () { var y = window.scrollY; if (y > maxY) maxY = y; else if (maxY - y > 40) closeNotice(); };
     window.addEventListener('scroll', onNoticeScroll, { passive: true });
     notice.querySelector('.pn-close').addEventListener('click', closeNotice);
   }
