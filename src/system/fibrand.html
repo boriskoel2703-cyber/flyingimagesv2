@@ -36,6 +36,7 @@ section.navy{background:var(--navy-900);color:var(--white)}
 .navy .why{color:var(--mist)}
 .mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.03em}
 .grid{display:grid;gap:20px}
+.grid>.grid{align-content:start}
 .g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
@@ -144,6 +145,12 @@ td.win{font-weight:500}
 .list li{padding-left:18px;position:relative;list-style:none}
 .list li::before{content:'';position:absolute;left:0;top:.7em;width:8px;height:2px;background:var(--sand)}
 ul.list{padding:0;margin:0}
+.dl{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.dl-l{font-size:.8rem;color:var(--ink-2);min-width:42px}
+.dl a{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--line);font-size:.8rem;font-weight:500;color:var(--ink);text-decoration:none;background:var(--white);transition:border-color .2s,background .2s}
+.dl a::before{content:"";width:10px;height:10px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 3v13M6 11l6 6 6-6M4 21h16'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 3v13M6 11l6 6 6-6M4 21h16'/%3E%3C/svg%3E") center/contain no-repeat}
+.dl a:hover{border-color:var(--sand);background:var(--sand-100)}
+.dl a:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
 footer{background:var(--navy-950);color:var(--mist);padding-block:40px;font-size:.88rem}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
 </style>
@@ -212,18 +219,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
     <div class="grid g4">
       <div class="tile"><div class="stage">
         <svg viewBox="0 0 130 120" width="130" height="120" aria-label="Primair beeldmerk"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#2A3A55"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
-      </div><div class="cap"><h3>Primair</h3><p>Op wit en paper. Standaardversie.</p></div></div>
+      </div><div class="cap"><h3>Primair</h3><p>Op wit en paper. Standaardversie.</p><div class="dl"><a href="logos/fi-beeldmerk-primair.svg" download>SVG</a><a href="logos/fi-beeldmerk-primair.png" download>PNG</a></div></div></div>
       <div class="tile"><div class="stage on-navy">
         <svg viewBox="0 0 130 120" width="130" height="120" aria-label="Negatief beeldmerk"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
-      </div><div class="cap"><h3>Negatief</h3><p>Op navy. F in paper, onderkant in mist.</p></div></div>
+      </div><div class="cap"><h3>Negatief</h3><p>Op navy. F in paper, onderkant in mist.</p><div class="dl"><a href="logos/fi-beeldmerk-negatief.svg" download>SVG</a><a href="logos/fi-beeldmerk-negatief.png" download>PNG</a></div></div></div>
       <div class="tile"><div class="stage on-paper">
         <div style="width:120px;height:120px;border-radius:28px;background:#0A1727;display:grid;place-items:center">
           <svg viewBox="0 0 130 120" width="68" height="63" aria-label="App-icoon"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
         </div>
-      </div><div class="cap"><h3>App-icoon</h3><p>Favicon, socials, profielfoto. Radius 23% van de tegel.</p></div></div>
+      </div><div class="cap"><h3>App-icoon</h3><p>Favicon, socials, profielfoto. Radius 23% van de tegel.</p><div class="dl"><a href="logos/fi-app-icoon.svg" download>SVG</a><a href="logos/fi-app-icoon.png" download>PNG</a></div></div></div>
       <div class="tile"><div class="stage">
         <svg viewBox="-3 -3 136 126" width="136" height="126" aria-label="Outline-beeldmerk"><g fill="none" stroke-width="2.5" stroke-linejoin="round"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" stroke="#0A1727"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" stroke="#0A1727" stroke-opacity=".45"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" stroke="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" stroke="#CBA266" stroke-opacity=".55"/></g></svg>
-      </div><div class="cap"><h3>Outline</h3><p>Alleen groot (vanaf 64 px): posters, supergraphic.</p></div></div>
+      </div><div class="cap"><h3>Outline</h3><p>Alleen groot (vanaf 64 px): posters, supergraphic.</p><div class="dl"><a href="logos/fi-beeldmerk-outline.svg" download>SVG</a><a href="logos/fi-beeldmerk-outline.png" download>PNG</a></div></div></div>
     </div>
   </div>
 </section>
@@ -238,13 +245,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
     <div class="grid g3">
       <div class="tile"><div class="stage on-navy">
         <span class="logo-wm" style="font-size:2rem;color:#fff">Flying Images<i></i></span>
-      </div><div class="cap"><h3>Woordmerk</h3><p>Outfit 500 · tracking −0,01em · streep 2 px, sand 0–35%, dan fade.</p></div></div>
+      </div><div class="cap"><h3>Woordmerk</h3><p>Outfit 500 · tracking −0,01em · streep 2 px, sand 0–35%, dan fade.</p><div class="dl"><span class="dl-l">Wit</span><a href="logos/fi-woordmerk-wit.svg" download>SVG</a><a href="logos/fi-woordmerk-wit.png" download>PNG</a></div><div class="dl"><span class="dl-l">Navy</span><a href="logos/fi-woordmerk-navy.svg" download>SVG</a><a href="logos/fi-woordmerk-navy.png" download>PNG</a></div></div></div>
       <div class="tile"><div class="stage on-navy">
         <div class="lockup">
           <svg viewBox="0 0 130 120" width="49" height="45" aria-hidden="true"><path d="M0 4 Q0 0 4 0 H86 Q90 0 90 4 V24 Q90 28 86 28 H30 V50 H66 Q70 50 70 54 V58 H0 Z" fill="#F6F3EE"/><path d="M0 62 H70 V72 Q70 76 66 76 H30 V116 Q30 120 26 120 H4 Q0 120 0 116 Z" fill="#A8B6C8"/><path d="M100 4 Q100 0 104 0 H126 Q130 0 130 4 V58 H100 Z" fill="#CBA266"/><path d="M100 62 H130 V116 Q130 120 126 120 H104 Q100 120 100 116 Z" fill="#A58A66"/></svg>
           <span class="logo-wm" style="font-size:2rem;color:#fff">Flying Images<i></i></span>
         </div>
-      </div><div class="cap"><h3>Horizontale lockup</h3><p>Header en e-mail. Header-PNG wacht nog op jouw akkoord.</p></div></div>
+      </div><div class="cap"><h3>Horizontale lockup</h3><p>Header en e-mail. Header-PNG wacht nog op jouw akkoord.</p><div class="dl"><span class="dl-l">Wit</span><a href="logos/fi-lockup-wit.svg" download>SVG</a><a href="logos/fi-lockup-wit.png" download>PNG</a></div><div class="dl"><span class="dl-l">Navy</span><a href="logos/fi-lockup-navy.svg" download>SVG</a><a href="logos/fi-lockup-navy.png" download>PNG</a></div></div></div>
       <div class="tile"><div class="stage">
         <svg viewBox="-20 -14 170 150" width="230" height="200" aria-label="Constructie van het beeldmerk" font-family="IBM Plex Mono, monospace" font-size="5.5">
           <g stroke="#A8B6C8" stroke-width=".3">
