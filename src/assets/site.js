@@ -223,28 +223,6 @@
     window.addEventListener('resize', updRoute);
   }
 
-  /* Garantie-logo (homepage): animatie speelt mee met scrollen */
-  var fi3d = document.querySelector('.fi3d');
-  if (fi3d && !reduce) {
-    fi3d.classList.add('scrub');
-    var fiTick = false;
-    var updFi = function () {
-      fiTick = false;
-      var b = fi3d.getBoundingClientRect(), vh = window.innerHeight;
-      // 0 = komt onderin beeld, 0.5 = midden (laptop open), 1 = verlaat bovenin beeld
-      var p = Math.max(0, Math.min(1, (vh - b.top) / (vh + b.height)));
-      // Scrollpositie → animatiestand: open rond het midden, daarna snel dicht en dicht blijven
-      var pts = [[0, 0], [0.38, 0.4], [0.53, 0.65], [0.75, 0.9], [1, 1]], t = 1;
-      for (var k = 1; k < pts.length; k++) {
-        if (p <= pts[k][0]) { var a = pts[k - 1], c = pts[k]; t = a[1] + (p - a[0]) / (c[0] - a[0]) * (c[1] - a[1]); break; }
-      }
-      fi3d.style.setProperty('--fp', t.toFixed(4));
-    };
-    updFi();
-    window.addEventListener('scroll', function () { if (!fiTick) { fiTick = true; requestAnimationFrame(updFi); } }, { passive: true });
-    window.addEventListener('resize', updFi);
-  }
-
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 })();

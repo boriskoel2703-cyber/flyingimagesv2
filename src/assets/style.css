@@ -500,19 +500,16 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* 3D FI-logo (garantie homepage): plat logo → klapt open tot laptop → terug */
 .fi3d { justify-self: end; scale: .78; transform-origin: right center; perspective: 1400px; width: 300px; height: 277px; max-width: 100%; display: grid; place-items: center;
   --f-top: var(--navy-900); --f-bot: #2A3A55; --i-top: var(--sand); --i-bot: #A58A66; }
-.fi3d-logo { position: relative; width: 300px; height: 277px; transform-style: preserve-3d; animation: fi-scene 6s cubic-bezier(.65,0,.35,1) infinite; }
+.fi3d-logo { position: relative; width: 300px; height: 277px; transform-style: preserve-3d; animation: fi-spin 9s linear infinite; }
 .fi3d .half { position: absolute; left: 0; width: 300px; height: 134px; transform-style: preserve-3d; }
-.fi3d .top { top: 0; transform-origin: 50% 100%; animation: fi-screen 6s cubic-bezier(.65,0,.35,1) infinite; }
-.fi3d .bot { top: 143px; transform-origin: 50% 0; animation: fi-fold 6s cubic-bezier(.65,0,.35,1) infinite; }
+.fi3d .top { top: 0; transform-origin: 50% 100%; }
+.fi3d .bot { top: 143px; transform-origin: 50% 0; }
 .fi3d .half svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .fi3d .half svg.layer { filter: brightness(.72); }
 .fi3d .f-top { fill: var(--f-top); } .fi3d .f-bot { fill: var(--f-bot); }
 .fi3d .i-top { fill: var(--i-top); } .fi3d .i-bot { fill: var(--i-bot); }
-@keyframes fi-scene { 0%, 15% { transform: rotateX(0) rotateY(0) scale(1); } 40%, 65% { transform: translateY(-30px) rotateX(-24deg) rotateY(32deg) scale(.92); } 90%, 100% { transform: rotateX(0) rotateY(0) scale(1); } }
-@keyframes fi-fold { 0%, 15% { transform: rotateX(0); } 40%, 65% { transform: rotateX(84deg); } 90%, 100% { transform: rotateX(0); } }
-@keyframes fi-screen { 0%, 15% { transform: rotateX(0); } 40%, 65% { transform: rotateX(-6deg); } 90%, 100% { transform: rotateX(0); } }
-/* Scroll-gestuurd: JS zet --fp (0–1) op .fi3d; de keyframes staan op pauze en volgen de scrollpositie */
-.fi3d.scrub .fi3d-logo, .fi3d.scrub .top, .fi3d.scrub .bot { animation-play-state: paused; animation-delay: calc(var(--fp, 0) * -5.99s); }
+/* Garantie-logo draait rustig rondjes om zijn eigen as */
+@keyframes fi-spin { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
 @media (max-width: 800px) { .fi3d { justify-self: start; scale: .58; transform-origin: left top; margin: 10px 0 -110px; } }
 
 /* Doorlopend slot: CTA + footer in één vlak, gloed en supergraphic over de naad heen */
