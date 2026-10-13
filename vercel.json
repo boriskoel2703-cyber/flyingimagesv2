@@ -28,6 +28,11 @@
       "source": "/diensten/website-laten-maken",
       "destination": "/diensten/onepage-website",
       "permanent": true
+    },
+    {
+      "source": "/over-mij",
+      "destination": "/over-ons",
+      "permanent": true
     }
   ]
 }
