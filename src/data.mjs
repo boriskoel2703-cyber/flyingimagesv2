@@ -279,7 +279,10 @@ export const tijdelijkePrijs = '€1975';
 // false = de hele site toont 'Prijs op aanvraag' i.p.v. bedragen (ook in Google-omschrijvingen en structured data).
 // Aanzetten kan zonder deploy in /system → Prijzen → 'Prijzen op de website'. Zet dit later ook hier op true,
 // dan krijgen ook de Google-omschrijvingen de prijzen.
-export const prijzenZichtbaar = false;
+export const prijzenZichtbaar = true;
+
+// Melding die bij elke pagina rechtsboven onder de header uitklapt (alleen als de prijzen zichtbaar zijn). Leeg = geen melding.
+export const prijsMelding = 'In verband met de vernieuwing van ons aanbod zijn de getoonde prijzen tijdelijk en niet bindend. Je ontvangt altijd vooraf een persoonlijk voorstel met een vaste prijs.';
 
 // Normale prijzen (vóór de tijdelijke prijs). /system gebruikt deze als standaardwaarden.
 export const basisPrijzen = {

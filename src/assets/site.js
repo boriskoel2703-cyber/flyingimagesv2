@@ -225,4 +225,10 @@
 
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
+  /* Prijsmelding: bij elke pagina openen, sluiten met het kruisje */
+  var notice = document.getElementById('priceNotice');
+  if (notice) {
+    setTimeout(function () { notice.classList.add('is-open'); }, reduce ? 0 : 700);
+    notice.querySelector('.pn-close').addEventListener('click', function () { notice.classList.remove('is-open'); });
+  }
 })();

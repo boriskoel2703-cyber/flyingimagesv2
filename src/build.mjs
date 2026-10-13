@@ -4,7 +4,7 @@
 import { mkdirSync, writeFileSync, cpSync, rmSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, categories, services, stepSets, packages, basisPrijzen, prijzenZichtbaar } from './data.mjs';
+import { site, categories, services, stepSets, packages, basisPrijzen, prijzenZichtbaar, prijsMelding } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MODE = process.argv[2] === 'preview' ? 'preview' : 'vercel';
@@ -132,6 +132,11 @@ function header(u, current, overlay) {
     </div>
   </div>
 </header>
+${prijsMelding ? `<div class="price-notice" id="priceNotice" role="status" aria-live="polite">
+  <span class="pn-icon" aria-hidden="true">i</span>
+  <p><strong>Tijdelijke prijzen</strong>${prijsMelding}</p>
+  <button class="pn-close" type="button" aria-label="Melding sluiten">&times;</button>
+</div>` : ''}
 <div class="drawer" id="drawer">
   <a class="d-link" href="${u('index')}">Home</a>
   <button class="d-link" type="button" data-acc aria-expanded="false" aria-controls="d-diensten">Diensten ${I.chev}</button>
@@ -249,7 +254,7 @@ function doc({ path, title, desc, body, overlay = false, jsonld = '' }) {
   const ci = main.lastIndexOf('<section class="section deep on-dark cta-band">');
   if (ci !== -1 && main.slice(ci).trim().endsWith('</section>')) { cta = main.slice(ci); main = main.slice(0, ci); }
   const html = `<!doctype html>
-<html lang="nl">
+<html lang="nl" data-prijzen="${PV ? 'aan' : 'uit'}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

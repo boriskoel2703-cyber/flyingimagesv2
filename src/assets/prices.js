@@ -23,9 +23,10 @@
   var OA = { card: 'prijs<strong>op aanvraag</strong>', chip: 'prijs <strong>op aanvraag</strong>', mini: 'prijs<b>op aanvraag</b>', cat: 'prijs <strong>op aanvraag</strong>',
     aside: '<div class="amount">Op aanvraag</div><p class="note">Je krijgt vooraf een helder voorstel met vaste prijs.</p>', pkg: '<div class="amount">Op aanvraag</div><div class="unit">voorstel op maat</div>' };
   function texts(on) { document.querySelectorAll('[data-pt-on]').forEach(function (el) { el.textContent = el.getAttribute(on ? 'data-pt-on' : 'data-pt-off'); }); }
-  function hide() { document.querySelectorAll('[data-p]').forEach(function (el) { var k = OA[el.getAttribute('data-p')]; if (k) el.innerHTML = k; }); texts(false); }
+  function hide() { document.documentElement.setAttribute('data-prijzen', 'uit'); document.querySelectorAll('[data-p]').forEach(function (el) { var k = OA[el.getAttribute('data-p')]; if (k) el.innerHTML = k; }); texts(false); }
 
   function apply(e) {
+    document.documentElement.setAttribute('data-prijzen', 'aan');
     texts(true);
     document.querySelectorAll('[data-p]').forEach(function (el) {
       var kind = el.getAttribute('data-p'), p = e.services[el.getAttribute('data-slug')];
