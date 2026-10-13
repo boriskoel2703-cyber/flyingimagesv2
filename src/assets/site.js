@@ -229,6 +229,10 @@
   var notice = document.getElementById('priceNotice');
   if (notice) {
     setTimeout(function () { notice.classList.add('is-open'); }, reduce ? 0 : 700);
-    notice.querySelector('.pn-close').addEventListener('click', function () { notice.classList.remove('is-open'); });
+    var closeNotice = function () { notice.classList.remove('is-open'); window.removeEventListener('scroll', onNoticeScroll); };
+    var startY = window.scrollY;
+    var onNoticeScroll = function () { if (Math.abs(window.scrollY - startY) > 40) closeNotice(); };
+    window.addEventListener('scroll', onNoticeScroll, { passive: true });
+    notice.querySelector('.pn-close').addEventListener('click', closeNotice);
   }
 })();
