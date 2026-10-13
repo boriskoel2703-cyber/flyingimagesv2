@@ -25,7 +25,7 @@ const steps = {
     ['Vrijblijvend gesprek', 'We horen wat je wilt bereiken en geven direct eerlijk advies.'],
     ['Plan & vaste prijs', 'Je krijgt een helder voorstel. Geen kleine lettertjes.'],
     ['Uitvoeren', 'Wij gaan aan de slag en houden je op de hoogte.'],
-    ['Oplevering', 'Pas als jij tevreden bent, betaal je.'],
+    ['Oplevering', 'Je betaalt na de eerste oplevering, daarna volgt nog één revisieronde.'],
   ],
   monthly: [
     ['Kennismaking', 'We bekijken waar je nu staat en wat je wilt bereiken.'],

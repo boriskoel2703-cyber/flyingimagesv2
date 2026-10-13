@@ -528,7 +528,7 @@ function werkwijze() {
     ['Vrijblijvend gesprek', 'We praten over jouw bedrijf, jouw doelen en wat je nodig hebt. Geen verplichtingen, geen factuur. Gewoon een eerlijk gesprek, met direct advies.', 'Helder advies en een eerste richting'],
     ['Plan & vaste prijs', 'We werken een richting uit: huisstijl, uitstraling, aanpak en een vaste prijs. Zo weten we allebei waar we naartoe werken voordat er iets gebouwd wordt.', 'Een voorstel met vaste prijs'],
     ['Bouwen & uitvoeren', 'Wij gaan aan de slag. Jij houdt de controle en wij houden je op de hoogte. Geen verrassingen, geen stilte.', 'Tussentijdse previews om op te reageren'],
-    ['Oplevering & goedkeuring', 'Alleen als jij 100% tevreden bent, betaal je. Niet goed? Dan betaal je niets. Daarna blijven we beschikbaar voor onderhoud, updates en hosting.', 'Live, en pas dan de factuur'],
+    ['Oplevering, betaling & revisie', 'Na de eerste oplevering keur jij het werk goed en betaal je de factuur. Daarna heb je nog recht op één revisieronde om de puntjes op de i te zetten. Ook daarna blijven we beschikbaar voor onderhoud, updates en hosting.', 'Factuur na eerste oplevering, plus één revisieronde'],
   ];
   const promises = [
     [I.chat, 'Eén aanspreekpunt', 'Je praat met de mensen die het werk doen. Geen accountmanagers, geen doorverbinden.'],
@@ -584,6 +584,7 @@ ${pageHero(u, a, { eyebrow: 'Werkwijze', title: 'Van gesprek tot lancering.', le
     <div class="reveal">${faqBlock([
       ['Wat kost het eerste gesprek?', 'Niets. Het eerste gesprek is altijd gratis en vrijblijvend.'],
       ['Wat als ik niet tevreden ben?', 'Dan betaal je niet. We passen het aan tot het klopt, en als het echt niet past, krijg je geen factuur.'],
+      ['Wanneer betaal ik en hoeveel revisies krijg ik?', 'Je betaalt na de eerste oplevering, zodra je het werk goedkeurt. Daarna heb je nog recht op één revisieronde. Extra aanpassingen daarna doen we als meerwerk, altijd in overleg.'],
       ['Werken jullie alleen in Zeewolde?', 'We zitten in Zeewolde en komen graag langs in de regio, maar we werken voor ondernemers in heel Nederland.'],
       ['Kan ik meerdere diensten combineren?', 'Juist. Veel klanten starten met een website en breiden later uit met vindbaarheid, Ai of dronebeelden. Alles via hetzelfde aanspreekpunt.'],
     ])}</div>
