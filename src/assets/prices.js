@@ -15,7 +15,7 @@
       sv[s.slug] = p;
     });
     b.categories.forEach(function (c) { cats[c.id] = t || ((cfg.categories || {})[c.id]) || c.from; });
-    b.packages.forEach(function (p) { pk.push(t && p.price.charAt(0) === '€' ? { price: t, unit: 'eenmalig' } : p); });
+    b.packages.forEach(function (p) { pk.push(p); }); // pakketprijzen = som diensten - €100, niet overschreven door de tijdelijke prijs
     return { services: sv, categories: cats, packages: pk };
   }
   var unitText = function (p) { return esc(p.unit) + (p.monthly ? ' + ' + esc(p.monthly) + '/mnd' : ''); };

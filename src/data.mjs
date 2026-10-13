@@ -239,22 +239,27 @@ export const services = [
 
 export const stepSets = steps;
 
+// Pakketprijs = som van de normale 'vanaf'-prijzen van de diensten in het pakket, min €100 pakketkorting.
+const PAKKET_KORTING = 100;
+const num = (v) => Number(String(v).replace(/[^0-9]/g, '')) || 0;
+const pakketPrijs = (list) => '€' + (list.reduce((t, [slug]) => t + num(services.find((x) => x.slug === slug).price.from), 0) - PAKKET_KORTING);
+
 export const packages = [
   // Elk pakket bundelt 3 of 4 diensten (slug uit `services` + korte toelichting wat er in het pakket zit).
-  { label: 'Pakket 1', name: 'Starter', price: '€200', unit: 'eenmalig + €30/mnd', intro: 'Snel en goed online, en meteen vindbaar.',
+  { label: 'Pakket 1', name: 'Starter', unit: 'eenmalig, excl. maandkosten', intro: 'Snel en goed online, en meteen vindbaar.',
     services: [
       ['onepage-website', 'Eén sterke pagina, responsive met contactformulier'],
       ['zoekmachine-optimalisatie', 'Basis SEO: titels, teksten en techniek op orde'],
       ['llm-vindbaarheid', 'Zo vinden ChatGPT en Google Ai je ook'],
     ] },
-  { label: 'Pakket 2', name: 'Groei', price: '€400', unit: 'eenmalig + €20/mnd', featured: true, intro: 'Een complete website die klanten binnenhaalt.',
+  { label: 'Pakket 2', name: 'Groei', unit: 'eenmalig, excl. maandkosten', featured: true, intro: 'Een complete website die klanten binnenhaalt.',
     services: [
       ['maatwerk-website', "Tot 8 pagina's, volledig op maat ontworpen"],
       ['zoekmachine-optimalisatie', 'SEO per pagina, gericht op jouw regio'],
       ['google-ads', 'Opzet van je eerste campagne'],
       ['drone-fotografie-video', "Eén opname met drone foto's voor je site"],
     ] },
-  { label: 'Pakket 3', name: 'Compleet', price: 'Op maat', unit: 'afhankelijk van je keuzes', intro: 'Merk, website en marketing uit één hand.',
+  { label: 'Pakket 3', name: 'Compleet', unit: 'eenmalig, excl. maandkosten', intro: 'Merk, website en marketing uit één hand.',
     services: [
       ['rebranding', 'Nieuwe huisstijl met brandbook'],
       ['webshop-laten-maken', 'Website of webshop op basis van je nieuwe merk'],
@@ -262,6 +267,7 @@ export const packages = [
       ['ai-oplossingen', 'Slimme automatisering die je tijd bespaart'],
     ] },
 ];
+for (const p of packages) p.price = pakketPrijs(p.services);
 
 // TIJDELIJKE PRIJS
 // Zolang hier een bedrag staat, toont de hele site overal "vanaf <bedrag>" (diensten, categorieën, pakketten).
@@ -283,8 +289,5 @@ if (tijdelijkePrijs) {
     s.price = { ...s.price, from: tijdelijkePrijs };
     delete s.price.monthly;
     if (s.price.note && s.price.note.includes('€')) delete s.price.note;
-  }
-  for (const p of packages) {
-    if (p.price.startsWith('€')) { p.price = tijdelijkePrijs; p.unit = 'eenmalig'; }
   }
 }
