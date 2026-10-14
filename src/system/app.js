@@ -1,4 +1,6 @@
 import * as C from "./intake-core.js";
+import { LEER, LEER_CATS, LEER_FIELDS } from "./leer-data.js";
+import { illustration, heroPattern } from "./leer-ill.js";
 
 /* ================= basis ================= */
 const API = "/api/system";
@@ -89,8 +91,189 @@ const mq = matchMedia("(max-width:900px)");
 $("#burger").onclick = () => document.body.classList.toggle(mq.matches ? "open" : "collapsed");
 $("#overlay").onclick = () => document.body.classList.remove("open");
 
+/* ================= Leeromgeving ================= */
+let LR = { slug: null, edit: false, dirty: false };
+const LR_CHECK = {}; // afvinken tijdens een gesprek, alleen in deze sessie
+
+function leerItem(slug) {
+  const base = LEER.find((x) => x.slug === slug);
+  if (!base) return null;
+  return { ...base, ...(CFG.leer?.[slug] || {}) };
+}
+const lrCat = (id) => LEER_CATS.find((c) => c.id === id) || LEER_CATS[0];
+const lrParas = (t) => String(t || "").split(/\n{2,}/).map((p) => `<p>${esc(p.trim())}</p>`).join("");
+
+function leerOverzicht() {
+  const groups = LEER_CATS.map((cat) => {
+    const items = LEER.filter((x) => x.cat === cat.id).map((x) => leerItem(x.slug));
+    return `<section class="lr-group" data-lr-group>
+      <div class="lr-group__h"><span class="lr-ic lr-ic--${cat.id}">${cat.letter}</span><h2>${esc(cat.name)}</h2><span class="lr-mono">${items.length} ${items.length === 1 ? "dienst" : "diensten"}</span></div>
+      <div class="lr-cards">${items.map((x) => `
+        <a class="lr-card" href="#leer/${x.slug}" data-lr-search="${esc((x.name + " " + x.kort + " " + cat.name).toLowerCase())}">
+          <div class="lr-card__ill">${illustration(x.ill, x.name)}</div>
+          <div class="lr-card__b"><h3>${esc(x.name)}</h3><p>${esc(x.kort)}</p>
+          <span class="lr-mono">${x.aanpak.length} stappen · ${x.belangrijk.length} checkpunten</span></div>
+        </a>`).join("")}</div>
+    </section>`;
+  }).join("");
+  return `<div class="lr">
+    <header class="lr-hero">
+      ${heroPattern()}
+      <div class="lr-hero__t">
+        <div class="lr-eyebrow">Leeromgeving · intern</div>
+        <h1>Hoe pakken we het aan?</h1>
+        <p>Per dienst: wat het is, wanneer een klant het nodig heeft, wat je moet checken en hoe we het aanpakken. Open hem vóór elk eerste gesprek.</p>
+        <label class="lr-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="lrSearch" type="search" placeholder="Zoek een dienst, bijv. webshop of drone" autocomplete="off"></label>
+      </div>
+    </header>
+    ${groups}
+    <p class="lr-none" id="lrNone" hidden>Geen dienst gevonden.</p>
+  </div>`;
+}
+
+function leerDetail(slug) {
+  const x = leerItem(slug);
+  if (!x) return `<div class="lr"><a class="lr-back" href="#leer">← Leeromgeving</a><div class="lr-panel">Deze dienst bestaat niet.</div></div>`;
+  LR.slug = slug;
+  const cat = lrCat(x.cat);
+  $("#crumb").innerHTML = `System / Leeromgeving / <b>${esc(x.name)}</b>`;
+  const edited = !!CFG.leer?.[slug];
+  const head = `
+    <a class="lr-back" href="#leer">← Leeromgeving</a>
+    <header class="lr-dhead">
+      <div class="lr-dhead__t">
+        <div class="lr-eyebrow"><span class="lr-ic lr-ic--${cat.id} sm">${cat.letter}</span>${esc(cat.name)}</div>
+        <h1>${esc(x.name)}</h1>
+        <p class="lr-lead">${esc(x.kort)}</p>
+        <div class="lr-acts">
+          ${LR.edit
+            ? `<button class="lr-btn" data-lr="save">Opslaan</button><button class="lr-btn ghost" data-lr="cancel">Annuleren</button>${edited ? `<button class="lr-btn ghost" data-lr="reset">Standaardtekst terugzetten</button>` : ""}`
+            : `<button class="lr-btn ghost" data-lr="edit">Bewerken</button><button class="lr-btn ghost" data-lr="copy">Gespreksvragen kopiëren</button>`}
+          ${edited && !LR.edit ? `<span class="lr-mono">Aangepast in System</span>` : ""}
+        </div>
+      </div>
+      <div class="lr-dhead__ill">${illustration(x.ill, x.name)}</div>
+    </header>`;
+  if (LR.edit) return `<div class="lr">${head}${leerEditor(x)}</div>`;
+
+  const nav = [["wat", "Wat is het"], ["signalen", "Signalen"], ["belangrijk", "Checklist"], ["vragen", "Gespreksvragen"], ["aanpak", "Aanpak"], ["valkuilen", "Valkuilen"]];
+  const checks = LR_CHECK[slug] || (LR_CHECK[slug] = new Set());
+  return `<div class="lr">${head}
+    <nav class="lr-toc">${nav.map(([id, t], i) => `<a href="#leer/${slug}" data-lr-jump="lr-${id}"><span>${String(i + 1).padStart(2, "0")}</span>${t}</a>`).join("")}</nav>
+    <div class="lr-doc">
+      <div class="lr-main">
+        <section class="lr-sec" id="lr-wat"><div class="lr-sec__h"><span>01</span><h2>Wat is het</h2></div><div class="lr-prose">${lrParas(x.wat)}</div></section>
+
+        <section class="lr-sec" id="lr-signalen"><div class="lr-sec__h"><span>02</span><h2>Wanneer heeft een klant dit nodig</h2></div>
+          <div class="lr-signals">${x.signalen.map((s) => `<div class="lr-signal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg><p>${esc(s)}</p></div>`).join("")}</div></section>
+
+        <section class="lr-sec" id="lr-belangrijk"><div class="lr-sec__h"><span>03</span><h2>Wat is belangrijk</h2><span class="lr-mono lr-sec__r" id="lrCheckCount">${checks.size}/${x.belangrijk.length} gecheckt</span></div>
+          <p class="lr-note">Vink af tijdens of na het gesprek. Dit wordt niet opgeslagen.</p>
+          <ul class="lr-checks">${x.belangrijk.map((s, i) => `<li><label><input type="checkbox" data-lr-check="${i}" ${checks.has(i) ? "checked" : ""}><span class="lr-box"></span><span>${esc(s)}</span></label></li>`).join("")}</ul></section>
+
+        <section class="lr-sec" id="lr-vragen"><div class="lr-sec__h"><span>04</span><h2>Vragen voor het eerste gesprek</h2></div>
+          <ol class="lr-qs">${x.vragen.map((q) => `<li>${esc(q)}</li>`).join("")}</ol></section>
+
+        <section class="lr-sec" id="lr-aanpak"><div class="lr-sec__h"><span>05</span><h2>Aanpak</h2><span class="lr-mono lr-sec__r">${x.aanpak.length} stappen</span></div>
+          <ol class="lr-route">${x.aanpak.map(([t, d], i) => `<li><span class="lr-stop">${i + 1}</span><div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join("")}</ol></section>
+
+        <section class="lr-sec" id="lr-valkuilen"><div class="lr-sec__h"><span>06</span><h2>Valkuilen</h2></div>
+          <div class="lr-traps">${x.valkuilen.map((s) => `<div class="lr-trap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.2v.1"/></svg><p>${esc(s)}</p></div>`).join("")}</div></section>
+      </div>
+      <aside class="lr-aside">
+        <div class="lr-panel"><div class="lr-mono">Wat de klant krijgt</div><ul class="lr-deliv">${x.oplevering.map((s) => `<li>${esc(s)}</li>`).join("")}</ul></div>
+        <div class="lr-panel"><div class="lr-mono">Werkwijze Flying Images</div><p>Klant betaalt na de eerste oplevering. Daarna volgt nog één revisieronde.</p></div>
+        <div class="lr-panel"><div class="lr-mono">Past goed bij</div>${x.combi.map((c) => leerItem(c)).filter(Boolean).map((c) => `<a class="lr-combi" href="#leer/${c.slug}"><span class="lr-ic lr-ic--${c.cat} sm">${lrCat(c.cat).letter}</span>${esc(c.name)}<i>→</i></a>`).join("")}</div>
+      </aside>
+    </div>
+  </div>`;
+}
+
+const lrToText = (type, v) => type === "list" ? (v || []).join("\n") : type === "steps" ? (v || []).map(([t, d]) => `${t} | ${d}`).join("\n") : v || "";
+const lrFromText = (type, t) => {
+  if (type === "text") return t.trim();
+  const lines = t.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (type === "list") return lines.map((l) => l.replace(/^[-•*]\s*/, ""));
+  return lines.map((l) => { const [a, ...b] = l.split("|"); return [a.trim(), b.join("|").trim()]; });
+};
+
+function leerEditor(x) {
+  const hint = { text: "Lege regel = nieuwe alinea.", list: "Eén punt per regel.", steps: "Eén stap per regel: Titel | uitleg" };
+  return `<div class="lr-edit">
+    <p class="lr-note">Wijzigingen gelden alleen voor de Leeromgeving en worden opgeslagen in System. De dienstpagina op de website verandert niet.</p>
+    ${LEER_FIELDS.map(([k, label, type]) => `
+      <label class="lr-field"><span class="lr-mono">${esc(label)}</span>
+        <textarea data-lr-field="${k}" data-type="${type}" rows="${type === "text" ? (k === "kort" ? 2 : 7) : Math.max(4, (x[k] || []).length + 1)}">${esc(lrToText(type, x[k]))}</textarea>
+        <small>${hint[type]}</small></label>`).join("")}
+  </div>`;
+}
+
+async function leerAction(btn) {
+  const act = btn.dataset.lr, slug = LR.slug;
+  if (act === "edit") { LR.edit = true; return render(); }
+  if (act === "cancel") {
+    if (LR.dirty && !(await ask("Je wijzigingen gaan verloren. Weet je het zeker?", "Weggooien"))) return;
+    LR.edit = false; LR.dirty = false; return render();
+  }
+  if (act === "copy") {
+    const x = leerItem(slug);
+    const txt = `${x.name}: vragen voor het eerste gesprek\n\n` + x.vragen.map((q, i) => `${i + 1}. ${q}`).join("\n");
+    try { await navigator.clipboard.writeText(txt); btn.textContent = "✓ Gekopieerd"; } catch { btn.textContent = "Kopiëren lukte niet"; }
+    return setTimeout(() => (btn.textContent = "Gespreksvragen kopiëren"), 1800);
+  }
+  if (act === "save" || act === "reset") {
+    if (act === "reset" && !(await ask("De standaardtekst voor deze dienst terugzetten? Je eigen aanpassingen worden verwijderd.", "Terugzetten"))) return;
+    const next = clone(CFG);
+    next.leer = { ...(next.leer || {}) };
+    if (act === "reset") delete next.leer[slug];
+    else {
+      const o = {};
+      content.querySelectorAll("[data-lr-field]").forEach((el) => { o[el.dataset.lrField] = lrFromText(el.dataset.type, el.value); });
+      if (!o.kort || !o.aanpak?.length) { alert("Vul minstens 'In één zin' en één stap bij 'Aanpak' in."); return; }
+      next.leer[slug] = o;
+    }
+    btn.disabled = true; btn.textContent = "Opslaan…";
+    try {
+      await api("saveConfig", { config: next });
+      CFG = next; C.applyConfig(CFG);
+      LR.edit = false; LR.dirty = false;
+      render(); savedLabel("✓ Opgeslagen");
+    } catch (err) { alert("Opslaan mislukt: " + err.message); btn.disabled = false; btn.textContent = act === "save" ? "Opslaan" : "Standaardtekst terugzetten"; }
+  }
+}
+
+content.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-lr]");
+  if (b) { e.preventDefault(); return leerAction(b); }
+  const j = e.target.closest("[data-lr-jump]");
+  if (j) { e.preventDefault(); document.getElementById(j.dataset.lrJump)?.scrollIntoView({ behavior: "smooth", block: "start" }); }
+});
+content.addEventListener("input", (e) => {
+  if (e.target.id === "lrSearch") {
+    const q = e.target.value.trim().toLowerCase();
+    let any = false;
+    content.querySelectorAll("[data-lr-group]").forEach((g) => {
+      let n = 0;
+      g.querySelectorAll("[data-lr-search]").forEach((c) => { const hit = !q || c.dataset.lrSearch.includes(q); c.hidden = !hit; n += hit; });
+      g.hidden = !n; any ||= !!n;
+    });
+    $("#lrNone").hidden = any;
+  }
+  if (e.target.dataset.lrField) LR.dirty = true;
+});
+content.addEventListener("change", (e) => {
+  const i = e.target.dataset?.lrCheck;
+  if (i === undefined || !LR.slug) return;
+  const set = LR_CHECK[LR.slug] || (LR_CHECK[LR.slug] = new Set());
+  e.target.checked ? set.add(+i) : set.delete(+i);
+  const el = $("#lrCheckCount");
+  if (el) el.textContent = `${set.size}/${leerItem(LR.slug).belangrijk.length} gecheckt`;
+});
+addEventListener("beforeunload", (e) => { if (LR.edit && LR.dirty) { e.preventDefault(); e.returnValue = ""; } });
+
 /* ================= router ================= */
-const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen", hero: "Hero-afbeelding", fibrand: "FIBrand", supergraphic: "Supergraphic" };
+const TITLES = { intakes: "Lopende intakes", afgerond: "Afgeronde projecten", nieuw: "Nieuwe intake", intake: "Intake", vragenlijsten: "Vragenlijsten", workflows: "Workflows", "workflow-be": "Workflow BE", "vragenlijst-be": "Vragenlijst BE", prijzen: "Prijzen", hero: "Hero-afbeelding", fibrand: "FIBrand", supergraphic: "Supergraphic", leer: "Leeromgeving" };
 const NAVSEC = { nieuw: "intakes", intake: "intakes" };
 let ROUTE_SEQ = 0;
 
@@ -104,6 +287,8 @@ async function render() {
   savedLabel("");
   if (sec !== "prijzen") PR = null;
   if (sec !== "hero") HERO = null;
+  if (sec !== "leer" || LR.slug !== arg) LR = { slug: null, edit: false, dirty: false };
+  document.body.classList.toggle("leer", sec === "leer");
   document.body.classList.remove("open");
   content.innerHTML = `<p class="lead"><span class="spin"></span></p>`;
   try {
@@ -129,6 +314,7 @@ function merkPagina(file, intro) {
 
 const PAGES = {
   async fibrand() { return merkPagina("fibrand", "Brandbook-bron van Flying Images: logo, kleuren, typografie, radius en toon."); },
+  async leer(slug) { return slug ? leerDetail(slug) : leerOverzicht(); },
   async supergraphic() { return merkPagina("supergraphic", "Supergraphic en patronen in alle formaten, te downloaden als SVG en PNG."); },
   async intakes() { return intakeList("lopend"); },
   async afgerond() { return intakeList("afgerond"); },

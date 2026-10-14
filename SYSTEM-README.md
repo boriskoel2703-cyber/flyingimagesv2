@@ -13,6 +13,8 @@ src/system/index.html       het dashboard
 src/system/app.js           schermen, stepper, Workflow BE, Vragenlijst BE
 src/system/intake-core.js   vragenlijsten + prompt-opbouw (overgenomen uit de intake-tool)
 src/system/system.css       huisstijl
+src/system/leer-data.js     Leeromgeving: standaardtekst per dienst
+src/system/leer-ill.js      Leeromgeving: illustraties (inline SVG)
 ```
 
 - `api/` hoort in de **root** van de repo (naast package.json). Vercel maakt er automatisch `/api/system` van.
@@ -39,6 +41,8 @@ De service role key staat alleen op de server, nooit in de browser. Na het toevo
 - Prijzen (System → Website → Prijzen): bestand `config/prices.json` in dezelfde bucket. De website haalt ze op via `/api/prices` (30 sec cache) en vervangt de prijzen uit `src/data.mjs`. Zolang er niets is opgeslagen, gelden de prijzen uit `src/data.mjs`. Let op: meta-omschrijvingen voor Google gebruiken de prijzen uit `src/data.mjs`.
 
 - Hero-afbeelding (System → Website → Hero-afbeelding): foto in `site/hero-<tijd>.webp` en instellingen (pad + focuspunt) in `config/site.json`, beide in dezelfde bucket. De foto wordt in de browser verkleind naar max. 2400 px en gecomprimeerd. De homepage vraagt `/api/site` op (30 sec cache) en vervangt de standaard dronefoto; `/api/site?img=hero` levert de foto zelf. Zonder eigen foto blijft de standaardfoto staan.
+
+- Leeromgeving (System → Merk → Leeromgeving): standaardteksten staan in `src/system/leer-data.js`. Wat je via Bewerken aanpast, komt in `config/system-config.json` onder `leer.<dienst>` en gaat vóór de standaardtekst. Terugzetten verwijdert die aanpassing.
 
 ## Beveiliging
 
