@@ -12,6 +12,7 @@
    valkuilen   wat vaak misgaat (lijst)
    oplevering  wat de klant uiteindelijk krijgt (lijst)
    combi       slugs van diensten die er goed bij passen
+   status      "ok" = aanpak klopt, anders "aanpak nog checken" (te wisselen in System)
 */
 
 export const LEER_CATS = [
@@ -23,7 +24,7 @@ export const LEER_CATS = [
 
 export const LEER = [
   {
-    slug: "maatwerk-website", cat: "web", name: "Maatwerk website", ill: "maatwerk",
+    slug: "maatwerk-website", cat: "web", name: "Maatwerk website", ill: "maatwerk", status: "ok",
     kort: "Een website met eigen ontwerp én eigen functies, zoals een boekingsflow, calculator of klantportaal.",
     wat: "Maatwerk is alles wat verder gaat dan informeren en contact laten opnemen. De site moet iets dóén voor het bedrijf: offertes berekenen, afspraken plannen, klanten laten inloggen of koppelen met een systeem dat ze al gebruiken. Het ontwerp is volledig op het merk afgestemd, geen template.\n\nBij ons loopt dit via de Custom website-workflow: intake en vragenlijst, brandbook-prompt, ontwerp en bouw (Lovable of eigen repo), en oplevering. De klant betaalt na de eerste oplevering en heeft daarna nog één revisieronde.",
     signalen: [

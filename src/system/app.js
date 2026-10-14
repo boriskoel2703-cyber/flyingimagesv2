@@ -101,6 +101,15 @@ function leerItem(slug) {
   return { ...base, ...(CFG.leer?.[slug] || {}) };
 }
 const lrCat = (id) => LEER_CATS.find((c) => c.id === id) || LEER_CATS[0];
+const lrStatus = (slug) => (CFG.leerStatus?.[slug] ?? LEER.find((x) => x.slug === slug)?.status) === "ok";
+const lrBadge = (slug, btn) => {
+  const ok = lrStatus(slug);
+  const icon = ok
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3 2"/></svg>';
+  const tag = btn ? "button" : "span";
+  return `<${tag} class="lr-status ${ok ? "ok" : "todo"}"${btn ? ` data-lr="status" title="Klik om te wisselen"` : ""}>${icon}${ok ? "Aanpak klopt" : "Aanpak nog checken"}</${tag}>`;
+};
 const lrParas = (t) => String(t || "").split(/\n{2,}/).map((p) => `<p>${esc(p.trim())}</p>`).join("");
 
 function leerOverzicht() {
@@ -111,7 +120,7 @@ function leerOverzicht() {
       <div class="lr-cards">${items.map((x) => `
         <a class="lr-card" href="#leer/${x.slug}" data-lr-search="${esc((x.name + " " + x.kort + " " + cat.name).toLowerCase())}">
           <div class="lr-card__ill">${illustration(x.ill, x.name)}</div>
-          <div class="lr-card__b"><h3>${esc(x.name)}</h3><p>${esc(x.kort)}</p>
+          <div class="lr-card__b">${lrBadge(x.slug)}<h3>${esc(x.name)}</h3><p>${esc(x.kort)}</p>
           <span class="lr-mono">${x.aanpak.length} stappen · ${x.belangrijk.length} checkpunten</span></div>
         </a>`).join("")}</div>
     </section>`;
@@ -145,6 +154,7 @@ function leerDetail(slug) {
       <div class="lr-dhead__t">
         <div class="lr-eyebrow"><span class="lr-ic lr-ic--${cat.id} sm">${cat.letter}</span>${esc(cat.name)}</div>
         <h1>${esc(x.name)}</h1>
+        <div class="lr-status-row">${lrBadge(slug, !LR.edit)}</div>
         <p class="lr-lead">${esc(x.kort)}</p>
         <div class="lr-acts">
           ${LR.edit
@@ -212,6 +222,14 @@ function leerEditor(x) {
 async function leerAction(btn) {
   const act = btn.dataset.lr, slug = LR.slug;
   if (act === "edit") { LR.edit = true; return render(); }
+  if (act === "status") {
+    const next = clone(CFG);
+    next.leerStatus = { ...(next.leerStatus || {}), [slug]: lrStatus(slug) ? "check" : "ok" };
+    btn.disabled = true;
+    try { await api("saveConfig", { config: next }); CFG = next; render(); savedLabel("✓ Status opgeslagen"); }
+    catch (err) { alert("Opslaan mislukt: " + err.message); btn.disabled = false; }
+    return;
+  }
   if (act === "cancel") {
     if (LR.dirty && !(await ask("Je wijzigingen gaan verloren. Weet je het zeker?", "Weggooien"))) return;
     LR.edit = false; LR.dirty = false; return render();
