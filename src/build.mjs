@@ -272,7 +272,11 @@ ${MODE === 'vercel' ? `<link rel="canonical" href="${canonical}">` : ''}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="${a('assets/style.css')}?v=${ASSET_V}">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A1727'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='13' font-weight='600' fill='%23CBA266' text-anchor='middle'%3EFI%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="${a('favicon.ico')}" sizes="48x48">
+<link rel="icon" href="${a('favicon.svg')}" type="image/svg+xml">
+<link rel="icon" href="${a('favicon-96x96.png')}" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="${a('apple-touch-icon.png')}">
+<link rel="manifest" href="${a('site.webmanifest')}">
 ${jsonld}
 </head>
 <body>
@@ -863,6 +867,7 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 cpSync(join(ROOT, 'src/assets'), join(OUT, 'assets'), { recursive: true });
 cpSync(join(ROOT, 'src/img'), join(OUT, 'img'), { recursive: true });
+cpSync(join(ROOT, 'src/root'), OUT, { recursive: true }); // favicons + manifest in de root
 cpSync(join(ROOT, 'src/system'), join(OUT, 'system'), { recursive: true }); // intern dashboard /system
 writeFileSync(join(OUT, 'assets/prices-base.json'), JSON.stringify(basisPrijzen)); // standaardprijzen voor /system en prices.js
 home();
