@@ -229,7 +229,7 @@ function svcCard(u, s, showCat = false) {
     <span class="icon">${icon(s.slug)}</span>
     ${showCat ? `<span class="cat">${cat(s.cat).name}</span>` : ''}
     <h3>${s.name}</h3>
-    <p>${s.intro.split('. ')[0]}.</p>
+    <p>${s.intro.split('. ')[0].replace(/\.$/, '')}.</p>
     <div class="foot"><span class="from" data-p="card" data-slug="${s.slug}">${PV ? `vanaf<strong>${s.price.from}</strong> ${unitText(s.price)}` : OA.card}</span><span class="arrow">${I.arrow}</span></div>
   </a>`;
 }
