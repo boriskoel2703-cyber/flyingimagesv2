@@ -1092,7 +1092,7 @@ function renderHero() {
     <div class="hero-frame__img" data-hero-focus><img src="${esc(h.preview)}" alt="" style="object-position:${h.focus}"><span class="hero-dot" style="left:${fx};top:${fy}"></span></div></div>`;
   return head("Website", "Hero-afbeelding", "De grote achtergrondafbeelding bovenaan de homepage. Upload een eigen foto en klik in de voorbeelden op het belangrijkste punt, zodat dat op elk scherm in beeld blijft. Na opslaan staat het binnen een minuut live.")
     + `<div class="card"><div class="card__h"><div><h3>Huidige afbeelding ${h.saved ? '<span class="badge">Eigen foto</span>' : '<span class="badge navy">Standaard</span>'}</h3>
-        <p>${h.file ? "Nog niet opgeslagen. Klik op Opslaan om hem live te zetten." : h.saved ? `Laatst opgeslagen: ${fmtDate(h.saved.savedAt)}` : "Nu staat de standaard dronefoto (brug) op de site."}</p></div></div>
+        <p>${h.file ? "Nog niet opgeslagen. Klik op Opslaan om hem live te zetten." : h.saved ? `Laatst opgeslagen: ${fmtDate(h.saved.savedAt)}` : "Geen eigen foto ingesteld: de hero op de homepage is nu leeg (donker). Upload een foto."}</p></div></div>
       <div class="hero-frames">${frame("wide", "Desktop")}${frame("tall", "Mobiel")}</div>
       <p class="hint">Focuspunt: ${esc(h.focus)}. Klik in een voorbeeld om het te verplaatsen. De linkerkant wordt op desktop deels bedekt door de tekst.</p>
       <div class="row" style="margin-top:14px"><label class="btn ghost sm">${h.saved || h.file ? "Andere foto kiezen" : "Foto uploaden"}<input type="file" accept="image/jpeg,image/png,image/webp" hidden data-hero="file"></label>

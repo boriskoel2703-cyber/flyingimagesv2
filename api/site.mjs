@@ -1,6 +1,7 @@
 // Publieke site-instellingen voor flyingimages.nl — alleen-lezen.
 // GET /api/site            → { hero: { src, focus } | null }   (ingesteld via /system → Hero-afbeelding)
 // GET /api/site?img=hero&v= → de hero-afbeelding zelf (lang gecachet; v wisselt bij elke nieuwe upload)
+// GET /api/site?img=hero    → altijd de huidige hero (de homepage laadt deze direct, kort gecachet)
 const BUCKET = "referenties";
 const SITE_PATH = "config/site.json";
 
@@ -27,7 +28,7 @@ export default async function handler(req, res) {
       const r = await fetch(`${base()}/storage/v1/object/authenticated/${BUCKET}/${hero.path}`, { headers: auth() });
       if (!r.ok) return res.status(404).end();
       res.setHeader("Content-Type", r.headers.get("content-type") || "image/webp");
-      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      res.setHeader("Cache-Control", req.query?.v ? "public, max-age=31536000, immutable" : "public, max-age=60, s-maxage=300, stale-while-revalidate=86400");
       return res.status(200).send(Buffer.from(await r.arrayBuffer()));
     }
 
