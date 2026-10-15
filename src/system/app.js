@@ -987,14 +987,27 @@ function prDraft(base, saved) {
   const d = { zichtbaar: saved && typeof saved.zichtbaar === "boolean" ? saved.zichtbaar : base.zichtbaar !== false, tijdelijkePrijs: saved ? saved.tijdelijkePrijs || "" : base.tijdelijkePrijs || "", services: {}, categories: {} };
   for (const sv of base.services) {
     const o = saved?.services?.[sv.slug] || {};
-    d.services[sv.slug] = { from: o.from || sv.from || "", unit: o.unit || sv.unit || "", monthly: o.monthly ?? sv.monthly ?? "", note: o.note ?? sv.note ?? "" };
+    d.services[sv.slug] = { from: o.from || sv.from || "", unit: o.unit || sv.unit || "", monthly: o.monthly ?? sv.monthly ?? "", note: o.note ?? sv.note ?? "", tonen: o.tonen !== false };
   }
+  d.packages = {};
+  for (const pk of base.packages || []) d.packages[prKey(pk)] = saved?.packages?.[prKey(pk)] !== false;
   for (const c of base.categories) d.categories[c.id] = saved?.categories?.[c.id] || c.from || "";
   return d;
+}
+const prKey = (pk) => String(pk.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+const prNum = (v) => { const n = Number(String(v || "").replace(/[^0-9]/g, "")); return n > 0 ? n : null; };
+function prCat(id) { // laagste prijs van de diensten in deze categorie die een prijs tonen
+  const t = money(PR.draft.tijdelijkePrijs); let best = null;
+  for (const sv of PR.base.services) {
+    const p = PR.draft.services[sv.slug]; if (sv.cat !== id || !p.tonen) continue;
+    const f = t || money(p.from); if (!best || (prNum(f) != null && (prNum(best) == null || prNum(f) < prNum(best)))) best = f;
+  }
+  return best;
 }
 const money = (v) => { v = String(v || "").trim(); return /^\d[\d.,]*$/.test(v) ? "€" + v : v; };
 function prLive(slug) {
   const p = PR.draft.services[slug], t = money(PR.draft.tijdelijkePrijs);
+  if (!p.tonen) return "prijs <b>op aanvraag</b>";
   const from = t || money(p.from), monthly = t ? "" : money(p.monthly);
   return `vanaf <b>${esc(from || "—")}</b> ${esc(p.unit)}${monthly ? ` + ${esc(monthly)}/mnd` : ""}`;
 }
@@ -1003,9 +1016,10 @@ function renderPrices() {
   const cats = PR.base.categories.map((c) => {
     const list = PR.base.services.filter((sv) => sv.cat === c.id);
     return `<div class="card"><div class="card__h"><div><h3>${esc(c.name)}</h3><p>${list.length} diensten</p></div>
-        <label class="pr-cat"><span class="mini">Vanaf op homepage</span><input class="field" data-pr="cat" data-id="${c.id}" value="${esc(d.categories[c.id])}" placeholder="${esc(c.from)}" ${t ? "disabled" : ""}></label></div>
-      ${list.map((sv) => { const p = d.services[sv.slug]; return `<div class="ed pr-row"><div class="ed__f">
-        <div class="pr-top"><b>${esc(sv.name)}</b><span class="pr-live" id="live-${sv.slug}">${prLive(sv.slug)}</span></div>
+        <div class="pr-cat"><span class="mini">Op de homepage</span><span class="pr-live">${(() => { const b = prCat(c.id); return b ? `vanaf <b>${esc(b)}</b>` : "prijs <b>op aanvraag</b>"; })()}</span></div></div>
+      ${list.map((sv) => { const p = d.services[sv.slug]; return `<div class="ed pr-row${p.tonen ? "" : " pr-off"}"><div class="ed__f">
+        <div class="pr-top"><b>${esc(sv.name)}</b><span class="pr-live" id="live-${sv.slug}">${prLive(sv.slug)}</span>
+          <label class="pr-switch"><input type="checkbox" data-pr="tonen" data-slug="${sv.slug}" ${p.tonen ? "checked" : ""}> Prijs tonen</label></div>
         <div class="pr-grid">
           <label><span class="mini">Vanaf</span><input class="field" data-pr="from" data-slug="${sv.slug}" value="${esc(p.from)}" placeholder="${esc(sv.from)}"></label>
           <label><span class="mini">Eenheid</span><input class="field" data-pr="unit" data-slug="${sv.slug}" value="${esc(p.unit)}" placeholder="eenmalig"></label>
@@ -1016,12 +1030,16 @@ function renderPrices() {
   }).join("");
   return head("Website", "Prijzen", "Pas per dienst de prijs aan die op flyingimages.nl staat: op de dienstkaarten, de dienstpagina en de homepage. Na opslaan staat het binnen een minuut live.")
     + `<div class="card pr-temp${d.zichtbaar ? " on" : ""}"><div class="card__h"><div><h3>Prijzen op de website ${d.zichtbaar ? '<span class="badge">Zichtbaar</span>' : '<span class="badge navy">Verborgen</span>'}</h3>
-        <p>${d.zichtbaar ? "De site toont de prijzen hieronder." : "De site toont overal \"Prijs op aanvraag\", ook bij de pakketten. Stel de prijzen rustig in en zet ze aan als ze kloppen."}</p></div></div>
+        <p>${d.zichtbaar ? "De site toont de prijzen die hieronder op \"Prijs tonen\" staan. De rest staat op aanvraag." : "Noodknop: de site toont overal \"Prijs op aanvraag\", ook bij de pakketten, ongeacht de schakelaars hieronder."}</p></div></div>
       <div class="row"><button class="btn ${d.zichtbaar ? "ghost" : "dark"} sm" data-pr-act="vis">${d.zichtbaar ? "Prijzen verbergen" : "Prijzen tonen"}</button></div></div>`
     + `<div class="card pr-temp${t ? " on" : ""}"><div class="card__h"><div><h3>Tijdelijke prijs ${t ? '<span class="badge">Actief</span>' : '<span class="badge navy">Uit</span>'}</h3>
         <p>Staat hier een bedrag, dan toont de hele site overal "vanaf" dit bedrag, ook bij de pakketten. Maandbedragen worden dan verborgen. Leeg laten = de prijzen per dienst hieronder.</p></div></div>
       <div class="row"><input class="field" style="max-width:220px" data-pr="temp" value="${esc(d.tijdelijkePrijs)}" placeholder="bijv. €1975">
       ${t ? '<button class="btn ghost sm" data-pr-act="temp-off">Tijdelijke prijs uitzetten</button>' : ""}</div></div>`
+    + `<div class="card"><div class="card__h"><div><h3>Pakketten</h3><p>Kies per pakket of de prijs zichtbaar is. Uit = "Op aanvraag, voorstel op maat".</p></div></div>
+      ${(PR.base.packages || []).map((pk) => { const on = d.packages[prKey(pk)]; return `<div class="ed pr-row${on ? "" : " pr-off"}"><div class="ed__f"><div class="pr-top"><b>${esc(pk.name)}</b>
+        <span class="pr-live">${on ? `<b>${esc(pk.price)}</b> ${esc(pk.unit)}` : "<b>op aanvraag</b>"}</span>
+        <label class="pr-switch"><input type="checkbox" data-pr="pkg" data-id="${prKey(pk)}" ${on ? "checked" : ""}> Prijs tonen</label></div></div></div>`; }).join("")}</div>`
     + cats
     + `<p class="hint">${PR.saved ? `Laatst opgeslagen: ${fmtDate(PR.savedAt)}` : "Nog niet opgeslagen in System. De site toont nu de prijzen uit de code."} Bedragen zonder €-teken krijgen die automatisch.</p>`
     + `<div class="sticky-save"><button class="btn ghost" data-pr-act="reset">Standaard herstellen</button><button class="btn dark" data-pr-act="save" id="prSave" ${PR.dirty ? "" : "disabled"}>${PR.dirty ? "Opslaan" : "Opgeslagen"}</button></div>`;
@@ -1031,6 +1049,8 @@ function prRedraw() { const y = scrollY; content.innerHTML = renderPrices(); scr
 content.addEventListener("input", (e) => {
   const el = e.target, k = el.dataset.pr; if (!PR || !k) return;
   if (k === "temp") { const was = !!money(PR.draft.tijdelijkePrijs); PR.draft.tijdelijkePrijs = el.value; prDirty(); if (was !== !!money(el.value)) { prRedraw(); const f = $('[data-pr="temp"]'); f.focus(); f.setSelectionRange(f.value.length, f.value.length); } else PR.base.services.forEach((sv) => { const l = $(`#live-${sv.slug}`); if (l) l.innerHTML = prLive(sv.slug); }); return; }
+  if (k === "tonen") { PR.draft.services[el.dataset.slug].tonen = el.checked; prDirty(); return prRedraw(); }
+  if (k === "pkg") { PR.draft.packages[el.dataset.id] = el.checked; prDirty(); return prRedraw(); }
   if (k === "cat") PR.draft.categories[el.dataset.id] = el.value;
   else { PR.draft.services[el.dataset.slug][k] = el.value; const l = $(`#live-${el.dataset.slug}`); if (l) l.innerHTML = prLive(el.dataset.slug); }
   prDirty();
@@ -1042,15 +1062,16 @@ content.addEventListener("click", async (e) => {
   else if (a === "temp-off") { PR.draft.tijdelijkePrijs = ""; PR.dirty = true; prRedraw(); }
   else if (a === "reset") {
     if (!(await ask("Alle prijzen terugzetten naar de standaardprijzen uit de code? Dit wordt pas actief na opslaan."))) return;
-    const vis = PR.draft.zichtbaar; PR.draft = prDraft(PR.base, null); PR.draft.tijdelijkePrijs = ""; PR.draft.zichtbaar = vis; PR.dirty = true; prRedraw();
+    const vis = PR.draft.zichtbaar, old = PR.draft; PR.draft = prDraft(PR.base, null); PR.draft.tijdelijkePrijs = ""; PR.draft.zichtbaar = vis; PR.draft.packages = old.packages;
+    for (const k in PR.draft.services) PR.draft.services[k].tonen = old.services[k].tonen; PR.dirty = true; prRedraw();
   } else if (a === "save") {
     const d = PR.draft;
-    const empty = PR.base.services.find((sv) => !money(d.services[sv.slug].from));
+    const empty = PR.base.services.find((sv) => d.services[sv.slug].tonen && !money(d.services[sv.slug].from));
     if (d.zichtbaar && empty && !money(d.tijdelijkePrijs)) return alert(`Vul een vanaf-prijs in bij ${empty.name}.`);
     el.disabled = true; el.textContent = "Opslaan…";
-    const prices = { zichtbaar: !!d.zichtbaar, tijdelijkePrijs: money(d.tijdelijkePrijs), categories: {}, services: {} };
+    const prices = { zichtbaar: !!d.zichtbaar, tijdelijkePrijs: money(d.tijdelijkePrijs), categories: {}, services: {}, packages: { ...d.packages } };
     for (const [id, v] of Object.entries(d.categories)) prices.categories[id] = money(v);
-    for (const [slug, p] of Object.entries(d.services)) prices.services[slug] = { from: money(p.from), unit: p.unit.trim(), monthly: money(p.monthly), note: p.note.trim() };
+    for (const [slug, p] of Object.entries(d.services)) prices.services[slug] = { from: money(p.from), unit: p.unit.trim(), monthly: money(p.monthly), note: p.note.trim(), tonen: p.tonen };
     try {
       const r = await api("savePrices", { prices });
       Object.assign(PR, { saved: true, savedAt: r.savedAt, dirty: false }); prRedraw();
