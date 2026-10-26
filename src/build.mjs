@@ -333,7 +333,7 @@ function home() {
     <div class="usp-item"><span class="usp-num" data-count="12">12</span><p>diensten onder één dak</p></div>
     <div class="usp-item"><span class="usp-num" data-count="0" data-prefix="€">€0</span><p>vooraf betalen</p></div>
     <div class="usp-item"><span class="usp-num" data-count="2">2</span><p>vaste aanspreekpunten: Job en Boris</p></div>
-    <div class="usp-item"><span class="usp-num" data-count="100" data-suffix="%">100%</span><p>tevreden, anders geen factuur</p></div>
+    <div class="usp-item"><span class="usp-num">Achteraf</span><p>betaal je, pas na jouw goedkeuring</p></div>
   </div>
 </section>
 
