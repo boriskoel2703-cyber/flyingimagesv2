@@ -258,6 +258,15 @@ function doc({ path, title, desc, body, overlay = false, jsonld = '' }) {
   const html = `<!doctype html>
 <html lang="nl" data-prijzen="${PV ? 'aan' : 'uit'}">
 <head>
+${MODE === 'vercel' ? `<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VTQ4KZ9JFP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VTQ4KZ9JFP');
+</script>` : ''}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${title}</title>
