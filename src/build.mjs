@@ -177,7 +177,7 @@ function footer(u, withSg = true) {
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="year">2026</span> Flying Images · Job &amp; Boris Koelman · Prijzen excl. btw · <a href="${u('privacy')}">Privacyverklaring</a></span>
+      <span>© <span id="year">2026</span> Flying Images · Job &amp; Boris Koelman · Prijzen excl. btw · <a href="${u('privacy')}">Privacyverklaring</a> · <button type="button" class="cookie-link" data-cookie-settings>Cookie-instellingen</button></span>
       ${soc.length ? `<div class="socials">${soc.join('')}</div>` : ''}
     </div>
   </div>
@@ -258,14 +258,21 @@ function doc({ path, title, desc, body, overlay = false, jsonld = '' }) {
   const html = `<!doctype html>
 <html lang="nl" data-prijzen="${PV ? 'aan' : 'uit'}">
 <head>
-${MODE === 'vercel' ? `<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VTQ4KZ9JFP"></script>
+${MODE === 'vercel' ? `<!-- Google tag (gtag.js): laadt pas na toestemming via de cookiebanner (Consent Mode v2) -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VTQ4KZ9JFP');
+  gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+  window.fiLoadGA = function () {
+    if (window.fiGA) return; window.fiGA = true;
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-VTQ4KZ9JFP';
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', 'G-VTQ4KZ9JFP');
+  };
+  try { var c = JSON.parse(localStorage.getItem('fi-consent')); if (c && c.v === 'ja' && Date.now() - c.t < 31536e6) window.fiLoadGA(); } catch (e) {}
 </script>` : ''}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -814,7 +821,7 @@ ${pageHero(u, a, { eyebrow: 'Contact', title: 'Klaar om te beginnen?', lead: 'Pl
 }
 
 function privacy() {
-  const updated = '13 oktober 2026';
+  const updated = '29 oktober 2026';
   const sec = (id, t, body) => `<section class="legal-sec" id="${id}"><h2>${t}</h2>${body}</section>`;
   const sections = [
     ['wie', 'Wie zijn wij', `<p>Flying Images bouwt websites en verzorgt vindbaarheid, Ai-oplossingen en dronebeelden voor ondernemers. Wij zijn verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in deze privacyverklaring.</p>
@@ -829,7 +836,8 @@ function privacy() {
     ['doelen', 'Waarom we dat doen', `<ul><li><b>Je vraag beantwoorden</b> en een voorstel maken. Grondslag: jouw verzoek, voorafgaand aan een overeenkomst.</li>
       <li><b>Je project uitvoeren</b>, opleveren en onderhouden. Grondslag: uitvoering van de overeenkomst.</li>
       <li><b>Factureren en onze administratie</b> bijhouden. Grondslag: wettelijke verplichting.</li>
-      <li><b>De website veilig en werkend houden.</b> Grondslag: ons gerechtvaardigd belang.</li></ul>
+      <li><b>De website veilig en werkend houden.</b> Grondslag: ons gerechtvaardigd belang.</li>
+      <li><b>Meten hoe de website wordt gebruikt</b> (Google Analytics), zodat we hem kunnen verbeteren. Grondslag: jouw toestemming.</li></ul>
       <p>We gebruiken je gegevens niet voor nieuwsbrieven of reclame zonder dat je daar zelf om vraagt, en we verkopen ze nooit.</p>`],
     ['bewaren', 'Hoe lang we gegevens bewaren', `<ul><li><b>Aanvragen die niet tot een opdracht leiden:</b> maximaal 12 maanden.</li>
       <li><b>Klant- en factuurgegevens:</b> 7 jaar, vanwege de fiscale bewaarplicht.</li>
@@ -841,10 +849,13 @@ function privacy() {
       <li><b>Supabase:</b> slaat de gegevens op in ons interne systeem waarmee we aanvragen en projecten beheren.</li>
       <li><b>Hostinger en Google (Gmail):</b> verwerken onze zakelijke e-mail.</li>
       <li><b>Google Fonts:</b> levert de lettertypes van deze site. Daarbij ontvangt Google je IP-adres.</li>
+      <li><b>Google Analytics:</b> meet, alleen met jouw toestemming, hoe de website wordt gebruikt (zie Cookies).</li>
       <li><b>Boekhouder en Belastingdienst</b>, voor zover dat wettelijk nodig is.</li></ul>
       <p>Sommige van deze partijen zitten (ook) buiten de Europese Economische Ruimte, bijvoorbeeld in de Verenigde Staten. Dat gebeurt alleen met passende waarborgen, zoals het EU-VS Data Privacy Framework of de standaardcontractbepalingen van de Europese Commissie.</p>`],
-    ['cookies', 'Cookies', `<p>Deze website gebruikt <b>geen tracking-, analyse- of marketingcookies</b>. We volgen je dus niet en bouwen geen profiel van je op. Je ziet daarom ook geen cookiebanner.</p>
-      <p>Alleen in ons afgeschermde interne systeem gebruiken we functionele opslag om ingelogd te blijven. Dat geldt niet voor bezoekers van de website.</p>`],
+    ['cookies', 'Cookies', `<p>Met jouw toestemming gebruiken we <b>Google Analytics</b> om te zien hoe bezoekers onze website gebruiken, bijvoorbeeld welke pagina's het meest bekeken worden. Daarvoor plaatst Google analytische cookies. We gebruiken dit alleen om de website te verbeteren, niet voor advertenties of om een profiel van je te maken.</p>
+      <p>Google Analytics laadt pas nadat je in de cookiebanner op <b>Accepteren</b> klikt. Kies je <b>Weigeren</b>, dan plaatsen we geen analytische cookies. We onthouden je keuze 12 maanden in je browser, zodat we het niet bij elk bezoek opnieuw vragen. Je kunt je keuze altijd wijzigen via <button type="button" class="cookie-link" data-cookie-settings>Cookie-instellingen</button> onderaan elke pagina.</p>
+      <p>Google kan deze gegevens ook buiten de Europese Economische Ruimte verwerken, met de waarborgen die hierboven bij het delen met derden staan beschreven.</p>
+      <p>In ons afgeschermde interne systeem gebruiken we daarnaast functionele opslag om ingelogd te blijven. Dat geldt niet voor bezoekers van de website.</p>`],
     ['beveiliging', 'Beveiliging', `<p>We gaan zorgvuldig om met je gegevens. De website draait volledig via een beveiligde verbinding (https), ons interne systeem is afgeschermd met een login, en alleen Job en Boris hebben toegang tot je gegevens. Denk je dat er iets misgaat? Laat het ons direct weten via <a href="mailto:${site.email}">${site.email}</a>.</p>`],
     ['rechten', 'Jouw rechten', `<p>Je hebt altijd het recht om:</p>
       <ul><li>je gegevens in te zien;</li><li>onjuiste gegevens te laten aanpassen;</li><li>je gegevens te laten verwijderen;</li><li>de verwerking te laten beperken;</li><li>je gegevens over te laten dragen;</li><li>bezwaar te maken tegen de verwerking.</li></ul>

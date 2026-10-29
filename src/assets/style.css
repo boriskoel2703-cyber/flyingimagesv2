@@ -736,3 +736,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 .pn-close:hover { background: rgba(255,255,255,.08); color: var(--white); }
 html[data-prijzen="uit"] .price-notice { display: none; }
 @media (prefers-reduced-motion: reduce) { .price-notice, .price-notice.is-open { transition: opacity .2s, visibility 0s; clip-path: none; transform: none; } }
+
+/* Cookiebanner */
+.cookie-banner { position: fixed; z-index: 60; left: var(--gutter); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(420px, calc(100vw - 2 * var(--gutter)));
+  background: var(--navy-900); color: var(--mist); border: 1px solid var(--line-dark); border-radius: var(--radius); padding: 22px 22px 20px;
+  box-shadow: 0 24px 60px -20px rgba(6, 14, 25, .65); font-size: .92rem; line-height: 1.55;
+  opacity: 0; transform: translateY(16px); transition: opacity .35s var(--ease), transform .4s var(--ease); }
+.cookie-banner.is-open { opacity: 1; transform: none; }
+.cookie-banner .cb-title { margin: 0 0 6px; color: var(--white); font-weight: 500; font-size: 1.02rem; }
+.cookie-banner .cb-text { margin: 0 0 18px; }
+.cookie-banner a { color: var(--sand-300); text-decoration: underline; text-underline-offset: 3px; }
+.cb-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cb-actions .btn { justify-content: center; min-height: 46px; padding: 0 16px; cursor: pointer; font: inherit; font-weight: 500; }
+.cb-actions .btn-ghost { background: transparent; }
+@media (max-width: 520px) { .cookie-banner { left: 50%; transform: translate(-50%, 16px); } .cookie-banner.is-open { transform: translate(-50%, 0); } }
+@media (prefers-reduced-motion: reduce) { .cookie-banner { transition: opacity .2s; } }
+.cookie-link { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

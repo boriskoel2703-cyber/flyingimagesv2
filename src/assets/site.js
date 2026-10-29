@@ -225,4 +225,60 @@
     window.addEventListener('scroll', onNoticeScroll, { passive: true });
     notice.querySelector('.pn-close').addEventListener('click', closeNotice);
   }
+
+  /* Cookiebanner: Google Analytics alleen na toestemming. Keuze 12 maanden onthouden. */
+  var CK = 'fi-consent', YEAR = 31536e6;
+  function getConsent() {
+    try { var c = JSON.parse(localStorage.getItem(CK)); return c && Date.now() - c.t < YEAR ? c.v : null; } catch (e) { return null; }
+  }
+  function setConsent(v) {
+    try { localStorage.setItem(CK, JSON.stringify({ v: v, t: Date.now() })); } catch (e) {}
+  }
+  function clearGACookies() {
+    var host = location.hostname.replace(/^www\./, '');
+    document.cookie.split(';').forEach(function (c) {
+      var name = c.split('=')[0].trim();
+      if (/^_ga/.test(name)) {
+        ['', '; domain=' + host, '; domain=.' + host].forEach(function (d) {
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
+        });
+      }
+    });
+  }
+  var banner = null;
+  function closeBanner() {
+    if (!banner) return;
+    banner.classList.remove('is-open');
+    var b = banner; banner = null;
+    setTimeout(function () { b.remove(); }, reduce ? 0 : 400);
+  }
+  function openBanner() {
+    if (banner) return;
+    var priv = document.querySelector('.foot-bottom a[href*="privacy"]');
+    banner = document.createElement('div');
+    banner.className = 'cookie-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Cookie-toestemming');
+    banner.innerHTML =
+      '<p class="cb-title">Mogen we meten?</p>' +
+      '<p class="cb-text">We gebruiken analytische cookies (Google Analytics) om te zien hoe onze site wordt gebruikt en hem te verbeteren. Alleen als jij dat goed vindt. ' +
+      '<a href="' + (priv ? priv.getAttribute('href') : '/privacy') + '#cookies">Meer in onze privacyverklaring</a>.</p>' +
+      '<div class="cb-actions"><button type="button" class="btn btn-sand" data-cb="ja">Accepteren</button>' +
+      '<button type="button" class="btn btn-ghost" data-cb="nee">Weigeren</button></div>';
+    document.body.appendChild(banner);
+    banner.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-cb]');
+      if (!btn) return;
+      var v = btn.getAttribute('data-cb'), was = getConsent();
+      setConsent(v);
+      closeBanner();
+      if (v === 'ja') { if (window.fiLoadGA) window.fiLoadGA(); }
+      else if (was === 'ja' || window.fiGA) { clearGACookies(); location.reload(); }
+    });
+    requestAnimationFrame(function () { if (banner) banner.classList.add('is-open'); });
+  }
+  if (!getConsent()) setTimeout(openBanner, reduce ? 0 : 900);
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); openBanner(); }
+  });
 })();
