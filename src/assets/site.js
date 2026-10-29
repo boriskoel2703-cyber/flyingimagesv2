@@ -273,10 +273,11 @@
       setConsent(v);
       closeBanner();
       if (v === 'ja') { if (window.fiLoadGA) window.fiLoadGA(); }
-      else if (was === 'ja' || window.fiGA) { clearGACookies(); location.reload(); }
+      else { clearGACookies(); if (was === 'ja' || window.fiGA) location.reload(); }
     });
     requestAnimationFrame(function () { if (banner) banner.classList.add('is-open'); });
   }
+  if (getConsent() !== 'ja') clearGACookies(); // oude GA-cookies zonder geldige toestemming opruimen
   if (!getConsent()) setTimeout(openBanner, reduce ? 0 : 900);
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); openBanner(); }
