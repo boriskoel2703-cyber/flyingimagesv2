@@ -143,14 +143,10 @@
     }, { passive: true });
   }
 
-  /* Hero-afbeelding uit /system → Hero-afbeelding: laadt direct, hier alleen het focuspunt zetten en infaden */
+  /* Hero-afbeelding (vast bestand in de repo): infaden zodra geladen */
   if (heroImg) {
     var shown = false, show = function () { if (!shown) { shown = true; heroImg.classList.add('ready'); } };
-    var loaded = heroImg.complete ? Promise.resolve() : new Promise(function (r) { heroImg.addEventListener('load', r); heroImg.addEventListener('error', r); });
-    var focus = window.fetch ? fetch('/api/site', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
-      if (d && d.hero && d.hero.focus) heroImg.style.objectPosition = d.hero.focus;
-    }).catch(function () {}) : Promise.resolve();
-    Promise.all([loaded, focus]).then(show);
+    if (heroImg.complete) show(); else { heroImg.addEventListener('load', show); heroImg.addEventListener('error', show); }
     setTimeout(show, 1500);
   }
 

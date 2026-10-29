@@ -325,7 +325,7 @@ function home() {
     desc: pageMeta['index'].metaDesc,
     body: (u, a) => `
 <section class="hero">
-  <div class="hero-media" aria-hidden="true"><img src="/api/site?img=hero" alt="" width="2400" height="1350" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div>
+  <div class="hero-media" aria-hidden="true">${picture(a, 'drone-rotonde', '', { sizes: '(min-width: 1081px) 74vw, 100vw', eager: true })}</div>
   <div class="wrap hero-inner">
     <div class="hero-load">
       <span class="eyebrow">Websites · Marketing · Ai · Drone</span>
