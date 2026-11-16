@@ -163,7 +163,7 @@ function footer(u, withSg = true) {
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="logo" href="${u('index')}">Flying Images<span></span></a>
-        <p>${site.tagline} Websites, vindbaarheid, Ai en beelden vanuit de lucht. Gebouwd door Job en Boris in ${site.city}.</p>
+        <p>${site.tagline} Websites, vindbaarheid, Ai en beelden vanuit de lucht. Gebouwd door Boris in ${site.city}.</p>
       </div>
       ${col(['web', 'beeld'], 'Bouwen & beeld')}
       ${col(['vind', 'ai'], 'Groeien & slimmer werken')}
@@ -177,7 +177,7 @@ function footer(u, withSg = true) {
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="year">2026</span> Flying Images · Job &amp; Boris Koelman · Prijzen excl. btw · <a href="${u('privacy')}">Privacyverklaring</a> · <button type="button" class="cookie-link" data-cookie-settings>Cookie-instellingen</button></span>
+      <span>© <span id="year">2026</span> Flying Images · Boris Koelman · Prijzen excl. btw · <a href="${u('privacy')}">Privacyverklaring</a> · <button type="button" class="cookie-link" data-cookie-settings>Cookie-instellingen</button></span>
       ${soc.length ? `<div class="socials">${soc.join('')}</div>` : ''}
     </div>
   </div>
@@ -316,7 +316,7 @@ function home() {
   const jsonld = `<script type="application/ld+json">${JSON.stringify({
     '@context': 'https://schema.org', '@type': 'ProfessionalService', name: site.name, url: site.domain, email: site.email,
     slogan: site.tagline, address: { '@type': 'PostalAddress', addressLocality: site.city, addressCountry: 'NL' },
-    founder: [{ '@type': 'Person', name: 'Boris Koelman' }, { '@type': 'Person', name: 'Job Koelman' }],
+    founder: [{ '@type': 'Person', name: 'Boris Koelman' }],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Diensten', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name }, ...(PV ? { priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', minPrice: Number(s.price.from.replace(/[^0-9]/g, '')) } } : {}) })) },
   })}</script>`;
   doc({
@@ -348,7 +348,7 @@ function home() {
   <div class="wrap usp-grid">
     <div class="usp-item"><span class="usp-num" data-count="12">12</span><p>diensten onder één dak</p></div>
     <div class="usp-item"><span class="usp-num" data-count="0" data-prefix="€">€0</span><p>vooraf betalen</p></div>
-    <div class="usp-item"><span class="usp-num" data-count="2">2</span><p>vaste aanspreekpunten: Job en Boris</p></div>
+    <div class="usp-item"><span class="usp-num" data-count="1">1</span><p>vast aanspreekpunt: Boris</p></div>
     <div class="usp-item"><span class="usp-num">Achteraf</span><p>betaal je, pas na jouw goedkeuring</p></div>
   </div>
 </section>
@@ -629,7 +629,7 @@ ${ctaBand(u)}`,
 
 function overOns() {
   const diff = [
-    [I.chat, 'Je praat met de makers', 'Job en Boris doen het werk zelf, van het eerste gesprek tot de lancering. Korte lijnen, snelle antwoorden.'],
+    [I.chat, 'Je praat met de makers', 'Boris doet het werk zelf, van het eerste gesprek tot de lancering. Korte lijnen, snelle antwoorden.'],
     [I.card, 'Betaalbaar én transparant', 'Je weet vooraf wat je betaalt, en je betaalt pas als je tevreden bent.'],
     [icon('ai-oplossingen'), 'Alles onder één dak', 'Website, vindbaarheid, Ai en beeld. Je hoeft niet te schakelen tussen vijf bureaus.'],
     [icon('online-marketing'), 'Jong, fris en eerlijk', 'Een frisse blik en veel energie. Wij weten hoe het voelt om klein te beginnen.'],
@@ -641,22 +641,18 @@ function overOns() {
     title: pageMeta['over-ons'].metaTitle,
     desc: pageMeta['over-ons'].metaDesc,
     body: (u, a) => `
-${pageHero(u, a, { eyebrow: 'Over ons', title: 'Wij zijn Job en Boris, en wij bouwen het zelf.', lead: 'Flying Images wordt gerund door twee broers uit Zeewolde. Persoonlijk, direct, betaalbaar en menselijk.', crumbs: [[null, 'Over ons']] })}
+${pageHero(u, a, { eyebrow: 'Over ons', title: 'Eén maker, en die bouwt het zelf.', lead: 'Flying Images is het webbureau van Boris Koelman uit Zeewolde. Persoonlijk, direct, betaalbaar en menselijk.', crumbs: [[null, 'Over ons']] })}
 <section class="section">
   <div class="wrap team">
     <div class="team-intro reveal">
       <span class="eyebrow">Het team</span>
-      <h2 class="h2">Twee broers. Eén team. Jouw verhaal.</h2>
+      <h2 class="h2">Eén maker. Eén aanspreekpunt. Jouw verhaal.</h2>
       <p class="lead">We begonnen Flying Images omdat we zagen hoe lastig het voor ondernemers is om online goed voor de dag te komen. Te duur, te technisch, te veel tussenpersonen. Dat kan anders.</p>
     </div>
     <div class="team-cards">
       <article class="person reveal">
         <div class="person-tile" aria-hidden="true"><span>B</span><i></i><i></i><i></i><i></i></div>
-        <div><h3>Boris Koelman</h3><p class="role">Ontwerp, bouw &amp; techniek</p><p>Zet jouw verhaal om in een website, merk of Ai-oplossing die werkt.</p></div>
-      </article>
-      <article class="person reveal">
-        <div class="person-tile" aria-hidden="true"><span>J</span><i></i><i></i><i></i><i></i></div>
-        <div><h3>Job Koelman</h3><p class="role">Techniek, advies &amp; commercieel</p><p>Denkt met je mee over wat je nodig hebt, technisch én zakelijk.</p></div>
+        <div><h3>Boris Koelman</h3><p class="role">Ontwerp, bouw, techniek &amp; advies</p><p>Zet jouw verhaal om in een website, merk of Ai-oplossing die werkt.</p></div>
       </article>
     </div>
   </div>
@@ -751,7 +747,7 @@ ${ctaBand(u)}`,
 
 function contact() {
   const next = [
-    ['We lezen je bericht', 'Job of Boris leest het zelf, geen ticketsysteem.'],
+    ['We lezen je bericht', 'Boris leest het zelf, geen ticketsysteem.'],
     ['Kennismaking', 'We plannen een vrijblijvend gesprek, bij jou, bij ons of online.'],
     ['Advies & voorstel', 'Je krijgt eerlijk advies en een voorstel met vaste prijs.'],
   ];
@@ -791,7 +787,7 @@ ${pageHero(u, a, { eyebrow: 'Contact', title: 'Klaar om te beginnen?', lead: 'Pl
     <aside class="contact-aside reveal">
       <span class="eyebrow">Direct contact</span>
       <dl>
-        <div><dt>Namen</dt><dd>Job &amp; Boris Koelman</dd></div>
+        <div><dt>Naam</dt><dd>Boris Koelman</dd></div>
         <div><dt>E-mail</dt><dd>${site.email}</dd></div>
         <div><dt>Locatie</dt><dd>${site.city}, Nederland</dd></div>
         <div><dt>KvK</dt><dd>${site.kvk}</dd></div>
@@ -825,7 +821,7 @@ function privacy() {
   const sec = (id, t, body) => `<section class="legal-sec" id="${id}"><h2>${t}</h2>${body}</section>`;
   const sections = [
     ['wie', 'Wie zijn wij', `<p>Flying Images bouwt websites en verzorgt vindbaarheid, Ai-oplossingen en dronebeelden voor ondernemers. Wij zijn verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in deze privacyverklaring.</p>
-      <dl class="legal-dl"><div><dt>Bedrijf</dt><dd>Flying Images (Job &amp; Boris Koelman)</dd></div><div><dt>Vestiging</dt><dd>${site.city}, Nederland</dd></div><div><dt>KvK</dt><dd>${site.kvk}</dd></div><div><dt>E-mail</dt><dd><a href="mailto:${site.email}">${site.email}</a></dd></div></dl>
+      <dl class="legal-dl"><div><dt>Bedrijf</dt><dd>Flying Images (Boris Koelman)</dd></div><div><dt>Vestiging</dt><dd>${site.city}, Nederland</dd></div><div><dt>KvK</dt><dd>${site.kvk}</dd></div><div><dt>E-mail</dt><dd><a href="mailto:${site.email}">${site.email}</a></dd></div></dl>
       <p>Heb je een vraag over je privacy? Mail ons, dan reageren we zelf. Geen ticketsysteem.</p>`],
     ['gegevens', 'Welke gegevens we verwerken', `<p>We verwerken alleen gegevens die we echt nodig hebben:</p>
       <ul><li><b>Contactformulier:</b> je naam, e-mailadres, telefoonnummer (optioneel), de dienst of het specialisme dat je kiest en je bericht.</li>
@@ -856,7 +852,7 @@ function privacy() {
       <p>Google Analytics laadt pas nadat je in de cookiebanner op <b>Accepteren</b> klikt. Kies je <b>Weigeren</b>, dan plaatsen we geen analytische cookies. We onthouden je keuze 12 maanden in je browser, zodat we het niet bij elk bezoek opnieuw vragen. Je kunt je keuze altijd wijzigen via <button type="button" class="cookie-link" data-cookie-settings>Cookie-instellingen</button> onderaan elke pagina.</p>
       <p>Google kan deze gegevens ook buiten de Europese Economische Ruimte verwerken, met de waarborgen die hierboven bij het delen met derden staan beschreven.</p>
       <p>In ons afgeschermde interne systeem gebruiken we daarnaast functionele opslag om ingelogd te blijven. Dat geldt niet voor bezoekers van de website.</p>`],
-    ['beveiliging', 'Beveiliging', `<p>We gaan zorgvuldig om met je gegevens. De website draait volledig via een beveiligde verbinding (https), ons interne systeem is afgeschermd met een login, en alleen Job en Boris hebben toegang tot je gegevens. Denk je dat er iets misgaat? Laat het ons direct weten via <a href="mailto:${site.email}">${site.email}</a>.</p>`],
+    ['beveiliging', 'Beveiliging', `<p>We gaan zorgvuldig om met je gegevens. De website draait volledig via een beveiligde verbinding (https), ons interne systeem is afgeschermd met een login, en alleen Boris heeft toegang tot je gegevens. Denk je dat er iets misgaat? Laat het ons direct weten via <a href="mailto:${site.email}">${site.email}</a>.</p>`],
     ['rechten', 'Jouw rechten', `<p>Je hebt altijd het recht om:</p>
       <ul><li>je gegevens in te zien;</li><li>onjuiste gegevens te laten aanpassen;</li><li>je gegevens te laten verwijderen;</li><li>de verwerking te laten beperken;</li><li>je gegevens over te laten dragen;</li><li>bezwaar te maken tegen de verwerking.</li></ul>
       <p>Stuur je verzoek naar <a href="mailto:${site.email}">${site.email}</a>. We reageren binnen een maand. Om misbruik te voorkomen kunnen we je vragen je te identificeren.</p>
